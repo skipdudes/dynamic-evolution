@@ -1,0 +1,5 @@
+pygame>=2.6,<3.0
+uvicorn>=0.29
+fastapi>=0.110
+python-dotenv>=1.0
+groq>=0.5

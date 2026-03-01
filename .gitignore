@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables
+.env
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Packaging
+*.egg-info/
+
+# PyCharm
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
