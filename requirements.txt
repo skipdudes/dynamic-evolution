@@ -2,3 +2,4 @@ pygame>=2.6,<3.0
 python-dotenv>=1.0
 groq>=0.5
 colorlog>=6.10.1,<7.0
+pytmx>=3.32,<4.0
