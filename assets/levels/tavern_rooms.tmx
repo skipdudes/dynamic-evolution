@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="6" nextobjectid="25">
+ <tileset firstgid="1" source="tilesets/Inside_A4.tsx"/>
+ <tileset firstgid="257" source="tilesets/Dungeon_A2.tsx"/>
+ <tileset firstgid="449" source="tilesets/Inside_B.tsx"/>
+ <tileset firstgid="705" source="tilesets/Inside_A2.tsx"/>
+ <tileset firstgid="945" source="tilesets/Dungeon_A5.tsx"/>
+ <layer id="1" name="background" width="17" height="13">
+  <data encoding="csv">
+945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,945,945,
+945,945,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,945,945,
+945,945,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,3221225725,945,945,
+945,945,247,249,249,249,249,249,249,249,249,249,249,249,249,945,945,
+945,945,247,249,249,249,249,249,249,249,249,249,249,249,249,945,945,
+945,945,247,249,248,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,247,249,248,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,247,249,248,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,247,249,248,945,945,945,945,945,945,945,945,945,945,945,945,
+945,945,247,249,248,945,945,945,945,945,945,945,945,945,945,945,945
+</data>
+ </layer>
+ <layer id="2" name="decoration" width="17" height="13">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,930,0,0,0,0,930,0,0,0,0,930,0,0,0,
+0,0,0,929,0,0,0,0,929,0,0,0,0,929,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="3" name="collision">
+  <object id="14" x="48" y="144" width="48" height="480"/>
+  <object id="15" x="240" y="384" width="48" height="240"/>
+  <object id="16" x="288" y="384" width="432" height="48"/>
+  <object id="17" x="720" y="288" width="48" height="96"/>
+  <object id="18" x="96" y="96" width="624" height="48"/>
+  <object id="19" x="720" y="144" width="48" height="144"/>
+  <object id="22" x="96" y="240" width="528" height="48"/>
+  <object id="23" x="672" y="240" width="48" height="48"/>
+  <object id="24" x="624" y="240" width="48" height="36"/>
+ </objectgroup>
+ <objectgroup id="4" name="triggers">
+  <object id="1" name="level_trigger" x="96" y="624" width="144" height="48">
+   <properties>
+    <property name="level" value="tavern_hall"/>
+   </properties>
+  </object>
+  <object id="3" name="level_trigger" x="624" y="221" width="48" height="67">
+   <properties>
+    <property name="level" value="tavern_bedroom"/>
+   </properties>
+  </object>
+  <object id="4" name="player_spawn" x="144" y="549" width="48" height="72">
+   <properties>
+    <property name="level" value="tavern_hall"/>
+   </properties>
+  </object>
+  <object id="5" name="player_spawn" x="624" y="219" width="48" height="72">
+   <properties>
+    <property name="level" value="tavern_bedroom"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="renderables">
+  <object id="6" gid="527" x="240" y="264" width="48" height="48"/>
+  <object id="7" gid="528" x="288" y="264" width="48" height="48"/>
+  <object id="9" gid="542" x="528" y="264" width="48" height="48"/>
+  <object id="10" gid="543" x="480" y="264" width="48" height="48"/>
+ </objectgroup>
+</map>

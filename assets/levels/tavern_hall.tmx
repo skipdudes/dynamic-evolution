@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="65">
+ <tileset firstgid="1" source="tilesets/Inside_A2.tsx"/>
+ <tileset firstgid="241" source="tilesets/Inside_A4.tsx"/>
+ <tileset firstgid="497" source="tilesets/Inside_B.tsx"/>
+ <tileset firstgid="753" source="tilesets/Inside_C.tsx"/>
+ <layer id="1" name="background" width="17" height="13">
+  <data encoding="csv">
+715,715,715,715,715,715,715,715,715,715,715,715,487,489,488,715,715,
+715,485,482,482,482,482,482,2684355043,482,482,482,482,487,489,488,486,715,
+715,485,482,482,482,482,482,2684355043,482,482,482,482,487,489,488,486,715,
+715,485,482,482,482,482,482,2684355043,482,482,482,482,487,489,488,486,715,
+715,485,482,482,482,482,482,2684355043,482,482,482,482,482,482,482,486,715,
+715,485,482,482,482,482,482,2684355043,482,482,482,482,482,482,482,486,715,
+715,483,483,483,483,483,483,483,482,482,482,482,482,482,482,486,715,
+715,485,482,482,482,482,482,482,482,482,482,482,482,482,482,486,715,
+715,485,482,482,482,482,482,482,482,482,482,482,482,482,482,486,715,
+715,485,482,482,482,482,482,482,482,482,482,482,482,482,482,486,715,
+715,485,482,482,482,482,482,482,482,482,482,482,482,482,482,486,715,
+715,485,482,482,482,482,482,482,482,482,482,482,482,482,482,486,715,
+715,715,715,715,715,715,715,485,482,486,715,715,715,715,715,715,715
+</data>
+ </layer>
+ <layer id="2" name="decoration" width="17" height="13">
+  <data encoding="csv">
+0,778,599,600,777,627,628,0,0,0,0,0,0,0,0,0,0,
+0,0,615,616,0,643,644,0,0,0,0,9,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,720,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="collision">
+  <object id="36" x="0" y="576" width="336" height="48"/>
+  <object id="37" x="480" y="576" width="336" height="48"/>
+  <object id="38" x="0" y="0" width="48" height="576"/>
+  <object id="39" x="48" y="0" width="528" height="48"/>
+  <object id="40" x="720" y="0" width="96" height="48"/>
+  <object id="41" x="768" y="48" width="48" height="528"/>
+  <object id="42" x="48" y="288" width="336" height="48"/>
+  <object id="43" x="336" y="48" width="48" height="240"/>
+  <object id="44" x="180" y="516" width="24" height="12"/>
+  <object id="45" x="240" y="456" width="24" height="12"/>
+  <object id="46" x="120" y="456" width="24" height="12"/>
+  <object id="47" x="180" y="396" width="24" height="12"/>
+  <object id="50" x="168" y="456" width="48" height="24"/>
+  <object id="51" x="600" y="516" width="24" height="12"/>
+  <object id="52" x="660" y="456" width="24" height="12"/>
+  <object id="53" x="540" y="456" width="24" height="12"/>
+  <object id="54" x="600" y="396" width="24" height="12"/>
+  <object id="55" x="588" y="456" width="48" height="24"/>
+  <object id="56" x="682" y="551" width="31" height="25"/>
+  <object id="57" x="712" y="542" width="42" height="22"/>
+  <object id="58" x="543" y="66" width="19" height="17"/>
+  <object id="59" x="480" y="54" width="48" height="28"/>
+  <object id="60" x="443" y="59" width="26" height="17"/>
+  <object id="61" x="575" y="48" width="1" height="120"/>
+  <object id="62" x="720" y="48" width="1" height="120"/>
+ </objectgroup>
+ <objectgroup id="5" name="triggers">
+  <object id="32" name="level_trigger" x="336" y="624" width="144" height="48">
+   <properties>
+    <property name="level" value="newworld"/>
+   </properties>
+  </object>
+  <object id="33" name="level_trigger" x="576" y="-48" width="144" height="48">
+   <properties>
+    <property name="level" value="tavern_rooms"/>
+   </properties>
+  </object>
+  <object id="34" name="player_spawn" x="384" y="549" width="48" height="72">
+   <properties>
+    <property name="level" value="newworld"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="renderables">
+  <object id="3" gid="689" x="168" y="480" width="48" height="48"/>
+  <object id="4" gid="705" x="108" y="480" width="48" height="48"/>
+  <object id="5" gid="705" x="228" y="480" width="48" height="48"/>
+  <object id="6" gid="689" x="588" y="480" width="48" height="48"/>
+  <object id="7" gid="705" x="528" y="480" width="48" height="48"/>
+  <object id="8" gid="705" x="648" y="480" width="48" height="48"/>
+  <object id="9" gid="705" x="168" y="540" width="48" height="48"/>
+  <object id="10" gid="705" x="168" y="420" width="48" height="48"/>
+  <object id="11" gid="705" x="588" y="420" width="48" height="48"/>
+  <object id="12" gid="705" x="588" y="540" width="48" height="48"/>
+  <object id="13" gid="652" x="480" y="84" width="48" height="48"/>
+  <object id="14" gid="668" x="432" y="84" width="48" height="48"/>
+  <object id="15" gid="667" x="708" y="564" width="48" height="48"/>
+  <object id="17" gid="665" x="192" y="84" width="48" height="48"/>
+  <object id="18" gid="666" x="60" y="168" width="48" height="48"/>
+  <object id="19" gid="666" x="108" y="144" width="48" height="48"/>
+  <object id="20" gid="714" x="288" y="168" width="48" height="48"/>
+  <object id="22" gid="729" x="240" y="156" width="48" height="48"/>
+ </objectgroup>
+ <objectgroup id="4" name="objects">
+  <object id="23" gid="770" x="168" y="468" width="48" height="48"/>
+  <object id="24" gid="787" x="588" y="468" width="48" height="48"/>
+  <object id="26" gid="818" x="336" y="240" width="48" height="48"/>
+  <object id="27" gid="807" x="336" y="132" width="48" height="48"/>
+  <object id="28" gid="804" x="84" y="324" width="48" height="48"/>
+  <object id="29" gid="817" x="156" y="324" width="48" height="48"/>
+ </objectgroup>
+</map>

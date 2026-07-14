@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="53">
+ <tileset firstgid="1" source="tilesets/Inside_A4.tsx"/>
+ <tileset firstgid="257" source="tilesets/Dungeon_A2.tsx"/>
+ <tileset firstgid="449" source="tilesets/Dungeon_A5.tsx"/>
+ <tileset firstgid="577" source="tilesets/Inside_B.tsx"/>
+ <tileset firstgid="833" source="tilesets/Inside_C.tsx"/>
+ <tileset firstgid="1105" source="tilesets/SF_Inside_C.tsx"/>
+ <tileset firstgid="1361" source="tilesets/Inside_A2.tsx"/>
+ <layer id="1" name="background" width="17" height="13">
+  <data encoding="csv">
+449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,
+449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,
+449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,
+449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,449,
+449,449,795,795,795,795,795,795,795,795,795,795,795,795,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,245,242,242,242,242,242,242,242,242,242,246,795,449,449,
+449,449,795,795,1073741905,795,795,795,795,795,795,795,795,795,795,449,449
+</data>
+ </layer>
+ <layer id="2" name="decoration" width="17" height="13">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,1417,0,0,0,0,
+0,0,0,0,1369,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="3" name="collision">
+  <object id="29" x="96" y="576" width="96" height="48"/>
+  <object id="30" x="96" y="192" width="48" height="384"/>
+  <object id="31" x="144" y="192" width="528" height="48"/>
+  <object id="32" x="240" y="576" width="480" height="48"/>
+  <object id="34" x="672" y="192" width="48" height="384"/>
+  <object id="36" x="168" y="548" width="19" height="14"/>
+  <object id="37" x="206" y="450" width="21" height="17"/>
+  <object id="38" x="592" y="400" width="16" height="18"/>
+  <object id="40" x="607" y="526" width="28" height="26"/>
+  <object id="41" x="297" y="366" width="28" height="20"/>
+  <object id="42" x="336" y="367" width="48" height="28"/>
+  <object id="44" x="172" y="266" width="39" height="22"/>
+  <object id="45" x="216" y="251" width="48" height="25"/>
+  <object id="46" x="347" y="248" width="26" height="18"/>
+  <object id="47" x="443" y="248" width="26" height="18"/>
+  <object id="48" x="384" y="246" width="47" height="29"/>
+  <object id="49" x="527" y="251" width="24" height="18"/>
+  <object id="50" x="564" y="247" width="48" height="28"/>
+  <object id="52" x="612" y="257" width="48" height="79"/>
+ </objectgroup>
+ <objectgroup id="4" name="triggers">
+  <object id="27" name="level_trigger" x="192" y="624" width="48" height="48">
+   <properties>
+    <property name="level" value="tavern_rooms"/>
+   </properties>
+  </object>
+  <object id="28" name="player_spawn" x="192" y="549" width="48" height="72">
+   <properties>
+    <property name="level" value="tavern_rooms"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="renderables">
+  <object id="1" gid="625" x="192" y="264" width="48" height="48"/>
+  <object id="2" gid="609" x="192" y="216" width="48" height="48"/>
+  <object id="3" gid="625" x="576" y="264" width="48" height="48"/>
+  <object id="4" gid="609" x="576" y="216" width="48" height="48"/>
+  <object id="5" gid="625" x="384" y="264" width="48" height="48"/>
+  <object id="6" gid="609" x="384" y="216" width="48" height="48"/>
+  <object id="7" gid="756" x="612" y="336" width="48" height="48"/>
+  <object id="8" gid="740" x="612" y="288" width="48" height="48"/>
+  <object id="9" gid="789" x="564" y="276" width="48" height="48"/>
+  <object id="10" gid="773" x="384" y="276" width="48" height="48"/>
+  <object id="11" gid="785" x="336" y="276" width="48" height="48"/>
+  <object id="12" gid="785" x="432" y="276" width="48" height="48"/>
+  <object id="13" gid="730" x="168" y="288" width="48" height="48"/>
+  <object id="14" gid="763" x="216" y="276" width="48" height="48"/>
+  <object id="24" gid="788" x="336" y="396" width="48" height="48"/>
+  <object id="26" gid="786" x="288" y="396" width="48" height="48"/>
+ </objectgroup>
+ <objectgroup id="6" name="objects">
+  <object id="16" gid="856" x="384" y="254" width="48" height="48"/>
+  <object id="18" gid="961" x="516" y="278" width="48" height="48"/>
+  <object id="19" gid="1190" x="600" y="554" width="48" height="48"/>
+  <object id="20" gid="1174" x="600" y="506" width="48" height="48"/>
+  <object id="23" gid="1140" x="156" y="566" width="48" height="48"/>
+ </objectgroup>
+</map>
