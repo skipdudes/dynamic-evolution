@@ -1,59 +1,47 @@
 import pygame
 import logging
+import os
+from game.entities.entity import Entity
 from game.core.settings import IMAGES_DIR, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 
 log = logging.getLogger(__name__)
 
-class Player:
+class Player(Entity):
     DIRECTION_DOWN = 0
     DIRECTION_LEFT = 1
     DIRECTION_RIGHT = 2
     DIRECTION_UP = 3
 
     def __init__(self, x: float, y: float, initial_direction: int = DIRECTION_DOWN):
-        self.x = x
-        self.y = y
-
-        # Dimensions
-        self.width = 48
-        self.height = 72
-
-        # Hitbox dimensions and offsets
-        self.hitbox_width = 36
-        self.hitbox_height = 24
-        self.hitbox_offset_x = (self.width - self.hitbox_width) // 2
-        self.hitbox_offset_y = self.height - self.hitbox_height
+        # Initialize the base Entity class with coordinates
+        super().__init__(x, y)
 
         # Stats
-        self.speed = 220.0  # 220.0
+        self.speed = 220.0
 
         # Animation & Direction
         self.current_direction = initial_direction
 
         # Animation control
-        self.animation_speed = 0.1125  # 0.15
+        self.animation_speed = 0.1125
         self.animation_timer = 0.0
 
         # Walking animation sequence
         self.walk_sequence = [0, 1, 2, 1]
-        self.sequence_index = 1  # By default, start at "standing still" sprite (idx 1)
+        self.sequence_index = 1  # Start at "standing still" sprite
         self.animation_frame = self.walk_sequence[self.sequence_index]
 
         self.was_moving = False
         self.frames = self._load_spritesheet()
 
     def _load_spritesheet(self) -> list[list[pygame.Surface]]:
-        """
-        Loads the Actor1.png spritesheet and extracts player frames.
-        """
-        import os
+        """Loads the Actor1.png spritesheet and extracts player frames."""
         path = os.path.join(IMAGES_DIR, "characters", "Actor1.png")
 
         try:
             spritesheet = pygame.image.load(path).convert_alpha()
         except FileNotFoundError:
             log.error(f"Spritesheet not found at: {path}")
-            # Return an empty list or create a fallback surface if needed
             raise SystemExit(1)
 
         frames = []
@@ -74,38 +62,13 @@ class Player:
         return frames
 
     @property
-    def hitbox(self) -> pygame.Rect:
-        """
-        Dynamically calculates current hitbox rect based on player position.
-        """
-        return pygame.Rect(
-            int(self.x + self.hitbox_offset_x),
-            int(self.y + self.hitbox_offset_y),
-            self.hitbox_width,
-            self.hitbox_height
-        )
-
-    @property
-    def bottom(self) -> float:
-        """
-        Returns the true bottom Y coordinate, used for Y-sorting.
-        """
-        return self.y + self.height
-
-    @property
     def current_sprite(self) -> pygame.Surface:
-        """
-        Returns the current image frame based on direction and animation state.
-        """
+        """Returns the current image frame based on direction and animation state."""
         return self.frames[self.current_direction][self.animation_frame]
 
     def update(self, dt: float, collision_rects: list[pygame.Rect]):
-        """
-        Handles input, movement, sliding collision, and animation timing.
-        """
+        """Handles input, movement, sliding collision, and animation timing."""
         keys = pygame.key.get_pressed()
-
-        # Vector2
         move_input = pygame.math.Vector2(0, 0)
 
         # Read keys using settings mappings
@@ -133,7 +96,7 @@ class Player:
             dy = move_input.y * self.speed * dt
             self._move_with_collision(dx, dy, collision_rects)
 
-            # Check if player physically moved (allowing for tiny float inaccuracies)
+            # Check if player physically moved
             actually_moved = (abs(self.x - old_x) > 0.01) or (abs(self.y - old_y) > 0.01)
 
             if actually_moved:
@@ -149,11 +112,9 @@ class Player:
                         self.animation_frame = self.walk_sequence[self.sequence_index]
                 self.was_moving = True
             else:
-                # Player is pushing against a wall and not moving
                 self._reset_animation()
                 self.was_moving = False
         else:
-            # Player released the keys
             self._reset_animation()
             self.was_moving = False
 
@@ -164,9 +125,7 @@ class Player:
         self.animation_timer = 0.0
 
     def _move_with_collision(self, dx: float, dy: float, colliders: list[pygame.Rect]):
-        """
-        Applies movement and resolves overlaps along X and Y axes independently.
-        """
+        """Applies movement and resolves overlaps along X and Y axes independently."""
         # Move X
         self.x += dx
         current_hitbox = self.hitbox
@@ -176,7 +135,7 @@ class Player:
                     self.x = rect.left - self.hitbox_width - self.hitbox_offset_x
                 elif dx < 0:  # Moving left
                     self.x = rect.right - self.hitbox_offset_x
-                break  # Sliding collision usually only needs one resolution per axis
+                break
 
         # Move Y
         self.y += dy

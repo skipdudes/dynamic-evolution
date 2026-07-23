@@ -20,6 +20,7 @@ class Level:
         self.collision_rects: list[pygame.Rect] = []
         self.renderables: list[dict] = []
         self.spawns: list[dict] = []
+        self.npc_spawns: list[dict] = []
         self.level_triggers: list[dict] = []
 
         self._parse_layers()
@@ -46,6 +47,15 @@ class Level:
                                 "x": obj.x,
                                 "y": obj.y,
                                 "level": target_level
+                            })
+                        elif obj.name == "npc_spawn":
+                            npc_id = getattr(obj, "properties", {}).get("npc_id", "default_npc")
+                            self.npc_spawns.append({
+                                "x": obj.x,
+                                "y": obj.y,
+                                "npc_id": npc_id,
+                                "width": getattr(obj, "width", 48),
+                                "height": getattr(obj, "height", 72)
                             })
                         elif obj.name == "level_trigger":
                             target_level = getattr(obj, "properties", {}).get("level", "")
@@ -169,7 +179,7 @@ class Level:
                             (x * tile_w - camera_x, y * tile_h - camera_y)
                         )
 
-    def draw_sorted_objects(self, screen: pygame.Surface, camera_x: float, camera_y: float, player):
+    def draw_sorted_objects(self, screen: pygame.Surface, camera_x: float, camera_y: float, entities: list):
         """
         Draws objects and the player together using multi-level Y-Sorting.
         """
@@ -185,14 +195,15 @@ class Level:
                 "z_index": obj["z_index"]
             })
 
-        # 2. Add player (Z-index = 1)
-        objects_to_draw.append({
-            "image": player.current_sprite,
-            "x": player.x,
-            "y": player.y,
-            "bottom": player.bottom,
-            "z_index": 1
-        })
+        # Add all living objects (Player, NPCs, Z-index = 1)
+        for entity in entities:
+            objects_to_draw.append({
+                "image": entity.current_sprite,
+                "x": entity.x,
+                "y": entity.y,
+                "bottom": entity.bottom,
+                "z_index": 1
+            })
 
         # 3. Sort by Y-bottom first, then Z-index
         sorted_objs = sorted(

@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     initial_state = PlayState(
         engine.state_machine,
-        level_filename="newworld.tmx",
+        level_filename="oldworld.tmx",
         player_instance=global_player
     )
     engine.state_machine.change(initial_state)
