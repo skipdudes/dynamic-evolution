@@ -114,39 +114,54 @@ class Player:
         if any(keys[k] for k in KEY_UP): move_input.y -= 1
         if any(keys[k] for k in KEY_DOWN): move_input.y += 1
 
-        is_moving = move_input.length() > 0
+        is_trying_to_move = move_input.length() > 0
 
-        if is_moving:
+        if is_trying_to_move:
             move_input = move_input.normalize()
 
-            # Set animation direction
+            # Update direction even if blocked by a wall
             if abs(move_input.x) > abs(move_input.y):
                 self.current_direction = self.DIRECTION_RIGHT if move_input.x > 0 else self.DIRECTION_LEFT
             else:
                 self.current_direction = self.DIRECTION_DOWN if move_input.y > 0 else self.DIRECTION_UP
 
-            # Instant animation frame step when player starts moving (key tap responsiveness)
-            if not self.was_moving:
-                self.sequence_index = 0
-                self.animation_frame = self.walk_sequence[self.sequence_index]
-                self.animation_timer = 0.0
-            else:
-                self.animation_timer += dt
-                if self.animation_timer >= self.animation_speed:
-                    self.animation_timer = 0.0
-                    self.sequence_index = (self.sequence_index + 1) % len(self.walk_sequence)
+            # Store position before attempting to move
+            old_x = self.x
+            old_y = self.y
+
+            dx = move_input.x * self.speed * dt
+            dy = move_input.y * self.speed * dt
+            self._move_with_collision(dx, dy, collision_rects)
+
+            # Check if player physically moved (allowing for tiny float inaccuracies)
+            actually_moved = (abs(self.x - old_x) > 0.01) or (abs(self.y - old_y) > 0.01)
+
+            if actually_moved:
+                if not self.was_moving:
+                    self.sequence_index = 0
                     self.animation_frame = self.walk_sequence[self.sequence_index]
+                    self.animation_timer = 0.0
+                else:
+                    self.animation_timer += dt
+                    if self.animation_timer >= self.animation_speed:
+                        self.animation_timer = 0.0
+                        self.sequence_index = (self.sequence_index + 1) % len(self.walk_sequence)
+                        self.animation_frame = self.walk_sequence[self.sequence_index]
+                self.was_moving = True
+            else:
+                # Player is pushing against a wall and not moving
+                self._reset_animation()
+                self.was_moving = False
         else:
-            # Reset to default standing pose when idle
-            self.sequence_index = 1
-            self.animation_frame = self.walk_sequence[self.sequence_index]
-            self.animation_timer = 0.0
+            # Player released the keys
+            self._reset_animation()
+            self.was_moving = False
 
-        self.was_moving = is_moving
-
-        dx = move_input.x * self.speed * dt
-        dy = move_input.y * self.speed * dt
-        self._move_with_collision(dx, dy, collision_rects)
+    def _reset_animation(self):
+        """Helper to return player to default standing pose."""
+        self.sequence_index = 1
+        self.animation_frame = self.walk_sequence[self.sequence_index]
+        self.animation_timer = 0.0
 
     def _move_with_collision(self, dx: float, dy: float, colliders: list[pygame.Rect]):
         """
