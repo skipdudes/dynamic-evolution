@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="37">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="44">
  <tileset firstgid="1" source="tilesets/Outside_A2.tsx"/>
  <tileset firstgid="225" source="tilesets/Outside_A1.tsx"/>
  <tileset firstgid="449" source="tilesets/Outside_B.tsx"/>
@@ -39,7 +39,7 @@
 198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,198,
 214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,214,
 0,0,642,0,0,0,0,0,0,641,0,0,0,0,0,643,0,0,0,0,0,641,0,0,
-0,629,0,625,627,0,626,0,627,0,0,642,0,627,0,0,641,0,625,626,0,0,625,660,
+0,0,0,625,627,0,626,0,627,0,0,642,0,627,0,0,641,0,625,626,0,0,625,660,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,628,0,0,0,0,0,643,0,0,0,
 642,0,641,0,0,0,660,0,0,628,0,0,0,0,0,0,642,0,0,0,0,0,642,0,
 0,0,0,0,643,0,0,642,0,0,0,643,0,0,0,0,625,0,626,0,628,0,0,0,
@@ -71,6 +71,10 @@
   <object id="32" x="220" y="547" width="14" height="15"/>
   <object id="33" x="224" y="564" width="14" height="7"/>
   <object id="36" x="0" y="312" width="1152" height="36"/>
+  <object id="39" x="58" y="501" width="29" height="16"/>
+  <object id="41" x="56" y="504" width="2" height="8"/>
+  <object id="42" x="53" y="506" width="3" height="4"/>
+  <object id="43" x="87" y="506" width="4" height="4"/>
  </objectgroup>
  <objectgroup id="7" name="triggers">
   <object id="11" name="level_trigger" x="1152" y="624" width="48" height="336">
@@ -95,5 +99,6 @@
   <object id="8" gid="630" x="1104" y="432" width="48" height="48"/>
   <object id="9" gid="594" x="288" y="744" width="48" height="48"/>
   <object id="10" gid="645" x="192" y="588" width="48" height="48"/>
+  <object id="37" gid="629" x="48" y="528" width="48" height="48"/>
  </objectgroup>
 </map>

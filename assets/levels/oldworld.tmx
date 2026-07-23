@@ -167,22 +167,22 @@
     <property name="level" value="house_mage"/>
    </properties>
   </object>
-  <object id="227" name="player_spawn" x="192" y="219" width="48" height="72">
+  <object id="227" name="player_spawn" x="192" y="240" width="48" height="72">
    <properties>
     <property name="level" value="inn"/>
    </properties>
   </object>
-  <object id="228" name="player_spawn" x="624" y="843" width="48" height="72">
+  <object id="228" name="player_spawn" x="624" y="864" width="48" height="72">
    <properties>
     <property name="level" value="house_marquis"/>
    </properties>
   </object>
-  <object id="229" name="player_spawn" x="1104" y="171" width="48" height="72">
+  <object id="229" name="player_spawn" x="1104" y="192" width="48" height="72">
    <properties>
     <property name="level" value="castle"/>
    </properties>
   </object>
-  <object id="230" name="player_spawn" x="1296" y="891" width="48" height="72">
+  <object id="230" name="player_spawn" x="1296" y="912" width="48" height="72">
    <properties>
     <property name="level" value="house_mage"/>
    </properties>

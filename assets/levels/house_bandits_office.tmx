@@ -6,7 +6,7 @@
  <tileset firstgid="513" source="tilesets/Inside_B.tsx"/>
  <tileset firstgid="769" source="tilesets/Inside_A2.tsx"/>
  <tileset firstgid="1009" source="tilesets/Inside_C.tsx"/>
- <layer id="1" name="background" width="17" height="13" locked="1">
+ <layer id="1" name="background" width="17" height="13">
   <data encoding="csv">
 129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,
 129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,129,
@@ -23,7 +23,7 @@
 340,340,340,340,340,340,340,340,340,340,340,340,340,340,340,129,129
 </data>
  </layer>
- <layer id="3" name="decoration" width="17" height="13" locked="1">
+ <layer id="3" name="decoration" width="17" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -73,7 +73,7 @@
   <object id="77" x="101" y="158" width="38" height="20"/>
   <object id="78" x="148" y="157" width="41" height="22"/>
  </objectgroup>
- <objectgroup id="4" name="triggers" locked="1">
+ <objectgroup id="4" name="triggers">
   <object id="39" name="level_trigger" x="-48" y="336" width="48" height="48">
    <properties>
     <property name="level" value="house_bandits_hall"/>
@@ -85,7 +85,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="5" name="renderables" locked="1">
+ <objectgroup id="5" name="renderables">
   <object id="1" gid="540" x="624" y="192" width="48" height="48"/>
   <object id="2" gid="524" x="624" y="144" width="48" height="48"/>
   <object id="3" gid="546" x="576" y="120" width="48" height="48"/>
@@ -118,7 +118,7 @@
   <object id="75" gid="679" x="48" y="192" width="48" height="48"/>
   <object id="76" gid="695" x="48" y="240" width="48" height="48"/>
  </objectgroup>
- <objectgroup id="6" name="objects" locked="1">
+ <objectgroup id="6" name="objects">
   <object id="15" gid="1063" x="144" y="168" width="48" height="48"/>
  </objectgroup>
 </map>

@@ -1,13 +1,14 @@
 import pygame
 import logging
 from game.core.state import BaseState
+from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT
 
 log = logging.getLogger(__name__)
 
 class TestState(BaseState):
     def __init__(self, state_machine):
         super().__init__(state_machine)
-        self.pos = pygame.Vector2(816 / 2, 624 / 2)  # initial pos - center of screen
+        self.pos = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)  # initial pos - center of screen
         self.speed = 300.0  # velocity - pixels / sec
 
     def enter(self):

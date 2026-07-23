@@ -1,60 +1,94 @@
 import pygame
 import logging
-import time
+import os
 from game.core.state_machine import StateMachine
+from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, MAX_UPDATETIME, GAME_VERSION, ICON_PATH
 
 log = logging.getLogger(__name__)
 
 class Engine:
-    def __init__(self, width: int = 816, height: int = 624):
+    def __init__(self, width: int = WINDOW_WIDTH, height: int = WINDOW_HEIGHT):
         pygame.init()
-        self.screen = pygame.display.set_mode((width, height))
-        pygame.display.set_caption("Shadows of the Crown II")
+        self.screen = pygame.display.set_mode(
+            (width, height),
+            pygame.SCALED
+        )
+        pygame.display.set_caption(WINDOW_TITLE)  # f"{WINDOW_TITLE} v{GAME_VERSION}"
+        pygame.mouse.set_visible(False)
 
-        self.clock = pygame.time.Clock()
+        # Apply icon
+        if os.path.exists(ICON_PATH):
+            icon_surface = pygame.image.load(ICON_PATH).convert_alpha()
+            pygame.display.set_icon(icon_surface)
+
         self.running = True
 
-        self.target_fps = 60  # future menu target FPS (30, 60, 120, 0 = no limit)
+        # FPS Settings: 0 means unlimited, otherwise target frame rate (e.g. 30, 60, 120)
+        self.target_fps = 60
         self.state_machine = StateMachine()
 
     def run(self):
         log.info("Starting the game loop")
 
-        MS_PER_UPDATE = 0.01  # Fixed Update Time Step - 10 ms (0.01 s)
-        previous_time = time.perf_counter()
-        lag = 0.0
+        last_frame_start_time = pygame.time.get_ticks()
+        time_accumulator = 0
 
         while self.running:
-            # Calculate time and accumulator
-            current_time = time.perf_counter()
-            elapsed = current_time - previous_time
-            previous_time = current_time
-            lag += elapsed
+            # Calculate the time between the frames
+            current_frame_start_time = pygame.time.get_ticks()
+            elapsed_frame_time = current_frame_start_time - last_frame_start_time
+            last_frame_start_time = current_frame_start_time
 
-            if lag > 0.2:  # if game stuck for too long, don't let update too much
-                lag = 0.2
+            # PREVENT SPIRAL OF DEATH (Catch-up cap)
+            if elapsed_frame_time > 10 * MAX_UPDATETIME:
+                elapsed_frame_time = 10 * MAX_UPDATETIME  # up to 10 frames back
 
-            # Get and handle events
-            events = pygame.event.get()
-            for event in events:
-                if event.type == pygame.QUIT:
-                    self.running = False
+            time_accumulator += elapsed_frame_time
 
-            self.state_machine.handle_events(events)
+            # Handle user input
+            self.handle_events()
 
-            # Update logic, as many "packets" as in accumulator
-            while lag >= MS_PER_UPDATE:
-                self.state_machine.update(MS_PER_UPDATE)
-                lag -= MS_PER_UPDATE
+            # Update with fixed time step
+            while time_accumulator >= MAX_UPDATETIME:
+                # We pass the fixed step in seconds (e.g., 0.01) to keep physics math easy
+                self.state_machine.update(MAX_UPDATETIME / 1000.0)
+                time_accumulator -= MAX_UPDATETIME
 
             # Render
-            self.state_machine.draw(self.screen)
-            pygame.display.flip()
+            self.render()
 
-            self.clock.tick(self.target_fps)
+            # Cap the framerate dynamically based on current target_fps setting
+            if self.target_fps > 0:
+                min_frametime = 1000 // self.target_fps
+                frame_time = pygame.time.get_ticks() - current_frame_start_time
+                if frame_time < min_frametime:
+                    pygame.time.delay(min_frametime - frame_time)
 
+        log.info("Finished the game loop")
         self.quit()
 
+    def handle_events(self):
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.QUIT:
+                self.running = False
+            # Possibly add global toggle fullscreen logic here
+
+        # Pass the events down to current states
+        self.state_machine.handle_events(events)
+
+    def render(self):
+        # Pygame handles the buffer swap via display.flip(), scaling is handled by SCALED flag
+        self.state_machine.draw(self.screen)
+        pygame.display.flip()
+
+    def set_fps_limit(self, new_fps: int):
+        """
+        Dynamically changes the FPS limit.
+        Pass 0 for unlimited framerate.
+        """
+        log.info(f"Changing FPS limit to: {'Unlimited' if new_fps == 0 else new_fps}")
+        self.target_fps = new_fps
+
     def quit(self):
-        log.info("Finished the game loop")
         pygame.quit()

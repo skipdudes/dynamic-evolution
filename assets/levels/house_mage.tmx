@@ -5,7 +5,7 @@
  <tileset firstgid="433" source="tilesets/Inside_A5.tsx"/>
  <tileset firstgid="561" source="tilesets/Inside_B.tsx"/>
  <tileset firstgid="817" source="tilesets/Inside_C.tsx"/>
- <tileset firstgid="1073" source="tilesets/SF_Inside_C.tsx"/>
+ <tileset firstgid="1089" source="tilesets/SF_Inside_C.tsx"/>
  <layer id="1" name="background" width="20" height="15">
   <data encoding="csv">
 405,405,405,405,405,405,405,405,405,405,405,405,405,405,405,405,405,405,405,405,
@@ -100,15 +100,15 @@
   </object>
  </objectgroup>
  <objectgroup id="8" name="renderables">
-  <object id="1" gid="1131" x="768" y="192" width="48" height="48"/>
-  <object id="2" gid="1163" x="624" y="192" width="48" height="48"/>
-  <object id="3" gid="1158" x="816" y="144" width="48" height="48"/>
-  <object id="4" gid="1142" x="816" y="96" width="48" height="48"/>
-  <object id="5" gid="1159" x="768" y="144" width="48" height="48"/>
-  <object id="6" gid="1143" x="768" y="96" width="48" height="48"/>
-  <object id="7" gid="1162" x="336" y="240" width="48" height="48"/>
-  <object id="8" gid="1122" x="336" y="576" width="48" height="48"/>
-  <object id="9" gid="1106" x="336" y="528" width="48" height="48"/>
+  <object id="1" gid="1147" x="768" y="192" width="48" height="48"/>
+  <object id="2" gid="1179" x="624" y="192" width="48" height="48"/>
+  <object id="3" gid="1174" x="816" y="144" width="48" height="48"/>
+  <object id="4" gid="1158" x="816" y="96" width="48" height="48"/>
+  <object id="5" gid="1175" x="768" y="144" width="48" height="48"/>
+  <object id="6" gid="1159" x="768" y="96" width="48" height="48"/>
+  <object id="7" gid="1178" x="336" y="240" width="48" height="48"/>
+  <object id="8" gid="1138" x="336" y="576" width="48" height="48"/>
+  <object id="9" gid="1122" x="336" y="528" width="48" height="48"/>
   <object id="12" gid="772" x="144" y="288" width="48" height="48"/>
   <object id="13" gid="770" x="192" y="288" width="48" height="48"/>
   <object id="14" gid="802" x="288" y="288" width="48" height="48"/>
@@ -130,7 +130,7 @@
   <object id="38" gid="989" x="192" y="528" width="48" height="48"/>
   <object id="39" gid="924" x="768" y="576" width="48" height="48"/>
   <object id="40" gid="908" x="768" y="528" width="48" height="48"/>
-  <object id="41" gid="1129" x="96" y="624" width="48" height="48"/>
+  <object id="41" gid="1145" x="96" y="624" width="48" height="48"/>
   <object id="42" gid="878" x="672" y="432" width="48" height="48"/>
   <object id="43" gid="893" x="720" y="432" width="48" height="48"/>
   <object id="44" gid="977" x="720" y="336" width="48" height="48"/>
@@ -148,7 +148,7 @@
   <object id="57" gid="663" x="240" y="96" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="9" name="objects">
-  <object id="11" gid="1140" x="336" y="228" width="48" height="48"/>
+  <object id="11" gid="1156" x="336" y="228" width="48" height="48"/>
   <object id="19" gid="1015" x="336" y="276" width="48" height="48"/>
   <object id="24" gid="966" x="384" y="192" width="48" height="48"/>
   <object id="26" gid="961" x="432" y="185" width="48" height="48"/>
