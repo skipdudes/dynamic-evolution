@@ -1,7 +1,7 @@
 import pygame
 import logging
 from game.core.state import BaseState
-from game.core.settings import KEY_PAUSE, KEY_TOGGLE_FULLSCREEN, KEY_INTERACT
+from game.core.settings import KEY_PAUSE, KEY_TOGGLE_FULLSCREEN, KEY_INTERACT, KEY_DEBUG
 from game.world.level import Level
 from game.world.camera import Camera
 from game.entities.player import Player
@@ -10,11 +10,12 @@ from game.entities.npc import NPC
 log = logging.getLogger(__name__)
 
 class PlayState(BaseState):
-    def __init__(self, state_machine, level_filename: str, player_instance: Player, previous_level_name: str = ""):
+    def __init__(self, state_machine, level_filename: str, player_instance: Player, previous_level_name: str = "", debug_mode: bool = False):
         super().__init__(state_machine)
         self.level_filename = level_filename
         self.previous_level_name = previous_level_name
         self.player = player_instance
+        self.debug_mode = debug_mode
 
         # Load world map
         self.level = Level(self.level_filename)
@@ -31,17 +32,14 @@ class PlayState(BaseState):
                 x=spawn_info["x"],
                 y=spawn_info["y"],
                 npc_id=spawn_info["npc_id"],
-                width=spawn_info["width"],
-                height=spawn_info["height"]
+                width=spawn_info.get("width", 48),
+                height=spawn_info.get("height", 72)
             )
             self.npcs.append(npc)
             log.info(f"Spawned NPC '{npc.npc_id}' at ({npc.x}, {npc.y})")
 
         # Create camera bound to level dimensions
         self.camera = Camera(self.level.width, self.level.height)
-
-        # Debug collision rendering flag
-        self.debug_mode = False
 
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
@@ -61,7 +59,7 @@ class PlayState(BaseState):
                     log.info("Toggled fullscreen mode.")
 
                 # Debug mode toggle (F3)
-                elif event.key == pygame.K_F3:
+                elif event.key in KEY_DEBUG:
                     self.debug_mode = not self.debug_mode
                     log.debug(f"Debug Mode set to: {self.debug_mode}")
 
@@ -101,7 +99,8 @@ class PlayState(BaseState):
                 self.state_machine,
                 level_filename=target_level,
                 player_instance=self.player,
-                previous_level_name=self.level_filename
+                previous_level_name=self.level_filename,
+                debug_mode=self.debug_mode
             )
             self.state_machine.change(new_play_state)
 
@@ -131,15 +130,13 @@ class PlayState(BaseState):
                     (rect.x - self.camera.x, rect.y - self.camera.y, rect.width, rect.height),
                     2
                 )
-            # NPCs' hitboxes and interaction radii (Blue / Yellow)
+            # NPC hitboxes (Blue) & Interaction ranges (Yellow)
             for npc in self.npcs:
-                # NPC collision
                 pygame.draw.rect(
                     screen, (0, 0, 255),
                     (npc.x - self.camera.x, npc.y - self.camera.y, npc.width, npc.height),
                     2
                 )
-                # Interaction radius
                 i_rect = npc.interaction_rect
                 pygame.draw.rect(
                     screen, (255, 255, 0),
