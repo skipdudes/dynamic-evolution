@@ -6,6 +6,7 @@ from game.world.level import Level
 from game.world.camera import Camera
 from game.entities.player import Player
 from game.entities.npc import NPC
+from game.states.dialogue_state import DialogueState
 
 log = logging.getLogger(__name__)
 
@@ -41,12 +42,21 @@ class PlayState(BaseState):
         # Create camera bound to level dimensions
         self.camera = Camera(self.level.width, self.level.height)
 
+        # Interaction tracking
+        self.active_prompt_npc: NPC | None = None
+        self.recently_interacted_npc: NPC | None = None
+
+        # Font for the "Press ENTER to speak" prompt
+        self.ui_font = pygame.font.Font(None, 28)
+
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 # Interaction
                 if event.key in KEY_INTERACT:
-                    self._check_npc_interaction()
+                    # self._check_npc_interaction()
+                    if self.active_prompt_npc:
+                        self._start_dialogue(self.active_prompt_npc)
 
                 # Pause menu trigger
                 elif event.key in KEY_PAUSE:
@@ -71,6 +81,15 @@ class PlayState(BaseState):
                 # HERE, in the future, opening dialogue window will be called
                 return
 
+    def _start_dialogue(self, npc: NPC):
+        """Pushes the dialogue state onto the state machine stack."""
+        log.info(f"Starting conversation with {npc.npc_id}")
+        self.recently_interacted_npc = npc
+        self.active_prompt_npc = None
+
+        dialogue_state = DialogueState(self.state_machine, self, npc, self.player)
+        self.state_machine.push(dialogue_state)
+
     def update(self, dt: float):
         # Combine static level colliders with dynamic NPC hitboxes
         active_colliders = self.level.collision_rects + [npc.hitbox for npc in self.npcs]
@@ -84,6 +103,24 @@ class PlayState(BaseState):
 
         # Update camera position
         self.camera.update(self.player.x, self.player.y, self.player.width, self.player.height)
+
+        # Update interaction prompt logic
+        npc_in_range = None
+        for npc in self.npcs:
+            if npc.is_player_in_range(self.player.hitbox):
+                npc_in_range = npc
+                break
+
+        if npc_in_range:
+            # If we are in range of the NPC we just talked to, keep prompt hidden
+            if self.recently_interacted_npc == npc_in_range:
+                self.active_prompt_npc = None
+            else:
+                self.active_prompt_npc = npc_in_range
+        else:
+            # Player walked away, clear the memory of recent interaction
+            self.recently_interacted_npc = None
+            self.active_prompt_npc = None
 
         # Check level triggers (transition to another level)
         target_level = self.level.check_level_triggers(self.player.hitbox)
@@ -114,7 +151,27 @@ class PlayState(BaseState):
         all_entities = [self.player] + self.npcs
         self.level.draw_sorted_objects(screen, self.camera.x, self.camera.y, all_entities)
 
-        # 3. Optional Debug overlays
+        # 3. Draw Interaction Prompt
+        if self.active_prompt_npc:
+            prompt_text = f"Press ENTER to speak with {self.active_prompt_npc.display_name}"
+            text_surf = self.ui_font.render(prompt_text, True, (255, 255, 255))
+
+            # Simple black background box for the prompt
+            padding = 10
+            rect_w = text_surf.get_width() + (padding * 2)
+            rect_h = text_surf.get_height() + (padding * 2)
+            prompt_rect = pygame.Rect(
+                (screen.get_width() - rect_w) // 2,
+                screen.get_height() - rect_h - 20,
+                rect_w,
+                rect_h
+            )
+
+            pygame.draw.rect(screen, (20, 20, 20), prompt_rect)
+            pygame.draw.rect(screen, (255, 255, 255), prompt_rect, 2)
+            screen.blit(text_surf, (prompt_rect.x + padding, prompt_rect.y + padding))
+
+        # 4. Optional Debug overlays
         if self.debug_mode:
             # Draw player hitbox in red
             p_hitbox = self.player.hitbox
