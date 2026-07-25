@@ -1,12 +1,13 @@
 import pygame
 import logging
 from game.core.state import BaseState
-from game.core.settings import KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, FONT_UI_PATH, FONT_UI_SIZE, STRING_DIALOGUE_BEGIN_PROMPT
+from game.core.settings import KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, STRING_DIALOGUE_BEGIN_PROMPT
 from game.world.level import Level
 from game.world.camera import Camera
 from game.entities.player import Player
 from game.entities.npc import NPC
 from game.states.dialogue_state import DialogueState
+from game.ui.hud import HUD
 
 log = logging.getLogger(__name__)
 
@@ -46,8 +47,8 @@ class PlayState(BaseState):
         self.active_prompt_npc: NPC | None = None
         self.recently_interacted_npc: NPC | None = None
 
-        # Font for the "Press ENTER to speak" prompt
-        self.ui_font = pygame.font.Font(FONT_UI_PATH, FONT_UI_SIZE)
+        # Initialize HUD
+        self.hud = HUD()
 
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
@@ -145,25 +146,10 @@ class PlayState(BaseState):
         all_entities = [self.player] + self.npcs
         self.level.draw_sorted_objects(screen, self.camera.x, self.camera.y, all_entities)
 
-        # 3. Draw Interaction Prompt
+        # 3. Draw Interaction Prompt via HUD
         if self.active_prompt_npc:
             prompt_text = f"{STRING_DIALOGUE_BEGIN_PROMPT}{self.active_prompt_npc.display_name}"
-            text_surf = self.ui_font.render(prompt_text, True, (255, 255, 255))
-
-            # Simple black background box for the prompt
-            padding = 10
-            rect_w = text_surf.get_width() + (padding * 4)
-            rect_h = text_surf.get_height() + (padding * 2)
-            prompt_rect = pygame.Rect(
-                (screen.get_width() - rect_w) // 2,
-                screen.get_height() - rect_h - (padding * 2),
-                rect_w,
-                rect_h
-            )
-
-            pygame.draw.rect(screen, (20, 20, 20), prompt_rect)
-            pygame.draw.rect(screen, (255, 255, 255), prompt_rect, 2)
-            screen.blit(text_surf, (prompt_rect.x + (padding * 2), prompt_rect.y + padding))
+            self.hud.draw_interaction_prompt(screen, prompt_text)
 
         # 4. Optional Debug overlays
         if self.debug_mode:

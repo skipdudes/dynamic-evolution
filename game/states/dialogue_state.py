@@ -5,7 +5,13 @@ from game.core.state import BaseState
 from game.entities.npc import NPC
 from game.entities.player import Player
 from game.entities.npc_data import NPC_DATA
-from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, IMAGES_DIR, FONT_DIALOGUE_PATH, FONT_DIALOGUE_SIZE, FONT_UI_PATH, FONT_UI_SIZE, COLOR_MISSING
+from game.core.settings import (
+    KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, IMAGES_DIR,
+    FONT_DIALOGUE, FONT_UI, COLOR_MISSING,
+    STRING_DIALOGUE_EMPTY, STRING_DIALOGUE_CONFIRM, STRING_DIALOGUE_WAIT,
+    STRING_DIALOGUE_REPLY, STRING_DIALOGUE_TOO_MANY,
+    STRING_DIALOGUE_SCROLL_UP, STRING_DIALOGUE_SCROLL_DOWN
+)
 
 log = logging.getLogger(__name__)
 
@@ -24,14 +30,14 @@ class DialogueState(BaseState):
         self.player_text = ""
         self.npc_text = ""
         self.max_chars = 300
-
         self.scroll_offset = 0
-        self.font = pygame.font.Font(FONT_DIALOGUE_PATH, FONT_DIALOGUE_SIZE) # Dialogue font (change `font` to `font_dialogue`)
-        self.font_small = pygame.font.Font(FONT_UI_PATH, FONT_UI_SIZE) # UI font (change `font_small` to `font_ui`)
+
+        self.font_dialogue = pygame.font.Font(*FONT_DIALOGUE)
+        self.font_ui = pygame.font.Font(*FONT_UI)
 
         self.waiting_timer = 0.0
         self.dot_count = 0
-        self.dummy_api_timer_const = 2  # "20" to test the dot animation, to be removed later
+        self.dummy_api_timer_const = 2  # to be removed later
         self.dummy_api_timer = self.dummy_api_timer_const  # to be removed later
 
         # Load Faces
@@ -41,6 +47,10 @@ class DialogueState(BaseState):
         p_face_idx = player_config.get("face_index", 0)
         self.player_face = self._load_face(p_face_file, p_face_idx)
 
+        # Load scroll icons (fallback to None if files don't exist yet)
+        self.icon_scroll_up = self._load_icon("scroll_up.png")
+        self.icon_scroll_down = self._load_icon("scroll_down.png")
+
         pygame.key.set_repeat(300, 50)
 
     def _load_face(self, filename: str, index: int) -> pygame.Surface:
@@ -48,8 +58,7 @@ class DialogueState(BaseState):
         fallback = pygame.Surface((144, 144))
         fallback.fill(COLOR_MISSING)
 
-        if not filename:
-            return fallback
+        if not filename: return fallback
 
         path = os.path.join(IMAGES_DIR, "characters", "faces", filename)
         try:
@@ -60,10 +69,14 @@ class DialogueState(BaseState):
 
         col = index % 4
         row = index // 4
-        face_x = col * 144
-        face_y = row * 144
+        return faces_sheet.subsurface(pygame.Rect(col * 144, row * 144, 144, 144))
 
-        return faces_sheet.subsurface(pygame.Rect(face_x, face_y, 144, 144))
+    def _load_icon(self, filename: str) -> pygame.Surface | None:
+        """Loads optional scroll arrow icons from assets/images/ui/"""
+        path = os.path.join(IMAGES_DIR, "ui", filename)
+        if os.path.exists(path):
+            return pygame.image.load(path).convert_alpha()
+        return None
 
     def exit(self):
         pygame.key.set_repeat(0, 0)
@@ -110,16 +123,8 @@ class DialogueState(BaseState):
     def update(self, dt: float):
         if self.current_phase == self.PHASE_WAITING:
             self.waiting_timer += dt
-
             cycle = int(self.waiting_timer) % 5
-            if cycle == 0:
-                self.dot_count = 0
-            elif cycle == 1:
-                self.dot_count = 1
-            elif cycle == 2:
-                self.dot_count = 2
-            else:
-                self.dot_count = 3
+            self.dot_count = cycle if cycle < 3 else 3
 
             self.dummy_api_timer -= dt
             if self.dummy_api_timer <= 0:
@@ -138,20 +143,22 @@ class DialogueState(BaseState):
         self.scroll_offset = 0
         log.info(f"Received reply from {self.npc.display_name}")
 
-    def _wrap_text(self, text: str, font: pygame.font.Font, max_width: int) -> list[str]:
-        """Splits a string into a list of strings (lines) that fit within max_width."""
+    def _wrap_text(self, text: str, font: pygame.font.Font, max_width: int, first_line_offset: int = 0) -> list[str]:
+        """Wraps text. first_line_offset accounts for a prepended speaker name."""
         words = text.split(' ')
         lines = []
         current_line = []
+        current_offset = first_line_offset
 
         for word in words:
             test_line = ' '.join(current_line + [word])
-            if font.size(test_line)[0] <= max_width:
+            if font.size(test_line)[0] + current_offset <= max_width:
                 current_line.append(word)
             else:
                 if current_line:
                     lines.append(' '.join(current_line))
                 current_line = [word]
+                current_offset = 0  # Reset offset after the first line wraps
 
         if current_line:
             lines.append(' '.join(current_line))
@@ -163,14 +170,14 @@ class DialogueState(BaseState):
 
         screen_width = screen.get_width()
         screen_height = screen.get_height()
-        box_height = 200  # dialogue box
+        box_height = 240  # dialogue box
         box_y = screen_height - box_height
 
         ui_surface = pygame.Surface((screen_width, box_height), pygame.SRCALPHA)  # transparent surface for the UI background
         ui_surface.fill((0, 0, 0, 153))  # 60% opacity black (153/255)
 
         text_area_width = screen_width - 144 - 60  # text area background
-        text_bg_rect = pygame.Rect(20, 20, text_area_width, box_height - 40)
+        text_bg_rect = pygame.Rect(20, 20, text_area_width, box_height - 70)
         pygame.draw.rect(ui_surface, (0, 0, 0, 230), text_bg_rect, border_radius=8)  # 90% opacity black (230/255) with rounded corners
 
         face_bg_rect = pygame.Rect(screen_width - 144 - 20, 28, 144, 144)  # face area background
@@ -184,24 +191,32 @@ class DialogueState(BaseState):
         else:
             screen.blit(self.npc_face, (face_bg_rect.x, face_y))
 
-        display_text = ""  # Main Text Content
-        text_color = (255, 255, 255)
+        prefix_text = ""  # Prefix ("You:", "The King:")
+        main_text = ""  # Main Text Content
+        prefix_color = (255, 215, 0)  # Gold
 
         if self.current_phase == self.PHASE_PLAYER_TYPING:
-            display_text = "You: " + self.player_text
+            prefix_text = "You: "
+            main_text = self.player_text
             if pygame.time.get_ticks() % 1000 < 500:  # Blinking cursor
-                display_text += "|"
+                main_text += "|"
         elif self.current_phase == self.PHASE_WAITING:
-            display_text = f"{self.npc.display_name} is thinking"
-            display_text += "." * self.dot_count
+            prefix_text = f"{self.npc.display_name} is thinking"
+            main_text = "." * self.dot_count
+            prefix_color = (255, 255, 255)  # White while thinking
         elif self.current_phase == self.PHASE_NPC_REPLY:
-            display_text = f"{self.npc.display_name}: " + self.npc_text
+            prefix_text = f"{self.npc.display_name}: "
+            main_text = self.npc_text
 
+        prefix_surf = self.font_dialogue.render(prefix_text, True, prefix_color)
+        prefix_width = prefix_surf.get_width()
+
+        # Wrap main text, offset the first line by the width of the prefix
         inner_text_rect = pygame.Rect(text_bg_rect.x + 15, box_y + text_bg_rect.y + 10, text_bg_rect.width - 30,
                                       text_bg_rect.height - 20)
-        lines = self._wrap_text(display_text, self.font, inner_text_rect.width)  # text wrapping & scrolling
+        lines = self._wrap_text(main_text, self.font_dialogue, inner_text_rect.width, first_line_offset=prefix_width)
 
-        line_height = self.font.get_height() + 4
+        line_height = self.font_dialogue.get_height() + 4
         max_lines_on_screen = inner_text_rect.height // line_height
         max_scroll = max(0, len(lines) - max_lines_on_screen)
 
@@ -212,34 +227,51 @@ class DialogueState(BaseState):
 
         visible_lines = lines[self.scroll_offset: self.scroll_offset + max_lines_on_screen]
         for i, line in enumerate(visible_lines):
-            text_surf = self.font.render(line, True, text_color)
-            screen.blit(text_surf, (inner_text_rect.x, inner_text_rect.y + (i * line_height)))
+            line_y = inner_text_rect.y + (i * line_height)
 
+            # Draw the prefix only on the actual first line of the message
+            if self.scroll_offset == 0 and i == 0:
+                screen.blit(prefix_surf, (inner_text_rect.x, line_y))
+                text_surf = self.font_dialogue.render(line, True, (255, 255, 255))
+                screen.blit(text_surf, (inner_text_rect.x + prefix_width, line_y))
+            else:
+                text_surf = self.font_dialogue.render(line, True, (255, 255, 255))
+                screen.blit(text_surf, (inner_text_rect.x, line_y))
+
+        # Bottom UI Strings
         bottom_text = ""  # helper prompts
         bottom_color = (128, 128, 128)
         is_over_limit = len(self.player_text) > self.max_chars
 
         if is_over_limit and self.current_phase == self.PHASE_PLAYER_TYPING:
-            bottom_text = "Too many characters!"
+            bottom_text = STRING_DIALOGUE_TOO_MANY
             bottom_color = (255, 0, 0)
         else:
             if self.current_phase == self.PHASE_PLAYER_TYPING:
-                if len(self.player_text) > 0:
-                    bottom_text = "Press ENTER to confirm, press ESC to quit"
-                else:
-                    bottom_text = "Enter text. Press ESC to quit"
+                bottom_text = STRING_DIALOGUE_CONFIRM if len(self.player_text) > 0 else STRING_DIALOGUE_EMPTY
             elif self.current_phase == self.PHASE_WAITING:
-                bottom_text = "Wait for the response"
+                bottom_text = STRING_DIALOGUE_WAIT
             elif self.current_phase == self.PHASE_NPC_REPLY:
-                bottom_text = "Press ENTER to reply, press ESC to quit"
+                bottom_text = STRING_DIALOGUE_REPLY
 
-        if max_scroll > 0 and self.current_phase == self.PHASE_NPC_REPLY:  # scroll indicators for NPC reply
-            if self.scroll_offset < max_scroll:
-                bottom_text += "  [v Scroll Down]"
-            if self.scroll_offset > 0:
-                bottom_text += "  [^ Scroll Up]"
-
-        bottom_surf = self.font_small.render(bottom_text, True, bottom_color)
-        helper_x = text_bg_rect.x + 15  # helper text pos
-        helper_y = box_y + text_bg_rect.bottom + 5
+        # Draw helper text
+        bottom_surf = self.font_ui.render(bottom_text, True, bottom_color)
+        helper_x = text_bg_rect.x + 15
+        helper_y = box_y + text_bg_rect.bottom + 10
         screen.blit(bottom_surf, (helper_x, helper_y))
+
+        # Draw scroll indicators
+        if max_scroll > 0 and self.current_phase == self.PHASE_NPC_REPLY:
+            if self.scroll_offset < max_scroll:
+                if self.icon_scroll_down:
+                    screen.blit(self.icon_scroll_down, (inner_text_rect.right - 20, inner_text_rect.bottom - 20))
+                else:
+                    screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_DOWN, True, (128, 128, 128)),
+                                (helper_x + 350, helper_y))
+
+            if self.scroll_offset > 0:
+                if self.icon_scroll_up:
+                    screen.blit(self.icon_scroll_up, (inner_text_rect.right - 20, inner_text_rect.top))
+                else:
+                    screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_UP, True, (128, 128, 128)),
+                                (helper_x + 500, helper_y))

@@ -32,12 +32,19 @@ KEY_PAUSE = [pygame.K_ESCAPE]
 KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
 
-# Fonts
-FONT_UI_PATH = os.path.join(FONTS_DIR, "CelticTime.ttf")
-FONT_UI_SIZE = 32
-FONT_DIALOGUE_PATH = os.path.join(FONTS_DIR, "CelticTime.ttf")
-FONT_DIALOGUE_SIZE = 32
+# Fonts (Tuple: Path, Size)
+FONT_UI = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
+FONT_DIALOGUE = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
 
 # In-game strings
 STRING_DIALOGUE_BEGIN_PROMPT = "Press ENTER to speak with "
+
+STRING_DIALOGUE_EMPTY = "Enter text. Press ESC to quit"
+STRING_DIALOGUE_CONFIRM = "Press ENTER to confirm, press ESC to quit"
+STRING_DIALOGUE_WAIT = "Wait for the response"
+STRING_DIALOGUE_REPLY = "Press ENTER to reply, press ESC to quit"
+STRING_DIALOGUE_TOO_MANY = "Too many characters!"
+STRING_DIALOGUE_SCROLL_UP = "[^ Scroll Up]"
+STRING_DIALOGUE_SCROLL_DOWN = "[v Scroll Down]"
+
 COLOR_MISSING = (255, 0, 255)  # Color used for missing textures (magenta)
