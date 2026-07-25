@@ -5,18 +5,20 @@ from game.core.settings import (
     IMAGES_DIR, FONT_DIALOGUE, FONT_UI, COLOR_MISSING,
     STRING_DIALOGUE_EMPTY, STRING_DIALOGUE_CONFIRM, STRING_DIALOGUE_WAIT,
     STRING_DIALOGUE_REPLY, STRING_DIALOGUE_TOO_MANY,
-    STRING_DIALOGUE_SCROLL_UP, STRING_DIALOGUE_SCROLL_DOWN
+    STRING_DIALOGUE_SCROLL_UP, STRING_DIALOGUE_SCROLL_DOWN,
+    COLOR_UI_BG_ALPHA, COLOR_UI_BOX_ALPHA, COLOR_TEXT_MAIN,
+    COLOR_TEXT_HELPER, COLOR_TEXT_WARNING, COLOR_PREFIX_PLAYER,
+    COLOR_PREFIX_NPC, COLOR_PREFIX_THINKING
 )
 
 log = logging.getLogger(__name__)
 
+
 class DialogueBox:
     def __init__(self):
-        # Unpack font tuples
         self.font_dialogue = pygame.font.Font(*FONT_DIALOGUE)
         self.font_ui = pygame.font.Font(*FONT_UI)
 
-        # Load scroll icons (fallback to None if files don't exist)
         self.icon_scroll_up = self._load_icon("scroll_up.png")
         self.icon_scroll_down = self._load_icon("scroll_down.png")
 
@@ -47,7 +49,6 @@ class DialogueBox:
         return faces_sheet.subsurface(pygame.Rect(col * 144, row * 144, 144, 144))
 
     def _wrap_text(self, text: str, font: pygame.font.Font, max_width: int, first_line_offset: int = 0) -> list[str]:
-        """Wraps text. first_line_offset accounts for a prepended speaker name."""
         words = text.split(' ')
         lines = []
         current_line = []
@@ -61,7 +62,7 @@ class DialogueBox:
                 if current_line:
                     lines.append(' '.join(current_line))
                 current_line = [word]
-                current_offset = 0  # Reset offset after the first line wraps
+                current_offset = 0
 
         if current_line:
             lines.append(' '.join(current_line))
@@ -81,59 +82,52 @@ class DialogueBox:
             npc_face: pygame.Surface,
             max_chars: int
     ) -> int:
-        """
-        Renders the dialogue box UI overlay.
-        Returns the calculated max_scroll value so the state can clamp scrolling.
-        """
+
         screen_width = screen.get_width()
         screen_height = screen.get_height()
-        box_height = 240  # Dialogue box height
+        box_height = 240
         box_y = screen_height - box_height
 
-        # Create transparent surface for UI background (SRCALPHA)
         ui_surface = pygame.Surface((screen_width, box_height), pygame.SRCALPHA)
-        ui_surface.fill((0, 0, 0, 153))  # 60% opacity black
+        ui_surface.fill(COLOR_UI_BG_ALPHA)
 
-        # Text area background (90% opacity black with rounded corners)
         text_area_width = screen_width - 144 - 60
         text_bg_rect = pygame.Rect(20, 20, text_area_width, box_height - 70)
-        pygame.draw.rect(ui_surface, (0, 0, 0, 230), text_bg_rect, border_radius=8)
+        pygame.draw.rect(ui_surface, COLOR_UI_BOX_ALPHA, text_bg_rect, border_radius=8)
 
-        # Face area background (90% opacity black)
         face_bg_rect = pygame.Rect(screen_width - 144 - 20, 28, 144, 144)
-        pygame.draw.rect(ui_surface, (0, 0, 0, 230), face_bg_rect, border_radius=8)
+        pygame.draw.rect(ui_surface, COLOR_UI_BOX_ALPHA, face_bg_rect, border_radius=8)
 
         screen.blit(ui_surface, (0, box_y))
 
-        # Draw faces
         face_y = box_y + 28
-        if current_phase == 0:  # PHASE_PLAYER_TYPING
+        if current_phase == 0:
             screen.blit(player_face, (face_bg_rect.x, face_y))
         else:
             screen.blit(npc_face, (face_bg_rect.x, face_y))
 
-        # Determine text content based on phase
         prefix_text = ""
         main_text = ""
-        prefix_color = (255, 215, 0)  # Gold
+        prefix_color = COLOR_PREFIX_PLAYER
 
-        if current_phase == 0:  # PHASE_PLAYER_TYPING
+        if current_phase == 0:
             prefix_text = "You: "
             main_text = player_text
             if pygame.time.get_ticks() % 1000 < 500:
                 main_text += "|"
-        elif current_phase == 1:  # PHASE_WAITING
+            prefix_color = COLOR_PREFIX_PLAYER
+        elif current_phase == 1:
             prefix_text = f"{npc_name} is thinking"
             main_text = "." * dot_count
-            prefix_color = (255, 255, 255)  # White while thinking
-        elif current_phase == 2:  # PHASE_NPC_REPLY
+            prefix_color = COLOR_PREFIX_THINKING
+        elif current_phase == 2:
             prefix_text = f"{npc_name}: "
             main_text = npc_text
+            prefix_color = COLOR_PREFIX_NPC
 
         prefix_surf = self.font_dialogue.render(prefix_text, True, prefix_color)
         prefix_width = prefix_surf.get_width()
 
-        # Inner text layout area
         inner_text_rect = pygame.Rect(
             text_bg_rect.x + 15,
             box_y + text_bg_rect.y + 10,
@@ -147,7 +141,6 @@ class DialogueBox:
         max_lines_on_screen = inner_text_rect.height // line_height
         max_scroll = max(0, len(lines) - max_lines_on_screen)
 
-        # Clamp scroll offset
         if current_phase == 0:
             effective_scroll = max_scroll
         else:
@@ -159,20 +152,19 @@ class DialogueBox:
 
             if effective_scroll == 0 and i == 0:
                 screen.blit(prefix_surf, (inner_text_rect.x, line_y))
-                text_surf = self.font_dialogue.render(line, True, (255, 255, 255))
+                text_surf = self.font_dialogue.render(line, True, COLOR_TEXT_MAIN)
                 screen.blit(text_surf, (inner_text_rect.x + prefix_width, line_y))
             else:
-                text_surf = self.font_dialogue.render(line, True, (255, 255, 255))
+                text_surf = self.font_dialogue.render(line, True, COLOR_TEXT_MAIN)
                 screen.blit(text_surf, (inner_text_rect.x, line_y))
 
-        # Bottom UI Strings / Helper prompts
         bottom_text = ""
-        bottom_color = (128, 128, 128)
+        bottom_color = COLOR_TEXT_HELPER
         is_over_limit = len(player_text) > max_chars
 
         if is_over_limit and current_phase == 0:
             bottom_text = STRING_DIALOGUE_TOO_MANY
-            bottom_color = (255, 0, 0)
+            bottom_color = COLOR_TEXT_WARNING
         else:
             if current_phase == 0:
                 bottom_text = STRING_DIALOGUE_CONFIRM if len(player_text) > 0 else STRING_DIALOGUE_EMPTY
@@ -186,20 +178,19 @@ class DialogueBox:
         helper_y = box_y + text_bg_rect.bottom + 10
         screen.blit(bottom_surf, (helper_x, helper_y))
 
-        # Draw scroll indicators if text overflows during NPC reply
         if max_scroll > 0 and current_phase == 2:
             if effective_scroll < max_scroll:
                 if self.icon_scroll_down:
                     screen.blit(self.icon_scroll_down, (inner_text_rect.right - 20, inner_text_rect.bottom - 20))
                 else:
-                    screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_DOWN, True, (128, 128, 128)),
+                    screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_DOWN, True, COLOR_TEXT_HELPER),
                                 (helper_x + 350, helper_y))
 
             if effective_scroll > 0:
                 if self.icon_scroll_up:
                     screen.blit(self.icon_scroll_up, (inner_text_rect.right - 20, inner_text_rect.top))
                 else:
-                    screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_UP, True, (128, 128, 128)),
+                    screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_UP, True, COLOR_TEXT_HELPER),
                                 (helper_x + 500, helper_y))
 
         return max_scroll
