@@ -2,28 +2,22 @@ import pygame
 import logging
 import os
 from game.core.state_machine import StateMachine
-from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, MAX_UPDATETIME, GAME_VERSION, ICON_PATH
+from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, MAX_UPDATETIME, GAME_VERSION, ICON_PATH, KEY_FULLSCREEN
 
 log = logging.getLogger(__name__)
 
 class Engine:
     def __init__(self, width: int = WINDOW_WIDTH, height: int = WINDOW_HEIGHT):
         pygame.init()
-        self.screen = pygame.display.set_mode(
-            (width, height),
-            pygame.SCALED
-        )
-        pygame.display.set_caption(WINDOW_TITLE)  # f"{WINDOW_TITLE} v{GAME_VERSION}"
+        self.screen = pygame.display.set_mode((width, height), pygame.SCALED)
+        pygame.display.set_caption(f"{WINDOW_TITLE} v{GAME_VERSION}")
         pygame.mouse.set_visible(False)
 
-        # Apply icon
         if os.path.exists(ICON_PATH):
             icon_surface = pygame.image.load(ICON_PATH).convert_alpha()
             pygame.display.set_icon(icon_surface)
 
         self.running = True
-
-        # FPS Settings: 0 means unlimited, otherwise target frame rate (e.g. 30, 60, 120)
         self.target_fps = 60
         self.state_machine = StateMachine()
 
@@ -45,19 +39,22 @@ class Engine:
 
             time_accumulator += elapsed_frame_time
 
-            # Handle user input
+            # Handle discrete events and global engine inputs
             self.handle_events()
+
+            # Handle continuous inputs
+            keys = pygame.key.get_pressed()
+            self.state_machine.handle_input(keys)
 
             # Update with fixed time step
             while time_accumulator >= MAX_UPDATETIME:
-                # We pass the fixed step in seconds (e.g., 0.01) to keep physics math easy
                 self.state_machine.update(MAX_UPDATETIME / 1000.0)
                 time_accumulator -= MAX_UPDATETIME
 
             # Render
             self.render()
 
-            # Cap the framerate dynamically based on current target_fps setting
+            # Cap the framerate dynamically
             if self.target_fps > 0:
                 min_frametime = 1000 // self.target_fps
                 frame_time = pygame.time.get_ticks() - current_frame_start_time
@@ -72,7 +69,10 @@ class Engine:
         for event in events:
             if event.type == pygame.QUIT:
                 self.running = False
-            # Possibly add global toggle fullscreen logic here
+            elif event.type == pygame.KEYDOWN:
+                if event.key in KEY_FULLSCREEN:
+                    pygame.display.toggle_fullscreen()
+                    log.info("Toggled fullscreen mode.")
 
         # Pass the events down to current states
         self.state_machine.handle_events(events)

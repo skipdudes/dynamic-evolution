@@ -10,12 +10,12 @@ if __name__ == "__main__":
     log.info("Aplication starting...")
 
     engine = Engine()
-    global_player = Player(x=0, y=0)
+    player = Player(x=0, y=0)
 
     initial_state = PlayState(
         engine.state_machine,
-        level_filename="oldworld.tmx",
-        player_instance=global_player
+        level_filename="castle.tmx",
+        player_instance=player
     )
     engine.state_machine.change(initial_state)
 

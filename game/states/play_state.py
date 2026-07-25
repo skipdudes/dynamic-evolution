@@ -1,7 +1,7 @@
 import pygame
 import logging
 from game.core.state import BaseState
-from game.core.settings import KEY_PAUSE, KEY_TOGGLE_FULLSCREEN, KEY_INTERACT, KEY_DEBUG
+from game.core.settings import KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, FONT_UI_PATH, FONT_UI_SIZE, STRING_DIALOGUE_BEGIN_PROMPT
 from game.world.level import Level
 from game.world.camera import Camera
 from game.entities.player import Player
@@ -47,38 +47,32 @@ class PlayState(BaseState):
         self.recently_interacted_npc: NPC | None = None
 
         # Font for the "Press ENTER to speak" prompt
-        self.ui_font = pygame.font.Font(None, 28)
+        self.ui_font = pygame.font.Font(FONT_UI_PATH, FONT_UI_SIZE)
 
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                # Interaction
                 if event.key in KEY_INTERACT:
-                    # self._check_npc_interaction()
-                    if self.active_prompt_npc:
-                        self._start_dialogue(self.active_prompt_npc)
+                    self._check_npc_interaction()
 
-                # Pause menu trigger
                 elif event.key in KEY_PAUSE:
                     log.info("Pause key pressed.")
                     # In future: self.state_machine.push(PauseState(self.state_machine))
 
-                # Fullscreen toggle (F4)
-                elif event.key in KEY_TOGGLE_FULLSCREEN:
-                    pygame.display.toggle_fullscreen()
-                    log.info("Toggled fullscreen mode.")
-
-                # Debug mode toggle (F3)
                 elif event.key in KEY_DEBUG:
                     self.debug_mode = not self.debug_mode
                     log.debug(f"Debug Mode set to: {self.debug_mode}")
+
+    def handle_input(self, keys):
+        """Passes continuous input state to the player."""
+        self.player.handle_input(keys)
 
     def _check_npc_interaction(self):
         """Checks if the player tries to interact with a nearby NPC."""
         for npc in self.npcs:
             if npc.is_player_in_range(self.player.hitbox):
                 log.info(f"Interacted with NPC: '{npc.npc_id}'!")
-                # HERE, in the future, opening dialogue window will be called
+                self._start_dialogue(npc)
                 return
 
     def _start_dialogue(self, npc: NPC):
@@ -94,7 +88,7 @@ class PlayState(BaseState):
         # Combine static level colliders with dynamic NPC hitboxes
         active_colliders = self.level.collision_rects + [npc.hitbox for npc in self.npcs]
 
-        # Update player position & collision against all objects
+        # Player logic update uses the input gathered in handle_input
         self.player.update(dt, active_colliders)
 
         # Update NPCs
@@ -153,50 +147,36 @@ class PlayState(BaseState):
 
         # 3. Draw Interaction Prompt
         if self.active_prompt_npc:
-            prompt_text = f"Press ENTER to speak with {self.active_prompt_npc.display_name}"
+            prompt_text = f"{STRING_DIALOGUE_BEGIN_PROMPT}{self.active_prompt_npc.display_name}"
             text_surf = self.ui_font.render(prompt_text, True, (255, 255, 255))
 
             # Simple black background box for the prompt
             padding = 10
-            rect_w = text_surf.get_width() + (padding * 2)
+            rect_w = text_surf.get_width() + (padding * 4)
             rect_h = text_surf.get_height() + (padding * 2)
             prompt_rect = pygame.Rect(
                 (screen.get_width() - rect_w) // 2,
-                screen.get_height() - rect_h - 20,
+                screen.get_height() - rect_h - (padding * 2),
                 rect_w,
                 rect_h
             )
 
             pygame.draw.rect(screen, (20, 20, 20), prompt_rect)
             pygame.draw.rect(screen, (255, 255, 255), prompt_rect, 2)
-            screen.blit(text_surf, (prompt_rect.x + padding, prompt_rect.y + padding))
+            screen.blit(text_surf, (prompt_rect.x + (padding * 2), prompt_rect.y + padding))
 
         # 4. Optional Debug overlays
         if self.debug_mode:
-            # Draw player hitbox in red
             p_hitbox = self.player.hitbox
-            pygame.draw.rect(
-                screen, (255, 0, 0),
-                (p_hitbox.x - self.camera.x, p_hitbox.y - self.camera.y, p_hitbox.width, p_hitbox.height),
-                2
-            )
-            # Draw map collision rects in green
+            pygame.draw.rect(screen, (255, 0, 0),  # red: player hitbox
+                             (p_hitbox.x - self.camera.x, p_hitbox.y - self.camera.y, p_hitbox.width, p_hitbox.height),
+                             2)
             for rect in self.level.collision_rects:
-                pygame.draw.rect(
-                    screen, (0, 255, 0),
-                    (rect.x - self.camera.x, rect.y - self.camera.y, rect.width, rect.height),
-                    2
-                )
-            # NPC hitboxes (Blue) & Interaction ranges (Yellow)
+                pygame.draw.rect(screen, (0, 255, 0),  # green: map collision
+                                 (rect.x - self.camera.x, rect.y - self.camera.y, rect.width, rect.height), 2)
             for npc in self.npcs:
-                pygame.draw.rect(
-                    screen, (0, 0, 255),
-                    (npc.x - self.camera.x, npc.y - self.camera.y, npc.width, npc.height),
-                    2
-                )
+                pygame.draw.rect(screen, (0, 0, 255),  # npc hitbox
+                                 (npc.x - self.camera.x, npc.y - self.camera.y, npc.width, npc.height), 2)
                 i_rect = npc.interaction_rect
-                pygame.draw.rect(
-                    screen, (255, 255, 0),
-                    (i_rect.x - self.camera.x, i_rect.y - self.camera.y, i_rect.width, i_rect.height),
-                    1
-                )
+                pygame.draw.rect(screen, (255, 255, 0),  # npc interaction range
+                                 (i_rect.x - self.camera.x, i_rect.y - self.camera.y, i_rect.width, i_rect.height), 1)

@@ -1,6 +1,13 @@
 
 # Central database/registry for NPC configuration
 NPC_DATA: dict[str, dict] = {
+    "player": {
+        "name": "You",
+        "sprite_file": "Actor1.png",
+        "sprite_index": 0,
+        "face_file": "Actor1.png",
+        "face_index": 0,
+    },
     "king": {
         "name": "The King",
         "sprite_file": "People3.png",

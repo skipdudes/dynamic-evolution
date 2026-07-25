@@ -36,6 +36,11 @@ class StateMachine:
         if self.states:
             self.states[-1].handle_events(events)
 
+    def handle_input(self, keys):
+        """Pass continuous key states to the active state."""
+        if self.states:
+            self.states[-1].handle_input(keys)
+
     def update(self, dt: float):
         """Update only the top"""
         if self.states:

@@ -5,7 +5,11 @@ class BaseState:
         self.state_machine = state_machine  # state machine access so it can pop itself or push another state
 
     def handle_events(self, events: list[pygame.event.Event]):
-        """Capture user input (only for active state)"""
+        """Handles discrete events (key presses, mouse clicks)."""
+        pass
+
+    def handle_input(self, keys):
+        """Handles continuous input (held keys)."""
         pass
 
     def update(self, dt: float):

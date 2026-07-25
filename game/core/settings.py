@@ -26,8 +26,18 @@ KEY_LEFT = [pygame.K_a, pygame.K_LEFT]
 KEY_RIGHT = [pygame.K_d, pygame.K_RIGHT]
 
 KEY_INTERACT = [pygame.K_RETURN, pygame.K_z]
-KEY_BACK = [pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_x]
-KEY_MENU = [pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_c]
+# KEY_BACK = [pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_x]
+# KEY_MENU = [pygame.K_LCTRL, pygame.K_RCTRL, pygame.K_c]
 KEY_PAUSE = [pygame.K_ESCAPE]
-KEY_TOGGLE_FULLSCREEN = [pygame.K_F4]
+KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
+
+# Fonts
+FONT_UI_PATH = os.path.join(FONTS_DIR, "CelticTime.ttf")
+FONT_UI_SIZE = 32
+FONT_DIALOGUE_PATH = os.path.join(FONTS_DIR, "CelticTime.ttf")
+FONT_DIALOGUE_SIZE = 32
+
+# In-game strings
+STRING_DIALOGUE_BEGIN_PROMPT = "Press ENTER to speak with "
+COLOR_MISSING = (255, 0, 255)  # Color used for missing textures (magenta)
