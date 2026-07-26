@@ -10,6 +10,9 @@ GAME_VERSION = "0.0.1"
 # Game loop settings
 MAX_UPDATETIME = 10  # ms (100 Hz logic update)
 
+# LLM's specific name provided by the Groq API
+LLM_NAME = "openai/gpt-oss-120b"
+
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ASSETS_DIR = os.path.join(BASE_DIR, "assets")
