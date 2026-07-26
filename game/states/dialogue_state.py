@@ -6,7 +6,6 @@ from game.entities.player import Player
 from game.entities.npc_data import NPC_DATA
 from game.ui.dialogue_box import DialogueBox
 from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, LLM_SYSTEM_BASE_CONTEXT
-from game.llm.client import GroqClient
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +31,7 @@ class DialogueState(BaseState):
         self.dot_count = 0
 
         # LLM integration variables
-        self.groq_client = GroqClient()
+        self.groq_client = self.game_state.groq_client  # retrieve previously initialized Groq client
         self.pending_response = None
         self.pending_error = None
 

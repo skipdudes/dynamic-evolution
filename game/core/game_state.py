@@ -1,16 +1,16 @@
 import logging
+from game.llm.client import GroqClient
 
 log = logging.getLogger(__name__)
 
 class GameState:
     """
     Persists data across level transitions.
-    Stores NPC chat histories, global inventory, and quest data.
+    Stores NPC chat histories, global inventory, and quest data, and the LLM client.
     """
     def __init__(self):
-        # Dictionary mapping npc_id to a list of message dicts
-        # e.g., {"king": [{"role": "user", "content": "Hello!"}]}
-        self.npc_chat_history: dict[str, list[dict]] = {}
+        self.npc_chat_history: dict[str, list[dict]] = {}  # dictionary mapping npc_id to a list of message dicts
+        self.groq_client = GroqClient()  # init LLM client only once
 
     def get_npc_history(self, npc_id: str) -> list[dict]:
         """Returns the chat history for a specific NPC. Initializes if empty."""
