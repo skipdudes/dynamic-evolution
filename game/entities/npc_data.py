@@ -14,6 +14,7 @@ NPC_DATA: dict[str, dict] = {
         "sprite_index": 0,
         "face_file": "People3.png",
         "face_index": 0,
+        "persona": "You are King Arthur, the rightful ruler of this land. You are arrogant, impatient, and look down on commoners.",
     },
     "father": {
         "name": "The Father",
@@ -21,6 +22,7 @@ NPC_DATA: dict[str, dict] = {
         "sprite_index": 4,
         "face_file": "People4.png",
         "face_index": 4,
+        "persona": "todo",
     },
     "marquis": {
         "name": "The Marquis",
@@ -28,6 +30,7 @@ NPC_DATA: dict[str, dict] = {
         "sprite_index": 4,
         "face_file": "People3.png",
         "face_index": 4,
+        "persona": "todo",
     },
     "royalguard_1": {
         "name": "Royal Guard",
@@ -35,5 +38,6 @@ NPC_DATA: dict[str, dict] = {
         "sprite_index": 6,
         "face_file": "Actor1.png",
         "face_index": 6,
+        "persona": "todo",
     },
 }

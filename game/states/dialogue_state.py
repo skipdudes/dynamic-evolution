@@ -14,11 +14,12 @@ class DialogueState(BaseState):
     PHASE_WAITING = 1
     PHASE_NPC_REPLY = 2
 
-    def __init__(self, state_machine, play_state, npc: NPC, player: Player):
+    def __init__(self, state_machine, play_state, npc: NPC, player: Player, game_state):
         super().__init__(state_machine)
         self.play_state = play_state
         self.npc = npc
         self.player = player
+        self.game_state = game_state
 
         self.current_phase = self.PHASE_PLAYER_TYPING
         self.player_text = ""
@@ -82,6 +83,9 @@ class DialogueState(BaseState):
         self.waiting_timer = 0.0
         self.dummy_api_timer = self.dummy_api_timer_const
         self.scroll_offset = 0
+
+        # Add player's message to persistent history
+        self.game_state.add_dialogue_message(self.npc.npc_id, "user", self.player_text)
         log.info(f"Sent message: {self.player_text} ({len(self.player_text)})")
 
     def update(self, dt: float):
@@ -105,6 +109,10 @@ class DialogueState(BaseState):
         self.npc_text = text
         self.current_phase = self.PHASE_NPC_REPLY
         self.scroll_offset = 0
+
+        # Add NPC's reply to persistent history
+        self.game_state.add_dialogue_message(self.npc.npc_id, "assistant", self.npc_text)
+        log.info(f"Received reply: {self.npc_text}")
 
     def draw(self, screen: pygame.Surface):
         # 1. Draw the game world underneath

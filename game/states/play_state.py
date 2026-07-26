@@ -12,12 +12,13 @@ from game.ui.hud import HUD
 log = logging.getLogger(__name__)
 
 class PlayState(BaseState):
-    def __init__(self, state_machine, level_filename: str, player_instance: Player, previous_level_name: str = "", debug_mode: bool = False):
+    def __init__(self, state_machine, level_filename: str, player_instance: Player, game_state, previous_level_name: str = "", debug_mode: bool = False):
         super().__init__(state_machine)
         self.level_filename = level_filename
         self.previous_level_name = previous_level_name
         self.player = player_instance
         self.debug_mode = debug_mode
+        self.game_state = game_state
 
         # Load world map
         self.level = Level(self.level_filename)
@@ -82,7 +83,7 @@ class PlayState(BaseState):
         self.recently_interacted_npc = npc
         self.active_prompt_npc = None
 
-        dialogue_state = DialogueState(self.state_machine, self, npc, self.player)
+        dialogue_state = DialogueState(self.state_machine, self, npc, self.player, self.game_state)
         self.state_machine.push(dialogue_state)
 
     def update(self, dt: float):
@@ -131,6 +132,7 @@ class PlayState(BaseState):
                 self.state_machine,
                 level_filename=target_level,
                 player_instance=self.player,
+                game_state=self.game_state,
                 previous_level_name=self.level_filename,
                 debug_mode=self.debug_mode
             )
