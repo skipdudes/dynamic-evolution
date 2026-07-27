@@ -2,7 +2,7 @@ import pygame
 import logging
 import os
 from game.core.state_machine import StateMachine
-from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, MAX_UPDATETIME, GAME_VERSION, ICON_PATH, KEY_FULLSCREEN
+from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, MAX_UPDATETIME, ICON_PATH, KEY_FULLSCREEN
 
 log = logging.getLogger(__name__)
 
@@ -10,7 +10,7 @@ class Engine:
     def __init__(self, width: int = WINDOW_WIDTH, height: int = WINDOW_HEIGHT):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height), pygame.SCALED)
-        pygame.display.set_caption(f"{WINDOW_TITLE} v{GAME_VERSION}")
+        pygame.display.set_caption(WINDOW_TITLE)
         pygame.mouse.set_visible(False)
 
         if os.path.exists(ICON_PATH):

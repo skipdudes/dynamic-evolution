@@ -8,6 +8,7 @@ from game.entities.player import Player
 from game.entities.npc import NPC
 from game.states.dialogue_state import DialogueState
 from game.ui.hud import HUD
+from game.states.transition_state import TransitionState
 
 log = logging.getLogger(__name__)
 
@@ -43,6 +44,9 @@ class PlayState(BaseState):
 
         # Create camera bound to level dimensions
         self.camera = Camera(self.level.width, self.level.height)
+
+        # Force initial camera update so it doesn't start at (0, 0)
+        self.camera.update(self.player.x, self.player.y, self.player.width, self.player.height)
 
         # Interaction tracking
         self.active_prompt_npc: NPC | None = None
@@ -121,22 +125,35 @@ class PlayState(BaseState):
         # Check level triggers (transition to another level)
         target_level = self.level.check_level_triggers(self.player.hitbox)
         if target_level:
-            # Append .tmx extension if missing
             if not target_level.endswith(".tmx"):
-                target_level += ".tmx"
+                target_level += ".tmx"  # Append .tmx extension if missing
 
             log.info(f"Player triggered transition to level: {target_level}")
 
-            # Switch state to the new level, passing current level as previous_level_name
-            new_play_state = PlayState(
+            # Stop the player completely on old level
+            self.player.input_vector.x = 0
+            self.player.input_vector.y = 0
+            self.player._reset_animation()
+
+            # Define what to load in the background
+            def load_next_level():
+                return PlayState(
+                    self.state_machine,
+                    level_filename=target_level,
+                    player_instance=self.player,
+                    game_state=self.game_state,
+                    previous_level_name=self.level_filename,
+                    debug_mode=self.debug_mode
+                )
+
+            # Transition based on next_state_func
+            transition = TransitionState(
                 self.state_machine,
-                level_filename=target_level,
-                player_instance=self.player,
-                game_state=self.game_state,
-                previous_level_name=self.level_filename,
-                debug_mode=self.debug_mode
+                prev_state=self,
+                next_state_func=load_next_level,
+                duration=0.3
             )
-            self.state_machine.change(new_play_state)
+            self.state_machine.change(transition)
 
     def draw(self, screen: pygame.Surface):
         screen.fill((0, 0, 0))

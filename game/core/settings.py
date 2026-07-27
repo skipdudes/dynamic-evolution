@@ -21,6 +21,15 @@ IMAGES_DIR = os.path.join(ASSETS_DIR, "images")
 FONTS_DIR = os.path.join(ASSETS_DIR, "fonts")
 ICON_PATH = os.path.join(IMAGES_DIR, "ui", "icon.png")
 
+# Menu assets
+IMAGE_LOGO = os.path.join(IMAGES_DIR, "ui", "logo.png")
+IMAGE_MAIN_MENU_BG = os.path.join(IMAGES_DIR, "titles", "Night.png")
+IMAGE_OPTIONS_BG = os.path.join(IMAGES_DIR, "titles", "WorldMap.png")
+IMAGE_ABOUT_BG = os.path.join(IMAGES_DIR, "titles", "Book.png")
+
+# Start Level (after Prologue)
+LEVEL_START = "castle.tmx"
+
 # Input Mappings (lists of allowed keys for each action)
 KEY_UP = [pygame.K_w, pygame.K_UP]
 KEY_DOWN = [pygame.K_s, pygame.K_DOWN]
@@ -32,10 +41,38 @@ KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
 
 # Fonts (Tuple: Path, Size)
+FONT_SPLASH = (os.path.join(FONTS_DIR, "Habbo.ttf"), 48)
 FONT_UI = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
 FONT_DIALOGUE = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
 
+# Splash text
+STRING_SPLASH_TEXT = "skipdudes presents..."
+
+# Menu strings
+MENU_OPTION_START = "Start game"
+MENU_OPTION_OPTIONS = "Options"
+MENU_OPTION_ABOUT = "About"
+MENU_OPTION_END = "End game"
+
+MENU_OPTIONS = [
+    MENU_OPTION_START,
+    MENU_OPTION_OPTIONS,
+    MENU_OPTION_ABOUT,
+    MENU_OPTION_END
+]
+
+# Options
+# todo: Add text
+
+# About
+# todo: Add text
+
+# Prologue
+STRING_PROLOGUE_HEADER = "Chapter I"
+STRING_PROLOGUE_TEXT = "The kingdom has fallen into darkness...\nBut there is still hope."
+
 # In-game strings
+STRING_CONTINUE_PROMPT = "Press ENTER to continue"
 STRING_DIALOGUE_BEGIN_PROMPT = "Press ENTER to speak with "
 STRING_DIALOGUE_EMPTY = "Enter text. Press ESC to quit"
 STRING_DIALOGUE_CONFIRM = "Press ENTER to confirm, press ESC to quit"
@@ -49,6 +86,7 @@ STRING_DIALOGUE_SCROLL_DOWN = "[v Scroll Down]"
 COLOR_UI_BG_ALPHA = (0, 0, 0, 153)          # 60% opacity black
 COLOR_UI_BOX_ALPHA = (0, 0, 0, 230)         # 90% opacity black
 COLOR_TEXT_MAIN = (255, 255, 255)           # White
+COLOR_TEXT_SELECTED = (255, 215, 0)         # Gold
 COLOR_TEXT_HELPER = (128, 128, 128)         # Gray
 COLOR_TEXT_WARNING = (255, 0, 0)            # Red
 COLOR_PREFIX_PLAYER = (255, 215, 0)         # Gold
