@@ -8,7 +8,6 @@ from game.entities.player import Player
 from game.entities.npc import NPC
 from game.states.dialogue_state import DialogueState
 from game.ui.hud import HUD
-from game.states.transition_state import TransitionState
 
 log = logging.getLogger(__name__)
 
@@ -84,6 +83,9 @@ class PlayState(BaseState):
     def _start_dialogue(self, npc: NPC):
         """Pushes the dialogue state onto the state machine stack."""
         log.info(f"Starting conversation with {npc.npc_id}")
+
+        self.player.stop()  # halt the player completely before opening the dialogue box
+
         self.recently_interacted_npc = npc
         self.active_prompt_npc = None
 
@@ -131,9 +133,7 @@ class PlayState(BaseState):
             log.info(f"Player triggered transition to level: {target_level}")
 
             # Stop the player completely on old level
-            self.player.input_vector.x = 0
-            self.player.input_vector.y = 0
-            self.player._reset_animation()
+            self.player.stop()
 
             # Define what to load in the background
             def load_next_level():
@@ -147,6 +147,7 @@ class PlayState(BaseState):
                 )
 
             # Transition based on next_state_func
+            from game.states.transition_state import TransitionState
             transition = TransitionState(
                 self.state_machine,
                 prev_state=self,

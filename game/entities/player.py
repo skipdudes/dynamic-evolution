@@ -142,3 +142,14 @@ class Player(Entity):
                 elif dy < 0:
                     self.y = rect.bottom - self.hitbox_offset_y
                 break
+
+    def stop(self):
+        """
+        Instantly halts player movement and resets the animation to idle.
+        Useful for transitions, dialogues, and opening menus.
+        """
+        self.input_vector.x = 0
+        self.input_vector.y = 0
+        self._reset_animation()
+        self.was_moving = False
+        log.info("Stopped the player.")
