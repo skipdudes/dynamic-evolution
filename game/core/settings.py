@@ -55,10 +55,10 @@ FPS_CHOICES = [30, 60, 120, 0]
 STRING_SPLASH_TEXT = "skipdudes presents..."
 
 # Menu strings
-MENU_OPTION_START = "Start game"
+MENU_OPTION_START = "Start Game"
 MENU_OPTION_OPTIONS = "Options"
 MENU_OPTION_ABOUT = "About"
-MENU_OPTION_END = "End game"
+MENU_OPTION_END = "Quit Game"
 
 # Options Menu Strings
 STRING_OPTIONS_TITLE = "Options"

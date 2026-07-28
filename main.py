@@ -13,7 +13,8 @@ if __name__ == "__main__":
     log.info("Aplication starting...")
 
     engine = Engine()
-    initial_state = SplashState(engine.state_machine)
+    #initial_state = SplashState(engine.state_machine)
+    initial_state = MainMenuState(engine.state_machine)
     engine.state_machine.push(initial_state)
     engine.run()
 

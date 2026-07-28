@@ -63,7 +63,8 @@ class MainMenuState(BaseState):
                     game_state=game_state
                 )
                 # Return StoryBoardState, which has loaded game inside
-                return StoryBoardState(self.state_machine, STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT, play_state, hold_time=3.0)
+                # return StoryBoardState(self.state_machine, STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT, play_state, hold_time=3.0)
+                return StoryBoardState(self.state_machine, STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT, play_state, hold_time=0.5)
 
             transition = TransitionState(self.state_machine, self, next_state_func=load_game, duration=1.0)
             self.state_machine.change(transition)

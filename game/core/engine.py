@@ -25,6 +25,7 @@ class Engine:
             pygame.display.set_icon(icon_surface)
 
         self.running = True
+        self.is_quitting = False  # Flag to prevent infinite quit loops during transition
         self.target_fps = self.config.fps  # Apply initial FPS from config
 
         self.state_machine = StateMachine()
@@ -77,7 +78,28 @@ class Engine:
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
-                self.running = False
+                # If player clicks 'X' on the window for the first time
+                if not self.is_quitting:
+                    self.is_quitting = True
+                    log.info("Window close requested. Initiating fade to black...")
+
+                    current_state = self.state_machine.get_current()
+
+                    from game.states.transition_state import TransitionState
+                    transition = TransitionState(
+                        self.state_machine,
+                        prev_state=current_state,
+                        next_state=None,
+                        duration=0.5,
+                        is_quit=True
+                    )
+                    self.state_machine.push(transition)
+                else:
+                    # This is triggered by the TransitionState when the fade is complete
+                    log.info("Fade complete. Shutting down engine.")
+                    self.running = False
+                    return  # Stop processing further events
+
             elif event.type == pygame.KEYDOWN:
                 if event.key in KEY_FULLSCREEN:
                     pygame.display.toggle_fullscreen()

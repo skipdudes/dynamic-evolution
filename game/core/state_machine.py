@@ -53,3 +53,9 @@ class StateMachine:
         """
         if self.states:
             self.states[-1].draw(screen)
+
+    def get_current(self) -> BaseState | None:
+        """Returns the current state at the top of the stack, or None if empty."""
+        if self.states:
+            return self.states[-1]
+        return None
