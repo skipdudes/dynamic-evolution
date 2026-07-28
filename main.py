@@ -2,6 +2,7 @@ import logging
 from game.core.logger import setup_logger
 from game.core.engine import Engine
 from game.states.splash_state import SplashState
+from game.states.main_menu_state import MainMenuState
 from game.core.game_state import GameState
 from game.entities.player import Player
 from game.states.play_state import PlayState

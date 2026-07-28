@@ -41,9 +41,15 @@ KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
 
 # Fonts (Tuple: Path, Size)
-FONT_SPLASH = (os.path.join(FONTS_DIR, "Habbo.ttf"), 48)
+FONT_SPLASH = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 48)
 FONT_UI = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
 FONT_DIALOGUE = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
+
+# Configuration
+CONFIG_FILE_PATH = os.path.join(BASE_DIR, "options.ini")
+DEFAULT_FPS = 60
+DEFAULT_FULLSCREEN = False
+FPS_CHOICES = [30, 60, 120, 0]
 
 # Splash text
 STRING_SPLASH_TEXT = "skipdudes presents..."
@@ -54,24 +60,38 @@ MENU_OPTION_OPTIONS = "Options"
 MENU_OPTION_ABOUT = "About"
 MENU_OPTION_END = "End game"
 
-MENU_OPTIONS = [
-    MENU_OPTION_START,
-    MENU_OPTION_OPTIONS,
-    MENU_OPTION_ABOUT,
-    MENU_OPTION_END
-]
+# Options Menu Strings
+STRING_OPTIONS_TITLE = "Options"
+STRING_OPTIONS_FPS = "FPS Limit"
+STRING_OPTIONS_DISPLAY = "Display Mode"
+STRING_OPTIONS_WINDOWED = "Windowed"
+STRING_OPTIONS_FULLSCREEN = "Fullscreen"
+STRING_OPTIONS_UNLIMITED = "Unlimited"
 
-# Options
-# todo: Add text
+STRING_CONTROLS_TITLE = "--- Controls ---"
+STRING_CONTROLS_MOVE = "Movement: Arrows / WASD"
+STRING_CONTROLS_INTERACT = "Interact: ENTER / Z"
+STRING_CONTROLS_PAUSE = "Back / Pause: ESC"
+STRING_CONTROLS_FULLSCREEN = "Fullscreen: F4"
 
-# About
-# todo: Add text
+STRING_OPTIONS_BACK = "Return"
+
+# About Menu Strings
+STRING_ABOUT_TITLE = "About"
+STRING_ABOUT_TEXT = (
+    "Shadows of the Crown II\n"
+    "Master's Thesis Project - 2026\n\n"
+    "Created by: Marcin Chetnik (aka skipdudes)\n"
+    "github.com/skipdudes/dynamic-evolution"
+)
+STRING_ABOUT_BACK = "Press ENTER to return"
 
 # Prologue
 STRING_PROLOGUE_HEADER = "Chapter I"
 STRING_PROLOGUE_TEXT = "The kingdom has fallen into darkness...\nBut there is still hope."
 
 # In-game strings
+STRING_RETURN_PROMPT = "Press ESC to return"
 STRING_CONTINUE_PROMPT = "Press ENTER to continue"
 STRING_DIALOGUE_BEGIN_PROMPT = "Press ENTER to speak with "
 STRING_DIALOGUE_EMPTY = "Enter text. Press ESC to quit"

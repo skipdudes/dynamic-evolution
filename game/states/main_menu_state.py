@@ -3,7 +3,7 @@ import pygame
 from game.core.state import BaseState
 from game.core.settings import (
     FONT_UI, IMAGE_MAIN_MENU_BG, IMAGE_LOGO, KEY_UP, KEY_DOWN, KEY_INTERACT,
-    MENU_OPTIONS, MENU_OPTION_START, MENU_OPTION_OPTIONS, MENU_OPTION_ABOUT, MENU_OPTION_END,
+    MENU_OPTION_START, MENU_OPTION_OPTIONS, MENU_OPTION_ABOUT, MENU_OPTION_END,
     COLOR_TEXT_SELECTED, COLOR_TEXT_MAIN, LEVEL_START, WINDOW_WIDTH, WINDOW_HEIGHT,
     STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT
 )
@@ -30,18 +30,25 @@ class MainMenuState(BaseState):
         if os.path.exists(IMAGE_LOGO):
             self.logo_surface = pygame.image.load(IMAGE_LOGO).convert_alpha()
 
+        self.menu_options = [
+            MENU_OPTION_START,
+            MENU_OPTION_OPTIONS,
+            MENU_OPTION_ABOUT,
+            MENU_OPTION_END
+        ]
+
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in KEY_UP:
-                    self.selected_index = (self.selected_index - 1) % len(MENU_OPTIONS)
+                    self.selected_index = (self.selected_index - 1) % len(self.menu_options)
                 elif event.key in KEY_DOWN:
-                    self.selected_index = (self.selected_index + 1) % len(MENU_OPTIONS)
+                    self.selected_index = (self.selected_index + 1) % len(self.menu_options)
                 elif event.key in KEY_INTERACT:
                     self._handle_selection()
 
     def _handle_selection(self):
-        selected = MENU_OPTIONS[self.selected_index]
+        selected = self.menu_options[self.selected_index]
 
         if selected == MENU_OPTION_START:
             # Delay creating GameState, Groq API etc.
@@ -56,7 +63,7 @@ class MainMenuState(BaseState):
                     game_state=game_state
                 )
                 # Return StoryBoardState, which has loaded game inside
-                return StoryBoardState(self.state_machine, STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT, play_state)
+                return StoryBoardState(self.state_machine, STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT, play_state, hold_time=3.0)
 
             transition = TransitionState(self.state_machine, self, next_state_func=load_game, duration=1.0)
             self.state_machine.change(transition)
@@ -87,7 +94,7 @@ class MainMenuState(BaseState):
 
         # Draw options
         start_y = 332
-        for i, option in enumerate(MENU_OPTIONS):
+        for i, option in enumerate(self.menu_options):
             color = COLOR_TEXT_SELECTED if i == self.selected_index else COLOR_TEXT_MAIN
             text_surf = self.font.render(option, True, color)
 

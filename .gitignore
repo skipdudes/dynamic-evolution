@@ -29,3 +29,6 @@ Thumbs.db
 
 # Logger files
 *.log
+
+# Game configuration
+options.ini

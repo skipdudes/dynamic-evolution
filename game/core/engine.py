@@ -3,13 +3,20 @@ import logging
 import os
 from game.core.state_machine import StateMachine
 from game.core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, MAX_UPDATETIME, ICON_PATH, KEY_FULLSCREEN
+from game.core.config import ConfigManager
 
 log = logging.getLogger(__name__)
 
 class Engine:
     def __init__(self, width: int = WINDOW_WIDTH, height: int = WINDOW_HEIGHT):
         pygame.init()
-        self.screen = pygame.display.set_mode((width, height), pygame.SCALED)
+        self.config = ConfigManager()  # load user configuration
+
+        flags = pygame.SCALED
+        if self.config.fullscreen:  # apply initial display mode based on config
+            flags |= pygame.FULLSCREEN
+
+        self.screen = pygame.display.set_mode((width, height), flags)
         pygame.display.set_caption(WINDOW_TITLE)
         pygame.mouse.set_visible(False)
 
@@ -18,8 +25,10 @@ class Engine:
             pygame.display.set_icon(icon_surface)
 
         self.running = True
-        self.target_fps = 60
+        self.target_fps = self.config.fps  # Apply initial FPS from config
+
         self.state_machine = StateMachine()
+        self.state_machine.engine = self  # FPS changing
 
     def run(self):
         log.info("Starting the game loop")
@@ -74,6 +83,11 @@ class Engine:
                     pygame.display.toggle_fullscreen()
                     log.info("Toggled fullscreen mode.")
 
+                    # Read actual state and save to config
+                    is_full = bool(pygame.display.get_surface().get_flags() & pygame.FULLSCREEN)
+                    self.config.fullscreen = is_full
+                    self.config.save()
+
         # Pass the events down to current states
         self.state_machine.handle_events(events)
 
@@ -87,8 +101,10 @@ class Engine:
         Dynamically changes the FPS limit.
         Pass 0 for unlimited framerate.
         """
-        log.info(f"Changing FPS limit to: {'Unlimited' if new_fps == 0 else new_fps}")
         self.target_fps = new_fps
+        self.config.fps = new_fps
+        self.config.save()
+        log.info(f"Changing FPS limit to: {'Unlimited' if new_fps == 0 else new_fps}")
 
     def quit(self):
         pygame.quit()

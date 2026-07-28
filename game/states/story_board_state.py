@@ -4,10 +4,11 @@ from game.core.settings import FONT_UI, FONT_DIALOGUE, KEY_INTERACT, COLOR_TEXT_
 from game.states.transition_state import TransitionState
 
 class StoryBoardState(BaseState):
-    def __init__(self, state_machine, title: str, text: str, next_state, title_color=COLOR_TEXT_SELECTED):
+    def __init__(self, state_machine, title: str, text: str, next_state, title_color=COLOR_TEXT_SELECTED, hold_time=3.0):
         super().__init__(state_machine)
         self.next_state = next_state
         self.text_raw = text
+        self.hold_time = hold_time  # Hold time before showing prompt
 
         self.font_title = pygame.font.Font(FONT_UI[0], 48)
         self.font_text = pygame.font.Font(*FONT_DIALOGUE)
@@ -32,7 +33,7 @@ class StoryBoardState(BaseState):
     def update(self, dt: float):
         if not self.can_skip and not self.is_transitioning:
             self.timer += dt
-            if self.timer >= 3.0:  # Hold time before showing prompt
+            if self.timer >= self.hold_time:
                 self.can_skip = True
 
     def _proceed(self):
