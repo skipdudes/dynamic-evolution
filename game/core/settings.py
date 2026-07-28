@@ -86,6 +86,14 @@ STRING_ABOUT_TEXT = (
 )
 STRING_ABOUT_BACK = "Press ENTER to return"
 
+# Pause Menu Strings
+STRING_PAUSE_TITLE = "Paused"
+STRING_PAUSE_RESUME = "Resume"
+STRING_PAUSE_OPTIONS = "Options"
+STRING_PAUSE_MAIN_MENU = "Main Menu"
+STRING_PAUSE_QUIT = "Quit Game"
+STRING_PAUSE_WARNING = "All story progress will be lost!"
+
 # Prologue
 STRING_PROLOGUE_HEADER = "Chapter I"
 STRING_PROLOGUE_TEXT = "The kingdom has fallen into darkness...\nBut there is still hope."

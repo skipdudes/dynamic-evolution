@@ -69,9 +69,9 @@ class MainMenuState(BaseState):
             self.state_machine.change(transition)
 
         elif selected == MENU_OPTION_OPTIONS:
-            self.state_machine.change(OptionsState(self.state_machine, self))
+            self.state_machine.push(OptionsState(self.state_machine))
         elif selected == MENU_OPTION_ABOUT:
-            self.state_machine.change(AboutState(self.state_machine, self))
+            self.state_machine.push(AboutState(self.state_machine))
         elif selected == MENU_OPTION_END:
             transition = TransitionState(self.state_machine, self, None, duration=1.0, is_quit=True)
             self.state_machine.change(transition)

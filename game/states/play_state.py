@@ -61,8 +61,11 @@ class PlayState(BaseState):
                     self._check_npc_interaction()
 
                 elif event.key in KEY_PAUSE:
-                    log.info("Pause key pressed.")
-                    # In future: self.state_machine.push(PauseState(self.state_machine))
+                    # Halt player movement and open pause menu
+                    self.player.stop()
+                    from game.states.pause_state import PauseState
+                    self.state_machine.push(PauseState(self.state_machine, self))
+                    return
 
                 elif event.key in KEY_DEBUG:
                     self.debug_mode = not self.debug_mode

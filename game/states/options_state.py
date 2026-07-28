@@ -15,9 +15,8 @@ from game.core.settings import (
 log = logging.getLogger(__name__)
 
 class OptionsState(BaseState):
-    def __init__(self, state_machine, main_menu_state):
+    def __init__(self, state_machine):
         super().__init__(state_machine)
-        self.main_menu_state = main_menu_state
 
         self.font_title = pygame.font.Font(FONT_UI[0], 48)
         self.font_menu = pygame.font.Font(*FONT_UI)
@@ -45,7 +44,7 @@ class OptionsState(BaseState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in KEY_PAUSE:
-                    self.state_machine.change(self.main_menu_state)
+                    self.state_machine.pop()
                 elif event.key in KEY_UP:
                     self.selected_index = (self.selected_index - 1) % len(self.options)
                 elif event.key in KEY_DOWN:
@@ -56,7 +55,7 @@ class OptionsState(BaseState):
                     self._toggle_value(direction=1)
                 elif event.key in KEY_INTERACT:
                     if self.selected_index == 2:  # if on the "Return" option
-                        self.state_machine.change(self.main_menu_state)  # go back
+                        self.state_machine.pop()  # go back
                     else:
                         self._toggle_value(direction=1)
 

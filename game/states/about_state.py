@@ -9,9 +9,8 @@ from game.core.settings import (
 )
 
 class AboutState(BaseState):
-    def __init__(self, state_machine, main_menu_state):
+    def __init__(self, state_machine):
         super().__init__(state_machine)
-        self.main_menu_state = main_menu_state
 
         self.font_title = pygame.font.Font(FONT_UI[0], 48)
         self.font_text = pygame.font.Font(*FONT_DIALOGUE)
@@ -27,7 +26,7 @@ class AboutState(BaseState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in KEY_PAUSE or event.key in KEY_INTERACT:
-                    self.state_machine.change(self.main_menu_state)
+                    self.state_machine.pop()
 
     def draw(self, screen: pygame.Surface):
         screen.blit(self.bg_surface, (0, 0))
