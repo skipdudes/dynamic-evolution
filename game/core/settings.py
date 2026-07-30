@@ -39,6 +39,7 @@ KEY_INTERACT = [pygame.K_RETURN, pygame.K_z]
 KEY_PAUSE = [pygame.K_ESCAPE]
 KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
+KEY_INVENTORY = [pygame.K_i, pygame.K_e, pygame.K_TAB]
 
 # Fonts (Tuple: Path, Size)
 FONT_SPLASH = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 48)
@@ -109,6 +110,8 @@ STRING_DIALOGUE_REPLY = "Press ENTER to reply, press ESC to quit"
 STRING_DIALOGUE_TOO_MANY = "Too many characters!"
 STRING_DIALOGUE_SCROLL_UP = "[^ Scroll Up]"
 STRING_DIALOGUE_SCROLL_DOWN = "[v Scroll Down]"
+STRING_INVENTORY_TITLE = "Inventory"
+STRING_INVENTORY_EMPTY = "Your inventory is empty."
 
 # UI Colors
 COLOR_UI_BG_ALPHA = (0, 0, 0, 153)          # 60% opacity black

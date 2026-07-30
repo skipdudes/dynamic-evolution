@@ -2,6 +2,7 @@ import pygame
 import logging
 import os
 from game.entities.entity import Entity
+from game.entities.inventory import Inventory
 from game.core.settings import IMAGES_DIR, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 from game.entities.npc_data import NPC_DATA
 
@@ -21,6 +22,14 @@ class Player(Entity):
         self.current_direction = initial_direction
         self.animation_speed = 0.1125
         self.animation_timer = 0.0
+        self.inventory = Inventory()
+
+        # Test items (inventory testing)
+        # self.inventory.add_item("gold", "Gold Coins", "Heavy, shiny currency.", 50)
+        # self.inventory.add_item("ferret_amulet", "Ferret Amulet",
+        #                         "A strangely shaped silver amulet. Seems to belong to a secret organization.", 1)
+        # self.inventory.add_item("sealed_letter", "Sealed Letter",
+        #                         "A letter sealed with wax. The 'H' initial is clearly visible on the seal.", 1)
 
         # Walking animation sequence
         self.walk_sequence = [0, 1, 2, 1]

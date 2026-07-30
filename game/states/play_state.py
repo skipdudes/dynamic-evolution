@@ -1,7 +1,7 @@
 import pygame
 import logging
 from game.core.state import BaseState
-from game.core.settings import KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, STRING_DIALOGUE_BEGIN_PROMPT
+from game.core.settings import KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, STRING_DIALOGUE_BEGIN_PROMPT
 from game.world.level import Level
 from game.world.camera import Camera
 from game.entities.player import Player
@@ -65,6 +65,13 @@ class PlayState(BaseState):
                     self.player.stop()
                     from game.states.pause_state import PauseState
                     self.state_machine.push(PauseState(self.state_machine, self))
+                    return
+
+                elif event.key in KEY_INVENTORY:
+                    # Halt player movement and open inventory
+                    self.player.stop()
+                    from game.states.inventory_state import InventoryState
+                    self.state_machine.push(InventoryState(self.state_machine, self))
                     return
 
                 elif event.key in KEY_DEBUG:
