@@ -52,6 +52,11 @@ DEFAULT_FPS = 60
 DEFAULT_FULLSCREEN = False
 FPS_CHOICES = [30, 60, 120, 0]
 
+# HUD Settings
+HUD_NOTIFICATION_DURATION = 5.0
+STRING_NOTIFY_ITEM = "New item: "
+STRING_NOTIFY_QUEST = "New log entry: "
+
 # Splash text
 STRING_SPLASH_TEXT = "skipdudes presents..."
 

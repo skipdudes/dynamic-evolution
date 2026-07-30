@@ -12,7 +12,7 @@ from game.ui.hud import HUD
 log = logging.getLogger(__name__)
 
 class PlayState(BaseState):
-    def __init__(self, state_machine, level_filename: str, player_instance: Player, game_state, previous_level_name: str = "", debug_mode: bool = False):
+    def __init__(self, state_machine, level_filename: str, player_instance: Player, game_state, previous_level_name: str = "", debug_mode: bool = False, hud=None):
         super().__init__(state_machine)
         self.level_filename = level_filename
         self.previous_level_name = previous_level_name
@@ -51,8 +51,11 @@ class PlayState(BaseState):
         self.active_prompt_npc: NPC | None = None
         self.recently_interacted_npc: NPC | None = None
 
-        # Initialize HUD
-        self.hud = HUD()
+        # Initialize HUD or use the existing one passed from the previous level
+        if hud is None:
+            self.hud = HUD()
+        else:
+            self.hud = hud
 
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
@@ -116,6 +119,9 @@ class PlayState(BaseState):
         # Update camera position
         self.camera.update(self.player.x, self.player.y, self.player.width, self.player.height)
 
+        # Update HUD (timers for notifications)
+        self.hud.update(dt)
+
         # Update interaction prompt logic
         npc_in_range = None
         for npc in self.npcs:
@@ -153,7 +159,8 @@ class PlayState(BaseState):
                     player_instance=self.player,
                     game_state=self.game_state,
                     previous_level_name=self.level_filename,
-                    debug_mode=self.debug_mode
+                    debug_mode=self.debug_mode,
+                    hud=self.hud
                 )
 
             # Transition based on next_state_func
@@ -181,7 +188,10 @@ class PlayState(BaseState):
             prompt_text = f"{STRING_DIALOGUE_BEGIN_PROMPT}{self.active_prompt_npc.display_name}"
             self.hud.draw_interaction_prompt(screen, prompt_text)
 
-        # 4. Optional Debug overlays
+        # 4. Draw active notifications
+        self.hud.draw_notifications(screen)
+
+        # 5. Optional Debug overlays
         if self.debug_mode:
             p_hitbox = self.player.hitbox
             pygame.draw.rect(screen, (255, 0, 0),  # red: player hitbox

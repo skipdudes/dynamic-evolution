@@ -54,6 +54,10 @@ class InventoryState(BaseState):
                     if self.items:
                         self.selected_index = (self.selected_index + 1) % len(self.items)
 
+    def update(self, dt: float):
+        """Allow HUD notifications to continue animating while inventory is open."""
+        self.play_state.hud.update(dt)
+
     def draw(self, screen: pygame.Surface):
         self.play_state.draw(screen)
         screen.blit(self.overlay, (0, 0))
@@ -123,6 +127,9 @@ class InventoryState(BaseState):
         desc_rect = pygame.Rect(details_x, desc_y, panel_width - 340, panel_height - (desc_y - panel_y) - 10)
 
         self._draw_text_wrapped(screen, selected_item_data['description'], self.font_desc, COLOR_TEXT_MAIN, desc_rect)
+
+        # Draw active notifications ON TOP of the inventory menu
+        self.play_state.hud.draw_notifications(screen)
 
     def _draw_text_wrapped(self, surface: pygame.Surface, text: str, font: pygame.font.Font, color: tuple,
                            rect: pygame.Rect) -> int:
