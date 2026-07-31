@@ -56,8 +56,8 @@
   <object id="57" x="408" y="504" width="96" height="17"/>
   <object id="58" x="551" y="512" width="97" height="28"/>
   <object id="59" x="612" y="441" width="48" height="27"/>
-  <object id="60" x="623" y="393" width="31" height="13"/>
-  <object id="61" x="577" y="398" width="24" height="17"/>
+  <object id="60" x="623" y="382" width="31" height="24"/>
+  <object id="61" x="577" y="385" width="24" height="30"/>
   <object id="62" x="590" y="352" width="19" height="24"/>
   <object id="63" x="636" y="323" width="25" height="23"/>
   <object id="64" x="577" y="272" width="46" height="18"/>

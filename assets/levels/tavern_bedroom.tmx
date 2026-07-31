@@ -58,7 +58,7 @@
   <object id="46" x="347" y="248" width="26" height="18"/>
   <object id="47" x="443" y="248" width="26" height="18"/>
   <object id="48" x="384" y="246" width="47" height="29"/>
-  <object id="49" x="527" y="251" width="24" height="18"/>
+  <object id="49" x="527" y="239" width="24" height="30"/>
   <object id="50" x="564" y="247" width="48" height="28"/>
   <object id="52" x="612" y="257" width="48" height="79"/>
  </objectgroup>

@@ -1,7 +1,7 @@
 import pygame
 from game.core.state import BaseState
 from game.core.settings import (
-    FONT_UI, FONT_DIALOGUE, KEY_PAUSE, KEY_UP, KEY_DOWN, KEY_INTERACT,
+    FONT_UI, FONT_DIALOGUE, KEY_RETURN, KEY_UP, KEY_DOWN, KEY_INTERACT,
     WINDOW_WIDTH, WINDOW_HEIGHT, COLOR_TEXT_SELECTED, COLOR_TEXT_MAIN, COLOR_TEXT_WARNING,
     STRING_PAUSE_TITLE, STRING_PAUSE_RESUME, STRING_PAUSE_OPTIONS,
     STRING_PAUSE_MAIN_MENU, STRING_PAUSE_QUIT, STRING_PAUSE_WARNING
@@ -32,7 +32,7 @@ class PauseState(BaseState):
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in KEY_PAUSE:
+                if event.key in KEY_RETURN:
                     self.state_machine.pop()
                 elif event.key in KEY_UP:
                     self.selected_index = (self.selected_index - 1) % len(self.options)
@@ -71,6 +71,8 @@ class PauseState(BaseState):
         panel_width, panel_height = 400, 360
         ui_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
         pygame.draw.rect(ui_surface, (0, 0, 0, 200), ui_surface.get_rect(), border_radius=12)
+
+        pygame.draw.rect(ui_surface, (255, 255, 255, 100), ui_surface.get_rect(), 2, border_radius=12)
 
         panel_x = (WINDOW_WIDTH - panel_width) // 2
         panel_y = (WINDOW_HEIGHT - panel_height) // 2

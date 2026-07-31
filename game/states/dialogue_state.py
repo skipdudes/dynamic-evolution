@@ -5,7 +5,7 @@ from game.entities.npc import NPC
 from game.entities.player import Player
 from game.entities.npc_data import NPC_DATA
 from game.ui.dialogue_box import DialogueBox
-from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, LLM_SYSTEM_BASE_CONTEXT
+from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, KEY_RETURN, LLM_SYSTEM_BASE_CONTEXT
 
 log = logging.getLogger(__name__)
 
@@ -50,20 +50,21 @@ class DialogueState(BaseState):
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in KEY_PAUSE:
-                    if self.current_phase != self.PHASE_WAITING:
-                        self.state_machine.pop()
-                    return
-
                 if self.current_phase == self.PHASE_PLAYER_TYPING:
-                    if event.key == pygame.K_RETURN:
+                    if event.key in KEY_PAUSE:
+                        self.state_machine.pop()
+                        return
+                    elif event.key == pygame.K_RETURN:  # hardcoded ENTER
                         if 0 < len(self.player_text.strip()) <= self.max_chars:
                             self._send_message()
-                    elif event.key == pygame.K_BACKSPACE:
+                    elif event.key == pygame.K_BACKSPACE:  # hardcoded BACKSPACE
                         self.player_text = self.player_text[:-1]
 
                 elif self.current_phase == self.PHASE_NPC_REPLY:
-                    if event.key in KEY_INTERACT:
+                    if event.key in KEY_RETURN:
+                        self.state_machine.pop()
+                        return
+                    elif event.key in KEY_INTERACT:
                         self.player_text = ""
                         self.current_phase = self.PHASE_PLAYER_TYPING
                         self.scroll_offset = 0
@@ -182,5 +183,5 @@ class DialogueState(BaseState):
         else:
             self.scroll_offset = max(0, min(self.scroll_offset, max_scroll))
 
-        # Draw active notifications ON TOP of the dialogue box
-        self.play_state.hud.draw_notifications(screen)
+        # # Draw active notifications ON TOP of the dialogue box
+        # self.play_state.hud.draw_notifications(screen)

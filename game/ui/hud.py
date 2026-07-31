@@ -1,5 +1,5 @@
 import pygame
-from game.core.settings import FONT_UI, COLOR_TEXT_MAIN
+from game.core.settings import FONT_UI, COLOR_TEXT_MAIN, HUD_NOTIFICATION_DURATION
 
 class HUD:
     def __init__(self):
@@ -10,7 +10,7 @@ class HUD:
         # Format: {"text": str, "timer": float}
         self.notifications = []
 
-    def add_notification(self, text: str, duration: float = 5.0):
+    def add_notification(self, text: str, duration: float = HUD_NOTIFICATION_DURATION):
         """Adds a new notification to the queue."""
         self.notifications.append({"text": text, "timer": duration})
 

@@ -36,10 +36,12 @@ KEY_DOWN = [pygame.K_s, pygame.K_DOWN]
 KEY_LEFT = [pygame.K_a, pygame.K_LEFT]
 KEY_RIGHT = [pygame.K_d, pygame.K_RIGHT]
 KEY_INTERACT = [pygame.K_RETURN, pygame.K_z]
+KEY_RETURN = [pygame.K_LSHIFT, pygame.K_RSHIFT, pygame.K_x, pygame.K_ESCAPE]
+KEY_INVENTORY = [pygame.K_i, pygame.K_e, pygame.K_TAB]
+KEY_JOURNAL = [pygame.K_n, pygame.K_l]
 KEY_PAUSE = [pygame.K_ESCAPE]
 KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
-KEY_INVENTORY = [pygame.K_i, pygame.K_e, pygame.K_TAB]
 
 # Fonts (Tuple: Path, Size)
 FONT_SPLASH = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 48)
@@ -75,9 +77,12 @@ STRING_OPTIONS_FULLSCREEN = "Fullscreen"
 STRING_OPTIONS_UNLIMITED = "Unlimited"
 
 STRING_CONTROLS_TITLE = "--- Controls ---"
-STRING_CONTROLS_MOVE = "Movement: Arrows / WASD"
+STRING_CONTROLS_MOVE = "Movement: Arrows / WSAD"
 STRING_CONTROLS_INTERACT = "Interact: ENTER / Z"
-STRING_CONTROLS_PAUSE = "Back / Pause: ESC"
+STRING_CONTROLS_RETURN = "Back: SHIFT / X"
+STRING_CONTROLS_INVENTORY = "Inventory: TAB / I / E"
+STRING_CONTROLS_JOURNAL = "Journal: N / L"
+STRING_CONTROLS_PAUSE = "Pause: ESC"
 STRING_CONTROLS_FULLSCREEN = "Fullscreen: F4"
 
 STRING_OPTIONS_BACK = "Return"
@@ -117,6 +122,11 @@ STRING_DIALOGUE_SCROLL_UP = "[^ Scroll Up]"
 STRING_DIALOGUE_SCROLL_DOWN = "[v Scroll Down]"
 STRING_INVENTORY_TITLE = "Inventory"
 STRING_INVENTORY_EMPTY = "Your inventory is empty."
+STRING_JOURNAL_TITLE = "Quest Journal"
+STRING_JOURNAL_EMPTY = "You have no quests."
+STRING_JOURNAL_ACTIVE = "[ Active ]"
+STRING_JOURNAL_COMPLETED = "[ Completed ]"
+STRING_JOURNAL_READ_PROMPT = "Press ENTER to read entries"
 
 # UI Colors
 COLOR_UI_BG_ALPHA = (0, 0, 0, 153)          # 60% opacity black

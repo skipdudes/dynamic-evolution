@@ -2,7 +2,7 @@ import os
 import pygame
 from game.core.state import BaseState
 from game.core.settings import (
-    FONT_UI, FONT_DIALOGUE, IMAGE_ABOUT_BG, KEY_PAUSE, KEY_INTERACT,
+    FONT_UI, FONT_DIALOGUE, IMAGE_ABOUT_BG, KEY_RETURN, KEY_INTERACT,
     GAME_VERSION, WINDOW_WIDTH, WINDOW_HEIGHT, COLOR_TEXT_SELECTED,
     COLOR_TEXT_MAIN, COLOR_TEXT_HELPER, STRING_ABOUT_TITLE, STRING_ABOUT_TEXT,
     STRING_ABOUT_BACK
@@ -25,7 +25,7 @@ class AboutState(BaseState):
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in KEY_PAUSE or event.key in KEY_INTERACT:
+                if event.key in KEY_RETURN or event.key in KEY_INTERACT:
                     self.state_machine.pop()
 
     def draw(self, screen: pygame.Surface):

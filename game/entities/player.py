@@ -3,6 +3,7 @@ import logging
 import os
 from game.entities.entity import Entity
 from game.entities.inventory import Inventory
+from game.entities.journal import Journal
 from game.core.settings import IMAGES_DIR, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
 from game.entities.npc_data import NPC_DATA
 
@@ -23,13 +24,20 @@ class Player(Entity):
         self.animation_speed = 0.1125
         self.animation_timer = 0.0
         self.inventory = Inventory()
+        self.journal = Journal()
 
-        # Test items (inventory testing)
+        # # Test items (inventory testing)
         # self.inventory.add_item("gold", "Gold Coins", "Heavy, shiny currency.", 50)
-        # self.inventory.add_item("ferret_amulet", "Ferret Amulet",
-        #                         "A strangely shaped silver amulet. Seems to belong to a secret organization.", 1)
-        # self.inventory.add_item("sealed_letter", "Sealed Letter",
-        #                         "A letter sealed with wax. The 'H' initial is clearly visible on the seal.", 1)
+        # self.inventory.add_item("ferret_amulet", "Ferret Amulet", "A strangely shaped silver amulet. Seems to belong to a secret organization.", 1)
+        # self.inventory.add_item("sealed_letter", "Sealed Letter", "A letter sealed with wax. The 'H' initial is clearly visible on the seal.", 1)
+        #
+        # # Test quests (journal testing)
+        # self.journal.add_quest("quest_missing_shipment", "The Missing Shipment")
+        # self.journal.add_entry("quest_missing_shipment", "Grizzly the barkeep asked me to investigate his missing courier in the eastern woods.")
+        # self.journal.add_entry("quest_missing_shipment", "I found Elara rummaging through the package. I should talk to her.")
+        # self.journal.complete_quest("quest_missing_shipment")
+        # self.journal.add_quest("quest_bouncers_test", "The Bouncer's Test")
+        # self.journal.add_entry("quest_bouncers_test", "I need to convince Brunt to let me inside the bandit hideout.")
 
         # Walking animation sequence
         self.walk_sequence = [0, 1, 2, 1]

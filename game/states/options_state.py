@@ -3,13 +3,15 @@ import pygame
 import logging
 from game.core.state import BaseState
 from game.core.settings import (
-    FONT_UI, FONT_DIALOGUE, IMAGE_OPTIONS_BG, KEY_PAUSE, KEY_INTERACT,
+    FONT_UI, FONT_DIALOGUE, IMAGE_OPTIONS_BG, KEY_RETURN, KEY_INTERACT,
     KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, GAME_VERSION, WINDOW_WIDTH, WINDOW_HEIGHT,
     COLOR_TEXT_MAIN, COLOR_TEXT_SELECTED, COLOR_TEXT_HELPER, FPS_CHOICES, DEFAULT_FPS,
     STRING_OPTIONS_TITLE, STRING_OPTIONS_FPS, STRING_OPTIONS_DISPLAY,
     STRING_OPTIONS_WINDOWED, STRING_OPTIONS_FULLSCREEN, STRING_OPTIONS_UNLIMITED,
     STRING_CONTROLS_TITLE, STRING_CONTROLS_MOVE, STRING_CONTROLS_INTERACT,
-    STRING_CONTROLS_PAUSE, STRING_CONTROLS_FULLSCREEN, STRING_OPTIONS_BACK
+    STRING_CONTROLS_PAUSE, STRING_CONTROLS_FULLSCREEN, STRING_OPTIONS_BACK,
+    # Nowe importy:
+    STRING_CONTROLS_RETURN, STRING_CONTROLS_INVENTORY, STRING_CONTROLS_JOURNAL
 )
 
 log = logging.getLogger(__name__)
@@ -32,10 +34,14 @@ class OptionsState(BaseState):
         self.options = [STRING_OPTIONS_FPS, STRING_OPTIONS_DISPLAY, STRING_OPTIONS_BACK]
         self.selected_index = 0
 
+        # Zaktualizowana lista sterowania z nowymi stringami
         self.controls_info = [
             STRING_CONTROLS_TITLE,
             STRING_CONTROLS_MOVE,
             STRING_CONTROLS_INTERACT,
+            STRING_CONTROLS_RETURN,
+            STRING_CONTROLS_INVENTORY,
+            STRING_CONTROLS_JOURNAL,
             STRING_CONTROLS_PAUSE,
             STRING_CONTROLS_FULLSCREEN
         ]
@@ -43,7 +49,7 @@ class OptionsState(BaseState):
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key in KEY_PAUSE:
+                if event.key in KEY_RETURN:
                     self.state_machine.pop()
                 elif event.key in KEY_UP:
                     self.selected_index = (self.selected_index - 1) % len(self.options)
@@ -76,7 +82,8 @@ class OptionsState(BaseState):
     def draw(self, screen: pygame.Surface):
         screen.blit(self.bg_surface, (0, 0))
 
-        panel_width, panel_height = 500, 450
+        # Zwiększyłem wysokość panelu z 450 na 520, żeby pomieścić 3 dodatkowe linijki tekstu
+        panel_width, panel_height = 500, 520
         ui_surface = pygame.Surface((panel_width, panel_height), pygame.SRCALPHA)
         pygame.draw.rect(ui_surface, (0, 0, 0, 200), ui_surface.get_rect(), border_radius=12)
 
@@ -90,7 +97,8 @@ class OptionsState(BaseState):
         current_fps = getattr(self.state_machine.engine, 'target_fps', DEFAULT_FPS)
         is_fullscreen = bool(pygame.display.get_surface().get_flags() & pygame.FULLSCREEN)
 
-        start_y = panel_y + 110
+        start_y = panel_y + 100  # Podniesione ciut wyżej
+
         for i, option in enumerate(self.options):
             color = COLOR_TEXT_SELECTED if i == self.selected_index else COLOR_TEXT_MAIN
 
@@ -105,15 +113,16 @@ class OptionsState(BaseState):
                 text_surf = self.font_menu.render(text, True, color)
 
                 x = (WINDOW_WIDTH - text_surf.get_width()) // 2
-                y = start_y + (i * 40)  # todo: Changed from 50 to 40 to bring them slightly closer
+                y = start_y + (i * 40)  # Opcje są teraz ciaśniej upakowane (co 40px)
                 screen.blit(text_surf, (x, y))
             else:
                 text_surf = self.font_menu.render(option, True, color)
                 x = (WINDOW_WIDTH - text_surf.get_width()) // 2
-                y = panel_y + panel_height - 50
+                y = panel_y + panel_height - 50  # Przycisk powrotu bezpiecznie na dole
                 screen.blit(text_surf, (x, y))
 
-        info_start_y = start_y + 100
+        # Blok z informacjami o sterowaniu (zaczyna się 90px pod pierwszą opcją)
+        info_start_y = start_y + 90
         for i, line in enumerate(self.controls_info):
             info_surf = self.font_info.render(line, True, COLOR_TEXT_HELPER)
             x = (WINDOW_WIDTH - info_surf.get_width()) // 2
