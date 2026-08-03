@@ -160,6 +160,23 @@ class Player(Entity):
                     self.y = rect.bottom - self.hitbox_offset_y
                 break
 
+    def turn_towards(self, target_rect: pygame.Rect):
+        """
+        Calculates the primary axis difference and makes the player face
+        the center of the given target rectangle.
+        """
+        dx = target_rect.centerx - self.hitbox.centerx
+        dy = target_rect.centery - self.hitbox.centery
+
+        # Determine if the target is further along the X or Y axis
+        if abs(dx) > abs(dy):
+            self.current_direction = self.DIRECTION_RIGHT if dx > 0 else self.DIRECTION_LEFT
+        else:
+            self.current_direction = self.DIRECTION_DOWN if dy > 0 else self.DIRECTION_UP
+
+        # Ensure the player snaps to the idle standing animation for the new direction
+        self._reset_animation()
+
     def stop(self):
         """
         Instantly halts player movement and resets the animation to idle.

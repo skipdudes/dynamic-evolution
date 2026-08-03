@@ -108,6 +108,7 @@
   </object>
   <object id="94" name="npc_spawn" x="432" y="264" width="48" height="72">
    <properties>
+    <property name="direction" value="down"/>
     <property name="npc_id" value="king"/>
    </properties>
   </object>

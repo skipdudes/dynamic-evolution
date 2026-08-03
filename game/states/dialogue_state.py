@@ -46,6 +46,7 @@ class DialogueState(BaseState):
 
     def exit(self):
         pygame.key.set_repeat(0, 0)
+        self.npc.reset_direction()
 
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:

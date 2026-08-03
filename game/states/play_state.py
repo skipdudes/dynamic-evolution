@@ -39,6 +39,7 @@ class PlayState(BaseState):
                 x=spawn_info["x"],
                 y=spawn_info["y"],
                 npc_id=spawn_info["npc_id"],
+                initial_direction=spawn_info.get("direction", "down"),
                 width=spawn_info.get("width", 48),
                 height=spawn_info.get("height", 72)
             )
@@ -115,6 +116,10 @@ class PlayState(BaseState):
         log.info(f"Starting conversation with {npc.npc_id}")
 
         self.player.stop()  # halt the player completely before opening the dialogue box
+
+        # Make the player and NPC turn to face each other
+        self.player.turn_towards(npc.hitbox)
+        npc.turn_towards(self.player.hitbox)
 
         self.recently_interacted_npc = npc
         self.active_prompt_npc = None
