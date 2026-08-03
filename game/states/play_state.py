@@ -201,10 +201,24 @@ class PlayState(BaseState):
         all_entities = [self.player] + self.npcs
         self.level.draw_sorted_objects(screen, self.camera.x, self.camera.y, all_entities)
 
-        # 2.5 Draw Night Filter if outdoor and night is active
+        # 2.5 Draw Night Filter and Light Masks
         if self.is_night and self.level.level_type == 'outdoor':
             night_surf = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA)
             night_surf.fill(COLOR_NIGHT_FILTER)
+
+            for light in self.level.lights:
+                # Calculate screen position based on the camera
+                screen_x = light["draw_x"] - self.camera.x
+                screen_y = light["draw_y"] - self.camera.y
+
+                mask_w = light["mask"].get_width()
+                mask_h = light["mask"].get_height()
+
+                # Optimization: render only if the mask is currently visible on the screen
+                if -mask_w < screen_x < WINDOW_WIDTH and -mask_h < screen_y < WINDOW_HEIGHT:
+                    # BLEND_RGBA_SUB subtracts the light mask's alpha from the night filter
+                    night_surf.blit(light["mask"], (screen_x, screen_y), special_flags=pygame.BLEND_RGBA_SUB)
+
             screen.blit(night_surf, (0, 0))
 
         # 3. Draw Interaction Prompt via HUD

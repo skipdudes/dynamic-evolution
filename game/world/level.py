@@ -31,6 +31,7 @@ class Level:
         self.spawns: list[dict] = []
         self.npc_spawns: list[dict] = []
         self.level_triggers: list[dict] = []
+        self.lights: list[dict] = []
 
         self._parse_layers()
 
@@ -117,6 +118,19 @@ class Level:
                         r1["bottom"] = true_bottom
                         r1["z_index"] = 0 if layer.name == "renderables" else 2
                         layer_objects_dict[layer.name].append(r1)
+
+                # 4. Lights layer
+                elif layer.name == "lights":
+                    glow_radius = 5  # How many pixels the light spills outside the rectangle
+                    for obj in layer:
+                        rect = pygame.Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height))
+                        mask = self._create_light_mask(rect.width, rect.height, glow_radius)
+                        self.lights.append({
+                            "rect": rect,                       # Original rectangle
+                            "draw_x": rect.x - glow_radius,     # Shift left by glow amount
+                            "draw_y": rect.y - glow_radius,     # Shift up by glow amount
+                            "mask": mask
+                        })
 
         # Depth inheritance for items placed on tables ("objects" on "renderables")
         for obj in layer_objects_dict.get("objects", []):
@@ -226,3 +240,32 @@ class Level:
                 obj["image"],
                 (obj["x"] - camera_x, obj["y"] - camera_y)
             )
+
+    def _create_light_mask(self, width: int, height: int, glow: int) -> pygame.Surface:
+        """
+        Generates a rectangular light mask that exactly fits the dimensions defined in Tiled,
+        and expands outward with a soft, rounded glowing gradient.
+        """
+        surf_w = width + glow * 2
+        surf_h = height + glow * 2
+        surf = pygame.Surface((surf_w, surf_h), pygame.SRCALPHA)
+
+        # Draw the gradient from the widest (weakest) to the closest to the core (brightest)
+        for d in range(glow, 0, -1):
+            progress = 1.0 - (d / glow)
+            # Non-linear light intensity falloff for realism
+            alpha = int(255 * (progress ** 1.5))
+
+            r_x = glow - d
+            r_y = glow - d
+            r_w = width + 2 * d
+            r_h = height + 2 * d
+
+            # The border_radius=d makes the outer edges of the glow smooth and round,
+            # but as it gets closer to the core, it becomes sharper.
+            pygame.draw.rect(surf, (255, 255, 255, alpha), (r_x, r_y, r_w, r_h), border_radius=d)
+
+        # Finally, draw the core in the center - a perfect rectangle (e.g., the window pane)
+        pygame.draw.rect(surf, (255, 255, 255, 255), (glow, glow, width, height))
+
+        return surf
