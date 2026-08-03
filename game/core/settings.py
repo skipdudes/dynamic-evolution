@@ -42,6 +42,7 @@ KEY_JOURNAL = [pygame.K_n, pygame.K_l]
 KEY_PAUSE = [pygame.K_ESCAPE]
 KEY_FULLSCREEN = [pygame.K_F4]
 KEY_DEBUG = [pygame.K_F3]
+KEY_NIGHTMODE = [pygame.K_F5]
 
 # Fonts (Tuple: Path, Size)
 FONT_SPLASH = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 48)
@@ -139,6 +140,7 @@ COLOR_PREFIX_PLAYER = (255, 215, 0)         # Gold
 COLOR_PREFIX_NPC = (255, 215, 0)            # Gold
 COLOR_PREFIX_THINKING = (255, 255, 255)     # White
 COLOR_MISSING = (255, 0, 255)               # Color used for missing textures (magenta)
+COLOR_NIGHT_FILTER = (15, 15, 45, 160)      # Dark blueish-purple for a cinematic night feel
 
 # LLM Base Context (Shared across all characters)
 LLM_SYSTEM_BASE_CONTEXT = (

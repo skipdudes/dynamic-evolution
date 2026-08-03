@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="79">
+ <properties>
+  <property name="level_type" value="indoor"/>
+ </properties>
  <tileset firstgid="1" source="tilesets/Dungeon_A5.tsx"/>
  <tileset firstgid="129" source="tilesets/Inside_A5.tsx"/>
  <tileset firstgid="257" source="tilesets/Inside_A4.tsx"/>

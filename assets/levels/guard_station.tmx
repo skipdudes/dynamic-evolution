@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="16" tilewidth="48" tileheight="48" infinite="0" nextlayerid="14" nextobjectid="88">
+ <properties>
+  <property name="level_type" value="outdoor"/>
+ </properties>
  <tileset firstgid="1" source="tilesets/Dungeon_A1.tsx"/>
  <tileset firstgid="193" source="tilesets/Dungeon_A5.tsx"/>
  <tileset firstgid="321" source="tilesets/Inside_A1.tsx"/>

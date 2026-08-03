@@ -14,6 +14,15 @@ class Level:
         log.info(f"Loading map: {self.filename}")
         self.tmx_data = pytmx.load_pygame(self.path)
 
+        # Get level type ('indoor' or 'outdoor', default to 'outdoor')
+        level_type_raw = str(self.tmx_data.properties.get("level_type", "outdoor")).strip().lower()
+        if level_type_raw == "indoor":
+            self.level_type = "indoor"
+        else:
+            if level_type_raw != "outdoor":
+                log.warning(f"Invalid level_type '{level_type_raw}' in map. Defaulting to 'outdoor'.")
+            self.level_type = "outdoor"
+
         self.width = self.tmx_data.width * self.tmx_data.tilewidth
         self.height = self.tmx_data.height * self.tmx_data.tileheight
 

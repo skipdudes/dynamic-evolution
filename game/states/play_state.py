@@ -1,7 +1,10 @@
 import pygame
 import logging
 from game.core.state import BaseState
-from game.core.settings import KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, KEY_JOURNAL, STRING_DIALOGUE_BEGIN_PROMPT
+from game.core.settings import (
+    KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, KEY_JOURNAL,
+    STRING_DIALOGUE_BEGIN_PROMPT, KEY_NIGHTMODE, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT
+)
 from game.world.level import Level
 from game.world.camera import Camera
 from game.entities.player import Player
@@ -12,13 +15,14 @@ from game.ui.hud import HUD
 log = logging.getLogger(__name__)
 
 class PlayState(BaseState):
-    def __init__(self, state_machine, level_filename: str, player_instance: Player, game_state, previous_level_name: str = "", debug_mode: bool = False, hud=None):
+    def __init__(self, state_machine, level_filename: str, player_instance: Player, game_state, previous_level_name: str = "", debug_mode: bool = False, hud=None, is_night: bool = False):
         super().__init__(state_machine)
         self.level_filename = level_filename
         self.previous_level_name = previous_level_name
         self.player = player_instance
         self.debug_mode = debug_mode
         self.game_state = game_state
+        self.is_night = is_night
 
         # Load world map
         self.level = Level(self.level_filename)
@@ -84,6 +88,11 @@ class PlayState(BaseState):
                 # # Test HUD notifications
                 # elif event.key == pygame.K_SPACE:
                 #     self.hud.add_notification("Test notification")
+
+                # Test night mode
+                elif event.key in KEY_NIGHTMODE:
+                    self.is_night = not self.is_night
+                    log.debug(f"Night Mode set to: {self.is_night}")
 
                 elif event.key in KEY_DEBUG:
                     self.debug_mode = not self.debug_mode
@@ -168,7 +177,8 @@ class PlayState(BaseState):
                     game_state=self.game_state,
                     previous_level_name=self.level_filename,
                     debug_mode=self.debug_mode,
-                    hud=self.hud
+                    hud=self.hud,
+                    is_night=self.is_night
                 )
 
             # Transition based on next_state_func
@@ -190,6 +200,12 @@ class PlayState(BaseState):
         # 2. Render Y-sorted objects + player + npcs
         all_entities = [self.player] + self.npcs
         self.level.draw_sorted_objects(screen, self.camera.x, self.camera.y, all_entities)
+
+        # 2.5 Draw Night Filter if outdoor and night is active
+        if self.is_night and self.level.level_type == 'outdoor':
+            night_surf = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA)
+            night_surf.fill(COLOR_NIGHT_FILTER)
+            screen.blit(night_surf, (0, 0))
 
         # 3. Draw Interaction Prompt via HUD
         if self.active_prompt_npc:
