@@ -35,16 +35,24 @@ class PlayState(BaseState):
         # Create NPC objects read from npc_spawn rectangles
         self.npcs: list[NPC] = []
         for spawn_info in self.level.npc_spawns:
-            npc = NPC(
-                x=spawn_info["x"],
-                y=spawn_info["y"],
-                npc_id=spawn_info["npc_id"],
-                initial_direction=spawn_info.get("direction", "down"),
-                width=spawn_info.get("width", 48),
-                height=spawn_info.get("height", 72)
-            )
-            self.npcs.append(npc)
-            log.info(f"Spawned NPC '{npc.npc_id}' at ({npc.x}, {npc.y})")
+            npc_id = spawn_info["npc_id"]
+            spawn_id = spawn_info["spawn_id"]
+
+            # Only instantiate and append the NPC if GameState confirms this is their active location
+            if self.game_state.is_npc_spawn_active(npc_id, spawn_id):
+                npc = NPC(
+                    x=spawn_info["x"],
+                    y=spawn_info["y"],
+                    npc_id=npc_id,
+                    initial_direction=spawn_info.get("direction", "down"),
+                    width=spawn_info.get("width", 48),
+                    height=spawn_info.get("height", 72)
+                )
+                self.npcs.append(npc)
+                log.info(
+                    f"Spawned NPC '{npc_id}' at location '{spawn_id}' facing {spawn_info.get('direction', 'down')}")
+            else:
+                log.debug(f"Skipped NPC '{npc_id}' at location '{spawn_id}' (Inactive state)")
 
         # Create camera bound to level dimensions
         self.camera = Camera(self.level.width, self.level.height)

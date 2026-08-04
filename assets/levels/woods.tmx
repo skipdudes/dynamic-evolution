@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="9" nextobjectid="426">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="9" nextobjectid="428">
  <properties>
   <property name="level_type" value="outdoor"/>
  </properties>
@@ -188,6 +188,20 @@
   <object id="190" name="player_spawn" x="3" y="730" width="48" height="72">
    <properties>
     <property name="level" value="newworld"/>
+   </properties>
+  </object>
+  <object id="426" name="npc_spawn" x="432" y="192" width="48" height="72">
+   <properties>
+    <property name="direction" value="up"/>
+    <property name="npc_id" value="smuggler"/>
+    <property name="spawn_id" value="smuggler_quest_woods"/>
+   </properties>
+  </object>
+  <object id="427" name="npc_spawn" x="600" y="444" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="fugitive_ranger"/>
+    <property name="spawn_id" value="fugitive_ranger_quest"/>
    </properties>
   </object>
  </objectgroup>

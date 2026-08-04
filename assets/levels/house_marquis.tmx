@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="88">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="89">
  <properties>
   <property name="level_type" value="indoor"/>
  </properties>
@@ -81,6 +81,13 @@
   <object id="84" name="player_spawn" x="456" y="645" width="48" height="72">
    <properties>
     <property name="level" value="oldworld"/>
+   </properties>
+  </object>
+  <object id="88" name="npc_spawn" x="480" y="168" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="marquis"/>
+    <property name="spawn_id" value="marquis_start"/>
    </properties>
   </object>
  </objectgroup>

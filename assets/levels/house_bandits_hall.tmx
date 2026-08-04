@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="92">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="94">
  <properties>
   <property name="level_type" value="indoor"/>
  </properties>
@@ -99,6 +99,20 @@
   <object id="43" name="player_spawn" x="765" y="298" width="48" height="72">
    <properties>
     <property name="level" value="house_bandits_office"/>
+   </properties>
+  </object>
+  <object id="92" name="npc_spawn" x="744" y="298" width="48" height="72">
+   <properties>
+    <property name="direction" value="left"/>
+    <property name="npc_id" value="bouncer"/>
+    <property name="spawn_id" value="bouncer_start"/>
+   </properties>
+  </object>
+  <object id="93" name="npc_spawn" x="312" y="180" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="bouncer"/>
+    <property name="spawn_id" value="bouncer_rest"/>
    </properties>
   </object>
  </objectgroup>

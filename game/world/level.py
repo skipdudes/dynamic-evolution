@@ -61,10 +61,16 @@ class Level:
                         elif obj.name == "npc_spawn":
                             npc_id = getattr(obj, "properties", {}).get("npc_id", "default_npc")
                             direction_str = getattr(obj, "properties", {}).get("direction", "down").strip().lower()
+
+                            # Extract spawn_id. If missing, assume the {npc_id}_start convention
+                            default_spawn = f"{npc_id}_start"
+                            spawn_id = getattr(obj, "properties", {}).get("spawn_id", default_spawn).strip()
+
                             self.npc_spawns.append({
                                 "x": obj.x,
                                 "y": obj.y,
                                 "npc_id": npc_id,
+                                "spawn_id": spawn_id,
                                 "direction": direction_str,
                                 "width": getattr(obj, "width", 48),
                                 "height": getattr(obj, "height", 72)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="66">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="70">
  <properties>
   <property name="level_type" value="indoor"/>
  </properties>
@@ -89,6 +89,13 @@
     <property name="level" value="tavern_rooms"/>
    </properties>
   </object>
+  <object id="66" name="npc_spawn" x="240" y="240" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="tavern_keeper"/>
+    <property name="spawn_id" value="tavern_keeper_start"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="renderables">
   <object id="3" gid="689" x="168" y="480" width="48" height="48"/>
@@ -109,6 +116,7 @@
   <object id="19" gid="666" x="108" y="144" width="48" height="48"/>
   <object id="20" gid="714" x="288" y="168" width="48" height="48"/>
   <object id="22" gid="729" x="240" y="156" width="48" height="48"/>
+  <object id="68" gid="483" x="240" y="336" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="4" name="objects">
   <object id="23" gid="770" x="168" y="468" width="48" height="48"/>
