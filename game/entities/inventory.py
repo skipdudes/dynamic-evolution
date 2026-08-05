@@ -41,3 +41,13 @@ class Inventory:
         Example output: {"gold": 50, "ferret_amulet": 1}
         """
         return {item_id: data["quantity"] for item_id, data in self.items.items()}
+
+    def get_llm_string(self) -> str:
+        """
+        Formats the inventory into a readable string for the LLM prompt.
+        """
+        if not self.items:
+            return "Empty"
+
+        # Creates a string like "50x gold, 1x ferret_amulet"
+        return ", ".join(f"{data['quantity']}x {item_id}" for item_id, data in self.items.items())

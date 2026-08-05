@@ -22,6 +22,9 @@ class GameState:
             "courier": None                     # Hidden
         }
 
+        # Dictionary to track the 'Stagnant State' - a one-sentence summary of how the NPC feels about the player.
+        self.stagnant_states: dict[str, str] = {}
+
     def get_npc_history(self, npc_id: str) -> list[dict]:
         """Returns the chat history for a specific NPC. Initializes if empty."""
         if npc_id not in self.npc_chat_history:
@@ -58,3 +61,16 @@ class GameState:
         """
         self.active_npc_spawns[npc_id] = spawn_id
         log.info(f"Updated NPC '{npc_id}' active spawn to: {spawn_id}")
+
+    def get_stagnant_state(self, npc_id: str) -> str:
+        """Returns the current relationship status/thought of the NPC regarding the player."""
+        # Default state if no interaction has happened yet
+        return self.stagnant_states.get(
+            npc_id,
+            "You don't know this person well yet. Form your opinion based on this conversation."
+        )
+
+    def set_stagnant_state(self, npc_id: str, state: str):
+        """Updates the relationship summary for an NPC."""
+        self.stagnant_states[npc_id] = state
+        log.info(f"Updated Stagnant State for '{npc_id}': {state}")

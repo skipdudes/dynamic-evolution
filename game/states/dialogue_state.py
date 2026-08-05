@@ -6,7 +6,7 @@ from game.entities.player import Player
 from game.entities.npc_data import NPC_DATA
 from game.ui.dialogue_box import DialogueBox
 from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, KEY_RETURN
-from game.llm.prompts import LLM_SYSTEM_BASE_CONTEXT
+from game.llm.prompts import LLM_SYSTEM_BASE_CONTEXT, LORE
 
 log = logging.getLogger(__name__)
 
@@ -87,22 +87,40 @@ class DialogueState(BaseState):
         self.waiting_timer = 0.0
         self.scroll_offset = 0
 
-        # 1. Build the dynamic System Prompt
+        # 1. Fetch static NPC data
         npc_config = NPC_DATA.get(self.npc.npc_id, {})
         persona = npc_config.get("persona", "You are an NPC.")
-        system_content = f"{LLM_SYSTEM_BASE_CONTEXT} {persona}"
 
-        # 2. Build the messages payload for the LLM
+        # 2. Fetch appropriate location Lore
+        location = npc_config.get("location", "crowns_reach")
+        location_lore = LORE.get(location, "")
+
+        # 3. Gather LIVE SYSTEM DATA (Inventory, Journal, Stagnant State)
+        inv_str = self.player.inventory.get_llm_string()
+        journal_str = self.player.journal.get_llm_string()
+        stagnant_state = self.game_state.get_stagnant_state(self.npc.npc_id)
+
+        live_data = (
+            "[LIVE SYSTEM DATA]\n"
+            f"Player's Inventory: {inv_str}\n"
+            f"Player's Journal:\n{journal_str}\n"
+            f"Your current internal thought/relationship with the player: {stagnant_state}\n"
+        )
+
+        # 4. Build the final dynamic System Prompt
+        system_content = f"{LLM_SYSTEM_BASE_CONTEXT}\n\n{location_lore}\n\n{persona}\n\n{live_data}"
+
+        # 5. Build the messages payload for the LLM
         # Start with the system prompt, then add all previous conversation history
         messages = [{"role": "system", "content": system_content}]
         messages.extend(self.game_state.get_npc_history(self.npc.npc_id))
         messages.append({"role": "user", "content": self.player_text})
 
-        # 3. Add player's message to persistent history immediately
+        # 6. Add player's message to persistent history immediately
         self.game_state.add_dialogue_message(self.npc.npc_id, "user", self.player_text)
         log.info(f"Sent message: {self.player_text} ({len(self.player_text)})")
 
-        # 4. Trigger the background API call to avoid freezing the game
+        # 7. Trigger the background API call
         self.groq_client.generate_response_async(messages, self._on_api_response)
 
     def _on_api_response(self, text: str | None, error: str | None):
