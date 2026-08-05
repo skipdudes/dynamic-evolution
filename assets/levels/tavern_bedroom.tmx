@@ -79,8 +79,8 @@
   <object id="53" name="npc_spawn" x="456" y="320" width="48" height="72">
    <properties>
     <property name="direction" value="down"/>
-    <property name="npc_id" value="smuggler"/>
-    <property name="spawn_id" value="smuggler_quest_bedroom"/>
+    <property name="npc_id" value="elara"/>
+    <property name="spawn_id" value="elara_quest_bedroom"/>
    </properties>
   </object>
  </objectgroup>

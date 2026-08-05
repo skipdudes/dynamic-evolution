@@ -104,15 +104,15 @@
   <object id="92" name="npc_spawn" x="744" y="298" width="48" height="72">
    <properties>
     <property name="direction" value="left"/>
-    <property name="npc_id" value="bouncer"/>
-    <property name="spawn_id" value="bouncer_start"/>
+    <property name="npc_id" value="brunt"/>
+    <property name="spawn_id" value="brunt_start"/>
    </properties>
   </object>
   <object id="93" name="npc_spawn" x="312" y="180" width="48" height="72">
    <properties>
     <property name="direction" value="down"/>
-    <property name="npc_id" value="bouncer"/>
-    <property name="spawn_id" value="bouncer_rest"/>
+    <property name="npc_id" value="brunt"/>
+    <property name="spawn_id" value="brunt_rest"/>
    </properties>
   </object>
  </objectgroup>

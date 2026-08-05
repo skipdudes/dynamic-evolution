@@ -49,23 +49,35 @@ class DialogueBox:
         return faces_sheet.subsurface(pygame.Rect(col * 144, row * 144, 144, 144))
 
     def _wrap_text(self, text: str, font: pygame.font.Font, max_width: int, first_line_offset: int = 0) -> list[str]:
-        words = text.split(' ')
         lines = []
-        current_line = []
+        # First, split the text by explicit newlines from the LLM
+        paragraphs = text.split('\n')
+
         current_offset = first_line_offset
 
-        for word in words:
-            test_line = ' '.join(current_line + [word])
-            if font.size(test_line)[0] + current_offset <= max_width:
-                current_line.append(word)
-            else:
-                if current_line:
-                    lines.append(' '.join(current_line))
-                current_line = [word]
-                current_offset = 0
+        for paragraph in paragraphs:
+            # Preserve intentional empty lines (e.g., from "\n\n")
+            if not paragraph:
+                lines.append("")
+                current_offset = 0  # reset offset on new lines
+                continue
 
-        if current_line:
-            lines.append(' '.join(current_line))
+            words = paragraph.split(' ')
+            current_line = []
+
+            for word in words:
+                test_line = ' '.join(current_line + [word])
+                if font.size(test_line)[0] + current_offset <= max_width:
+                    current_line.append(word)
+                else:
+                    if current_line:
+                        lines.append(' '.join(current_line))
+                    current_line = [word]
+                    current_offset = 0  # prefix only affects the very first line
+
+            if current_line:
+                lines.append(' '.join(current_line))
+            current_offset = 0  # reset offset for the next paragraph
 
         return lines
 
@@ -74,6 +86,7 @@ class DialogueBox:
             screen: pygame.Surface,
             current_phase: int,
             npc_name: str,
+            player_name: str,
             player_text: str,
             npc_text: str,
             dot_count: int,
@@ -111,7 +124,7 @@ class DialogueBox:
         prefix_color = COLOR_PREFIX_PLAYER
 
         if current_phase == 0:
-            prefix_text = "You: "
+            prefix_text = f"{player_name}: "
             main_text = player_text
             if pygame.time.get_ticks() % 1000 < 500:
                 main_text += "|"

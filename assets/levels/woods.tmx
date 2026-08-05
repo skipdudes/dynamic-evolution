@@ -193,15 +193,15 @@
   <object id="426" name="npc_spawn" x="432" y="192" width="48" height="72">
    <properties>
     <property name="direction" value="up"/>
-    <property name="npc_id" value="smuggler"/>
-    <property name="spawn_id" value="smuggler_quest_woods"/>
+    <property name="npc_id" value="elara"/>
+    <property name="spawn_id" value="elara_quest_woods"/>
    </properties>
   </object>
   <object id="427" name="npc_spawn" x="600" y="444" width="48" height="72">
    <properties>
     <property name="direction" value="down"/>
-    <property name="npc_id" value="fugitive_ranger"/>
-    <property name="spawn_id" value="fugitive_ranger_quest"/>
+    <property name="npc_id" value="deserter"/>
+    <property name="spawn_id" value="deserter_quest"/>
    </properties>
   </object>
  </objectgroup>

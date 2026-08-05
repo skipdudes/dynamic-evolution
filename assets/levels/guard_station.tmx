@@ -122,8 +122,8 @@
   <object id="88" name="npc_spawn" x="396" y="228" width="48" height="72">
    <properties>
     <property name="direction" value="down"/>
-    <property name="npc_id" value="captain"/>
-    <property name="spawn_id" value="captain_start"/>
+    <property name="npc_id" value="thorne"/>
+    <property name="spawn_id" value="thorne_start"/>
    </properties>
   </object>
  </objectgroup>

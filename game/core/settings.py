@@ -141,10 +141,3 @@ COLOR_PREFIX_NPC = (255, 215, 0)            # Gold
 COLOR_PREFIX_THINKING = (255, 255, 255)     # White
 COLOR_MISSING = (255, 0, 255)               # Color used for missing textures (magenta)
 COLOR_NIGHT_FILTER = (15, 15, 45, 160)      # Dark blueish-purple for a cinematic night feel
-
-# LLM Base Context (Shared across all characters)
-LLM_SYSTEM_BASE_CONTEXT = (
-    "You are an NPC in a 2D RPG game called 'Shadows of the Crown II'. "
-    "Keep your answers concise and immersive. Do not break character. "
-    "Do not acknowledge that you are an AI."
-)

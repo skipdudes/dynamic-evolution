@@ -92,8 +92,8 @@
   <object id="114" name="npc_spawn" x="324" y="288" width="48" height="72">
    <properties>
     <property name="direction" value="down"/>
-    <property name="npc_id" value="innkeeper"/>
-    <property name="spawn_id" value="innkeeper_start"/>
+    <property name="npc_id" value="barnaby"/>
+    <property name="spawn_id" value="barnaby_start"/>
    </properties>
   </object>
  </objectgroup>

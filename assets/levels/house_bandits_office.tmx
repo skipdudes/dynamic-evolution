@@ -97,8 +97,8 @@
   <object id="80" name="npc_spawn" x="492" y="336" width="48" height="72">
    <properties>
     <property name="direction" value="left"/>
-    <property name="npc_id" value="sorcerer"/>
-    <property name="spawn_id" value="sorcerer_start"/>
+    <property name="npc_id" value="silas"/>
+    <property name="spawn_id" value="silas_start"/>
    </properties>
   </object>
  </objectgroup>

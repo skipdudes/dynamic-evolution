@@ -92,8 +92,8 @@
   <object id="66" name="npc_spawn" x="240" y="240" width="48" height="72">
    <properties>
     <property name="direction" value="down"/>
-    <property name="npc_id" value="tavern_keeper"/>
-    <property name="spawn_id" value="tavern_keeper_start"/>
+    <property name="npc_id" value="grizzly"/>
+    <property name="spawn_id" value="grizzly_start"/>
    </properties>
   </object>
  </objectgroup>
