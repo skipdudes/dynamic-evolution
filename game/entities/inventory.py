@@ -1,3 +1,5 @@
+from game.entities.item_data import ITEMS_DB
+
 class Inventory:
     """
     Manages the player's items. Data is structured for easy manipulation
@@ -8,10 +10,16 @@ class Inventory:
         # Key: item_id (string), Value: dictionary with item data
         self.items = {}
 
-    def add_item(self, item_id: str, name: str, description: str, quantity: int = 1):
+    def add_item(self, item_id: str, quantity: int = 1):
+        """Adds an item by pulling its name and description from the database."""
         if item_id in self.items:
             self.items[item_id]["quantity"] += quantity
         else:
+            # Fetch item data from DB, with safe fallbacks if someone makes a typo
+            item_info = ITEMS_DB.get(item_id, {})
+            name = item_info.get("name", f"Unknown Item ({item_id})")
+            description = item_info.get("description", "No description available.")
+
             self.items[item_id] = {
                 "name": name,
                 "description": description,

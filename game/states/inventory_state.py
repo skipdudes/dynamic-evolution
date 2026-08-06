@@ -8,6 +8,7 @@ from game.core.settings import (
     COLOR_TEXT_HELPER, COLOR_MISSING, IMAGES_DIR, STRING_INVENTORY_TITLE,
     STRING_INVENTORY_EMPTY, STRING_DIALOGUE_SCROLL_UP, STRING_DIALOGUE_SCROLL_DOWN
 )
+from game.entities.item_data import ITEMS_DB
 
 log = logging.getLogger(__name__)
 
@@ -38,12 +39,29 @@ class InventoryState(BaseState):
         items_gfx_dir = os.path.join(IMAGES_DIR, "items")
 
         for item_id, _ in self.items:
-            icon_path = os.path.join(items_gfx_dir, f"{item_id}.png")
-            if os.path.exists(icon_path):
-                img = pygame.image.load(icon_path).convert_alpha()
+            item_info = ITEMS_DB.get(item_id, {})
+            custom_icon_name = item_info.get("icon")
+
+            final_icon_path = None
+
+            # 1. Try custom icon from ITEMS_DB
+            if custom_icon_name:
+                temp_path = os.path.join(items_gfx_dir, custom_icon_name)
+                if os.path.exists(temp_path):
+                    final_icon_path = temp_path
+
+            # 2. If custom fails or is missing, try item_id.png fallback
+            if not final_icon_path:
+                temp_path = os.path.join(items_gfx_dir, f"{item_id}.png")
+                if os.path.exists(temp_path):
+                    final_icon_path = temp_path
+
+            # 3. Load the matched image, or fallback to missing texture
+            if final_icon_path:
+                img = pygame.image.load(final_icon_path).convert_alpha()
                 self.item_icons[item_id] = pygame.transform.scale(img, (96, 96))
             else:
-                log.warning(f"Missing inventory icon for item_id: '{item_id}' at {icon_path}")
+                log.warning(f"Missing inventory icon for item_id: '{item_id}'. Falling back to missing texture.")
                 self.item_icons[item_id] = None
 
     def _load_icon(self, filename: str) -> pygame.Surface | None:

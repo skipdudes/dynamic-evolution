@@ -26,19 +26,6 @@ class Player(Entity):
         self.inventory = Inventory()
         self.journal = Journal()
 
-        # # Test items (inventory testing)
-        # self.inventory.add_item("gold", "Gold Coins", "Heavy, shiny currency.", 50)
-        # self.inventory.add_item("ferret_amulet", "Ferret Amulet", "A strangely shaped silver amulet. Seems to belong to a secret organization.", 1)
-        # self.inventory.add_item("sealed_letter", "Sealed Letter", "A letter sealed with wax. The 'H' initial is clearly visible on the seal.", 1)
-        #
-        # # Test quests (journal testing)
-        # self.journal.add_quest("quest_missing_shipment", "The Missing Shipment")
-        # self.journal.add_entry("quest_missing_shipment", "Grizzly the barkeep asked me to investigate his missing courier in the eastern woods.")
-        # self.journal.add_entry("quest_missing_shipment", "I found Elara rummaging through the package. I should talk to her.")
-        # self.journal.complete_quest("quest_missing_shipment")
-        # self.journal.add_quest("quest_bouncers_test", "The Bouncer's Test")
-        # self.journal.add_entry("quest_bouncers_test", "I need to convince Brunt to let me inside the bandit hideout.")
-
         # Walking animation sequence
         self.walk_sequence = [0, 1, 2, 1]
         self.sequence_index = 1  # Start at "standing still" sprite

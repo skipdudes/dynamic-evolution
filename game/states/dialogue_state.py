@@ -5,8 +5,9 @@ from game.entities.npc import NPC
 from game.entities.player import Player
 from game.entities.npc_data import NPC_DATA
 from game.ui.dialogue_box import DialogueBox
-from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, KEY_RETURN
+from game.core.settings import KEY_INTERACT, KEY_UP, KEY_DOWN, KEY_PAUSE, KEY_RETURN, STRING_DIALOGUE_NO_REPLY_NPC
 from game.llm.prompts import LLM_SYSTEM_BASE_CONTEXT, LORE
+from game.llm.tool_calling import execute_tool_calls
 
 log = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ class DialogueState(BaseState):
         self.groq_client = self.game_state.groq_client  # retrieve previously initialized Groq client
         self.pending_response = None
         self.pending_error = None
+        self.pending_tools = []  # list to hold parsed tool calls
 
         self.dialogue_box = DialogueBox()
         self.npc_face = self.dialogue_box.load_face(self.npc.face_filename, self.npc.face_index)
@@ -123,15 +125,15 @@ class DialogueState(BaseState):
         # 7. Trigger the background API call
         self.groq_client.generate_response_async(messages, self._on_api_response)
 
-    def _on_api_response(self, text: str | None, error: str | None):
+    def _on_api_response(self, text: str | None, parsed_tools: list[dict] | None, error: str | None):
         """
         Callback executed from the background thread once the HTTP request finishes.
-        Safely store the result here, and the main game thread picks it up in update().
         """
         if error:
             self.pending_error = error
         else:
             self.pending_response = text
+            self.pending_tools = parsed_tools or []  # save tools
 
     def update(self, dt: float):
         if self.current_phase == self.PHASE_WAITING:
@@ -140,10 +142,29 @@ class DialogueState(BaseState):
             cycle = int(self.waiting_timer) % 5
             self.dot_count = cycle if cycle < 3 else 3
 
-            # Check if the background thread has delivered a response
-            if self.pending_response is not None:
-                self._receive_message(self.pending_response)
-                self.pending_response = None
+            # Check if the background thread has delivered a response or tools
+            if self.pending_response is not None or self.pending_tools:
+
+                # 1. Execute tools first, pushing HUD notifications
+                if self.pending_tools:
+                    execute_tool_calls(
+                        tools=self.pending_tools,
+                        play_state=self.play_state,
+                        game_state=self.game_state,
+                        current_npc_id=self.npc.npc_id  # <-- FIXED ARGUMENT NAME HERE
+                    )
+                    self.pending_tools = []
+
+                # 2. Handle the text response
+                if self.pending_response is not None:
+                    # Edge case: LLM purely called a tool and returned an empty text string
+                    if self.pending_response.strip() == "":
+                        self._receive_message(STRING_DIALOGUE_NO_REPLY_NPC)
+                    else:
+                        self._receive_message(self.pending_response)
+
+                    self.pending_response = None
+
             elif self.pending_error is not None:
                 self._receive_message(f"[API ERROR] {self.pending_error}")
                 self.pending_error = None

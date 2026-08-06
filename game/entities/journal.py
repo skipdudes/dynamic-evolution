@@ -1,3 +1,5 @@
+from game.entities.quest_data import QUESTS_DB
+
 class Journal:
     """
     Manages the player's quest log.
@@ -8,9 +10,12 @@ class Journal:
         # Key: quest_id (string), Value: dictionary with quest data
         self.quests = {}
 
-    def add_quest(self, quest_id: str, title: str):
-        """Adds a new active quest to the journal."""
+    def add_quest(self, quest_id: str):
+        """Adds a new active quest by pulling its title from the database."""
         if quest_id not in self.quests:
+            quest_info = QUESTS_DB.get(quest_id, {})
+            title = quest_info.get("title", f"Unknown Quest ({quest_id})")
+
             self.quests[quest_id] = {
                 "title": title,
                 "status": "active",
