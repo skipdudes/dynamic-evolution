@@ -107,8 +107,14 @@ STRING_PAUSE_QUIT = "Quit Game"
 STRING_PAUSE_WARNING = "All story progress will be lost!"
 
 # Prologue
-STRING_PROLOGUE_HEADER = "Chapter I"
-STRING_PROLOGUE_TEXT = "The kingdom has fallen into darkness...\nBut there is still hope."
+STRING_PROLOGUE_HEADER = "A False Peace"
+STRING_PROLOGUE_TEXT = """You remained loyal to the crown. The rebellion in the capital was crushed, its leaders executed, and King Arthur retained his throne. For your bravery, you were named Duke.
+
+The citizens believed peace had finally returned. But it was merely an illusion.
+
+While clearing out the rebels' hideouts, a disturbing detail emerged. Many of the traitors carried the exact same item: a small, ferret-shaped amulet. The conspiracy was much deeper than anyone anticipated.
+
+You have been urgently summoned to the castle. The true Shadows of the Crown are still out there..."""
 
 # In-game strings
 STRING_RETURN_PROMPT = "Press ESC to return"
