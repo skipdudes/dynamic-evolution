@@ -72,27 +72,32 @@ class GroqClient:
 
     def _fetch_response(self, messages: list[dict], callback):
         try:
-            # We FORCE the model to always use our master tool!
+            # Set tool_choice to "auto".
+            # The LLM will use standard text for casual replies,
+            # and the JSON tool ONLY when it needs to update the game state.
             chat_completion = self.client.chat.completions.create(
                 messages=messages,
                 model=self.model,
                 tools=LLM_TOOLS,
-                tool_choice={"type": "function", "function": {"name": "npc_response"}},
+                tool_choice="auto",
             )
 
             response_message = chat_completion.choices[0].message
-            reply_text = ""
+
+            # Default to standard text response if the model just wanted to talk
+            reply_text = response_message.content if response_message.content else ""
             parsed_tools = []
 
             if response_message.tool_calls:
-                # Extract the forced tool JSON
+                # If the model decided to use the tool, extract the JSON
                 tool_call = response_message.tool_calls[0]
                 args = json.loads(tool_call.function.arguments)
 
-                # We pull the actual dialogue text straight from the JSON parameters
-                reply_text = args.get("dialogue", "")
+                # The dialogue is now inside the JSON argument
+                tool_dialogue = args.get("dialogue", "")
+                if tool_dialogue:
+                    reply_text = tool_dialogue
 
-                # We pass the rest of the arguments to our state updater
                 parsed_tools = [args]
 
             callback(reply_text, parsed_tools, None)

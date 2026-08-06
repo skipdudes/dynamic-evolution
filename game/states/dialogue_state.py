@@ -191,7 +191,8 @@ class DialogueState(BaseState):
             '—': '-',
             '–': '-',
             '‑': '-',
-            '…': '...'
+            '…': '...',
+            'ç': 'c',
         }
         for fancy_char, normal_char in replacements.items():
             text = text.replace(fancy_char, normal_char)
