@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="46">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="47">
  <properties>
   <property name="level_type" value="outdoor"/>
  </properties>
@@ -92,6 +92,11 @@
     <property name="direction" value="down"/>
     <property name="npc_id" value="courier"/>
     <property name="spawn_id" value="courier_quest"/>
+   </properties>
+  </object>
+  <object id="46" name="player_spawn" x="480" y="538" width="48" height="72">
+   <properties>
+    <property name="level" value="unknown"/>
    </properties>
   </object>
  </objectgroup>

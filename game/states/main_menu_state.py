@@ -5,7 +5,7 @@ from game.core.settings import (
     FONT_UI, IMAGE_MAIN_MENU_BG, IMAGE_LOGO, KEY_UP, KEY_DOWN, KEY_INTERACT,
     MENU_OPTION_START, MENU_OPTION_OPTIONS, MENU_OPTION_ABOUT, MENU_OPTION_END,
     COLOR_TEXT_SELECTED, COLOR_TEXT_MAIN, LEVEL_START, WINDOW_WIDTH, WINDOW_HEIGHT,
-    STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT
+    STRING_PROLOGUE_HEADER, STRING_PROLOGUE_TEXT, STRING_FIRST_LOG_ENTRY
 )
 from game.states.transition_state import TransitionState
 from game.states.play_state import PlayState
@@ -56,6 +56,22 @@ class MainMenuState(BaseState):
                 from game.states.story_board_state import StoryBoardState
                 game_state = GameState()
                 player = Player(x=0, y=0)
+
+                # Initialize the first quest right at the start of the game
+                player.journal.add_quest("quest_echoes_rebellion")
+                player.journal.add_entry("quest_echoes_rebellion", STRING_FIRST_LOG_ENTRY)
+
+                # player.journal.add_quest("quest_magic_path")
+                # player.journal.add_quest("quest_stranger_tarnstead")
+                # player.journal.add_quest("quest_missing_shipment")
+                # player.journal.add_quest("quest_bouncers_test")
+                # player.journal.add_quest("quest_test_loyalty")
+                # player.journal.add_quest("quest_loose_ends")
+                # player.journal.add_quest("quest_midnight_drop")
+                # player.journal.add_quest("quest_whispers_dark")
+                # player.journal.add_quest("quest_point_no_return")
+                # player.journal.add_quest("quest_checkmate")
+
                 play_state = PlayState(
                     self.state_machine,
                     level_filename=LEVEL_START,

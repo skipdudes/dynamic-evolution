@@ -30,22 +30,25 @@ LLM_TOOLS = [
                         "type": "integer",
                         "description": "Quantity to give. Set to 0 if none."
                     },
-                    "quest_id": {
-                        "type": "string",
-                        "description": "ID of quest (e.g., 'quest_echoes_rebellion'). Leave empty string if none."
-                    },
-                    "quest_action": {
-                        "type": "string",
-                        "enum": ["start", "progress", "complete", "none"],
-                        "description": "Action to perform on the quest."
-                    },
-                    "quest_entry": {
-                        "type": "string",
-                        "description": "Journal entry text. Leave empty string if none."
+                    "quest_updates": {
+                        "type": "array",
+                        "description": "List of quests to update. Can be used to complete one quest and start another simultaneously.",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "quest_id": {"type": "string", "description": "ID of the quest"},
+                                "quest_action": {"type": "string", "enum": ["start", "progress", "complete"]},
+                                "quest_entry": {"type": "string", "description": "Journal entry text. Leave empty if none."}
+                            }
+                        }
                     },
                     "stagnant_state": {
                         "type": "string",
                         "description": "One sentence summary updating your internal relationship state with the player."
+                    },
+                    "teleport_destination": {
+                        "type": "string",
+                        "description": "The map name to teleport the player to (e.g., 'meadow'). Leave empty string if no teleport."
                     }
                 },
                 "required": ["dialogue"]

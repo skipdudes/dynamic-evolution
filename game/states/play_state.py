@@ -70,6 +70,16 @@ class PlayState(BaseState):
         else:
             self.hud = hud
 
+        self.pending_teleport: str | None = None  # variable to hold queued teleportations from LLM tools
+
+    def teleport_player(self, destination: str):
+        """
+        Queues a teleportation. The actual map transition will happen
+        in the update loop once the dialogue state is popped.
+        """
+        self.pending_teleport = destination
+        log.info(f"Teleport queued for: {destination}")
+
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -170,8 +180,14 @@ class PlayState(BaseState):
             self.recently_interacted_npc = None
             self.active_prompt_npc = None
 
-        # Check level triggers (transition to another level)
-        target_level = self.level.check_level_triggers(self.player.hitbox)
+        # Check for queued teleports (from LLM) or physical level triggers
+        target_level = None
+        if self.pending_teleport:
+            target_level = self.pending_teleport
+            self.pending_teleport = None  # Clear it so it doesn't trigger endlessly
+        else:
+            target_level = self.level.check_level_triggers(self.player.hitbox)
+
         if target_level:
             if not target_level.endswith(".tmx"):
                 target_level += ".tmx"  # Append .tmx extension if missing

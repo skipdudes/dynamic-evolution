@@ -23,9 +23,12 @@ class Journal:
             }
 
     def add_entry(self, quest_id: str, entry_text: str):
-        """Adds a new progress entry to an existing quest."""
+        """Adds a new progress entry to an existing quest, preventing consecutive duplicates."""
         if quest_id in self.quests:
-            self.quests[quest_id]["entries"].append(entry_text)
+            entries = self.quests[quest_id]["entries"]
+            # Only add the entry if the list is empty, or if the last entry is different
+            if not entries or entries[-1] != entry_text:
+                entries.append(entry_text)
 
     def complete_quest(self, quest_id: str):
         """Marks an existing quest as completed."""

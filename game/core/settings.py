@@ -116,6 +116,9 @@ While clearing out the rebels' hideouts, a disturbing detail emerged. Many of th
 
 You have been urgently summoned to the castle. The true Shadows of the Crown are still out there..."""
 
+# Starting quest first entry
+STRING_FIRST_LOG_ENTRY = "The King summoned me urgently. I should speak with him in the throne room."
+
 # In-game strings
 STRING_RETURN_PROMPT = "Press ESC to return"
 STRING_CONTINUE_PROMPT = "Press ENTER to continue"
