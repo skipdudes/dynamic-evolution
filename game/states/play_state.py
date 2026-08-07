@@ -72,6 +72,25 @@ class PlayState(BaseState):
 
         self.pending_teleport: str | None = None  # variable to hold queued teleportations from LLM tools
 
+        # Automatically start Quest 3 when the player first arrives in the meadow (after teleport)
+        if self.level_filename == "meadow.tmx" and not self.player.journal.has_quest("quest_stranger_tarnstead"):
+            self.player.journal.add_quest("quest_stranger_tarnstead")
+
+            entry_text = (
+                "The teleportation was successful. I am in a meadow somewhere in Tarnstead. "
+                "I should head east into the settlement and find a local tavern. "
+                "A bartender is always the best source of rumors."
+            )
+            self.player.journal.add_entry("quest_stranger_tarnstead", entry_text)
+
+            # Show HUD notification immediately upon map load
+            from game.entities.quest_data import QUESTS_DB
+            from game.core.settings import STRING_NOTIFY_QUEST
+
+            q_name = QUESTS_DB["quest_stranger_tarnstead"]["title"]
+            self.hud.add_notification(f"{STRING_NOTIFY_QUEST}{q_name}")
+            log.info("Environmental Trigger: Started 'A Stranger in Tarnstead'")
+
     def teleport_player(self, destination: str):
         """
         Queues a teleportation. The actual map transition will happen
