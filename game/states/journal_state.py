@@ -18,7 +18,7 @@ class JournalState(BaseState):
         self.font_title = pygame.font.Font(FONT_UI[0], 48)
         self.font_list = pygame.font.Font(*FONT_UI)
         self.font_desc = pygame.font.Font(*FONT_DIALOGUE)
-        self.font_ui = pygame.font.Font(*FONT_UI)  # Fixed missing font error
+        self.font_ui = pygame.font.Font(*FONT_UI)
 
         # Load scroll icons
         self.icon_scroll_up = self._load_icon("scroll_up.png")
@@ -156,25 +156,26 @@ class JournalState(BaseState):
         # List Scroll indicators (Icons)
         if self.list_scroll_offset > 0:
             if self.icon_scroll_up:
-                screen.blit(self.icon_scroll_up, (panel_x + 150, panel_y + 85))
+                screen.blit(self.icon_scroll_up, (panel_x + 149, panel_y + 83))
             else:
                 screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_UP, True, COLOR_TEXT_HELPER),
                             (list_x, panel_y + 70))
 
         if self.list_scroll_offset + self.max_list_items < len(self.quests):
             if self.icon_scroll_down:
-                screen.blit(self.icon_scroll_down, (panel_x + 150, panel_y + panel_height - 25))
+                screen.blit(self.icon_scroll_down, (panel_x + 150, panel_y + panel_height - 31))
             else:
                 screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_DOWN, True, COLOR_TEXT_HELPER),
                             (list_x, panel_y + panel_height - 25))
 
-        pygame.draw.line(screen, COLOR_TEXT_HELPER, (panel_x + 280, panel_y + 100),
-                         (panel_x + 280, panel_y + panel_height - 30), 2)
+        # The vertical dividing line
+        pygame.draw.line(screen, COLOR_TEXT_HELPER, (panel_x + 295, panel_y + 100),
+                         (panel_x + 295, panel_y + panel_height - 30), 2)
 
         # --- Right Side: Quest Details ---
-        details_x = panel_x + 310
+        details_x = panel_x + 325
         details_y = panel_y + 100
-        text_max_width = panel_width - 340
+        text_max_width = panel_width - 355
 
         selected_q_data = self.quests[self.selected_index][1]
         is_active = (selected_q_data["status"] == "active")
@@ -216,14 +217,14 @@ class JournalState(BaseState):
             icon_x = details_x + text_max_width - 30
             if self.entries_scroll_offset > 0:
                 if self.icon_scroll_up:
-                    screen.blit(self.icon_scroll_up, (icon_x, panel_y + 140))
+                    screen.blit(self.icon_scroll_up, (icon_x, panel_y + 137))
                 else:
                     screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_UP, True, COLOR_TEXT_HELPER),
                                 (icon_x - 50, panel_y + 140))
 
             if self.entries_scroll_offset < max_entries_scroll:
                 if self.icon_scroll_down:
-                    screen.blit(self.icon_scroll_down, (icon_x, panel_y + panel_height - 25))
+                    screen.blit(self.icon_scroll_down, (icon_x, panel_y + panel_height - 31))
                 else:
                     screen.blit(self.font_ui.render(STRING_DIALOGUE_SCROLL_DOWN, True, COLOR_TEXT_HELPER),
                                 (icon_x - 50, panel_y + panel_height - 25))

@@ -61,17 +61,6 @@ class MainMenuState(BaseState):
                 player.journal.add_quest("quest_echoes_rebellion")
                 player.journal.add_entry("quest_echoes_rebellion", STRING_FIRST_LOG_ENTRY)
 
-                # player.journal.add_quest("quest_magic_path")
-                # player.journal.add_quest("quest_stranger_tarnstead")
-                # player.journal.add_quest("quest_missing_shipment")
-                # player.journal.add_quest("quest_bouncers_test")
-                # player.journal.add_quest("quest_test_loyalty")
-                # player.journal.add_quest("quest_loose_ends")
-                # player.journal.add_quest("quest_midnight_drop")
-                # player.journal.add_quest("quest_whispers_dark")
-                # player.journal.add_quest("quest_point_no_return")
-                # player.journal.add_quest("quest_checkmate")
-
                 play_state = PlayState(
                     self.state_machine,
                     level_filename=LEVEL_START,
