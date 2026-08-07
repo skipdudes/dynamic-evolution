@@ -30,6 +30,14 @@ LLM_TOOLS = [
                         "type": "integer",
                         "description": "Quantity to give. Set to 0 if none."
                     },
+                    "remove_item_id": {
+                        "type": "string",
+                        "description": "ID of item to remove from player (e.g., 'special_herbs'). Leave empty if none."
+                    },
+                    "remove_item_qty": {
+                        "type": "integer",
+                        "description": "Quantity to remove. Set to 0 if none."
+                    },
                     "quest_updates": {
                         "type": "array",
                         "description": "List of quests to update. Can be used to complete one quest and start another simultaneously.",
@@ -39,6 +47,17 @@ LLM_TOOLS = [
                                 "quest_id": {"type": "string", "description": "ID of the quest"},
                                 "quest_action": {"type": "string", "enum": ["start", "progress", "complete"]},
                                 "quest_entry": {"type": "string", "description": "Journal entry text. Leave empty if none."}
+                            }
+                        }
+                    },
+                    "npc_location_updates": {
+                        "type": "array",
+                        "description": "List of NPC movements (spawning/despawning).",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "npc_id": {"type": "string", "description": "ID of the NPC (e.g., 'elara')."},
+                                "spawn_id": {"type": "string", "description": "ID of the spawn point. Use 'none' to despawn/remove them."}
                             }
                         }
                     },

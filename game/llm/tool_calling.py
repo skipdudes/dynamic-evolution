@@ -77,7 +77,34 @@ def execute_tool_calls(tools: list[dict], play_state, game_state, current_npc_id
             game_state.set_stagnant_state(current_npc_id, stagnant_state)
             log.info(f"Tool Executed [stagnant_state]: {stagnant_state}")
 
-        # 4. Check for teleportation
+        # 4. Check for item removing
+        remove_item_id = args.get("remove_item_id")
+        remove_qty = args.get("remove_item_qty", 0)
+
+        if remove_item_id and remove_item_id.strip() and remove_item_id != "none" and remove_qty > 0:
+            # Assuming your inventory class has a remove_item method!
+            if hasattr(play_state.player.inventory, 'remove_item'):
+                play_state.player.inventory.remove_item(remove_item_id, remove_qty)
+                item_name = ITEMS_DB.get(remove_item_id, {}).get("name", remove_item_id)
+                play_state.hud.add_notification(f"Lost item: {item_name} x{remove_qty}")
+                log.info(f"Tool Executed [remove_item]: {remove_qty}x {remove_item_id}")
+            else:
+                log.warning("Inventory class is missing 'remove_item' method!")
+
+        # 5. Check for NPC location updates (spawning / despawning)
+        npc_updates = args.get("npc_location_updates", [])
+        for n_update in npc_updates:
+            n_id = n_update.get("npc_id")
+            s_id = n_update.get("spawn_id")
+
+            if s_id and s_id.lower() == "none":
+                s_id = None
+
+            if n_id:
+                game_state.set_npc_spawn(n_id, s_id)
+                log.info(f"Tool Executed [update_npc_location]: {n_id} -> {s_id}")
+
+        # 6. Check for teleportation
         teleport_dest = args.get("teleport_destination")
         if teleport_dest and teleport_dest.strip() and teleport_dest != "none":
             if hasattr(play_state, 'teleport_player'):

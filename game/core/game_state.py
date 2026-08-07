@@ -17,9 +17,9 @@ class GameState:
         # If an NPC's ID is mapped to None, they won't spawn anywhere.
         # If an NPC is NOT in this dictionary, the game automatically assumes their active spawn is '{npc_id}_start'.
         self.active_npc_spawns: dict[str, str | None] = {
-            "smuggler": None,                   # Hidden
-            "fugitive_ranger": None,            # Hidden
-            "courier": None                     # Hidden
+            "elara": None,      # Hidden
+            "deserter": None,   # Hidden
+            "courier": None     # Hidden
         }
 
         # Dictionary to track the 'Stagnant State' - a one-sentence summary of how the NPC feels about the player.

@@ -7,7 +7,7 @@ ITEMS_DB = {
     # Common item
     "gold": {
         "name": "Gold Coins",
-        "description": "Heavy, shiny currency accepted everywhere.",
+        "description": "Heavy, shiny currency accepted everywhere in the kingdom.",
         "icon": "gold.png"
     },
 
@@ -16,6 +16,13 @@ ITEMS_DB = {
         "name": "Ferret Amulet",
         "description": "A strangely shaped silver amulet. Seems to belong to a secret organization.",
         "icon": "ferret_amulet.png"
+    },
+
+    # Quest 4
+    "special_herbs": {
+        "name": "Package of Herbs",
+        "description": "A suspicious package of special herbs that smells incredibly strong.",
+        "icon": "package.png"
     },
 
     # Quest X
