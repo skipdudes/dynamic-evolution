@@ -25,6 +25,20 @@ ITEMS_DB = {
         "icon": "package.png"
     },
 
+    # Quest 5
+    "roughneck_ale": {
+        "name": "The Roughneck Ale",
+        "description": "A ridiculously strong, foul-smelling brew. More like a weapon than a drink.",
+        "icon": "brunts_drink.png"
+    },
+
+    # Quest 6
+    "rebel_ledger": {
+        "name": "Confiscated Ledger",
+        "description": "A book filled with coded transactions and rebel names.",
+        "icon": "rebel_ledger.png"
+    },
+
     # Quest X
     "aldous_staff": {
         "name": "Aldous's Staff",
