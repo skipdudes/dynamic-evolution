@@ -61,6 +61,12 @@ class MainMenuState(BaseState):
                 player.journal.add_quest("quest_echoes_rebellion")
                 player.journal.add_entry("quest_echoes_rebellion", STRING_FIRST_LOG_ENTRY)
 
+                # # test quest 4
+                # player.inventory.add_item("ferret_amulet")
+                # player.journal.add_quest("quest_missing_shipment")
+                # player.journal.add_entry("quest_missing_shipment", "Find the lost herbs in the eastern woods.")
+                # game_state.set_npc_spawn("elara", "elara_quest_woods")
+
                 play_state = PlayState(
                     self.state_machine,
                     level_filename=LEVEL_START,
