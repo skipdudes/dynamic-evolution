@@ -39,6 +39,13 @@ ITEMS_DB = {
         "icon": "rebel_ledger.png"
     },
 
+    # Sidequest
+    "blackmail_letters": {
+        "name": "Blackmail Letters",
+        "description": "Incriminating letters proving Captain Thorne is heavily corrupt and colluding with rebels.",
+        "icon": "letters.png"
+    },
+
     # Quest X
     "aldous_staff": {
         "name": "Aldous's Staff",

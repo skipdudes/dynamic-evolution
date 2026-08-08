@@ -76,6 +76,16 @@ class MainMenuState(BaseState):
                 # player.journal.add_quest("quest_bouncers_test")
                 # player.journal.add_entry("quest_bouncers_test", "Grizzly sent me to the bandit hideout in the north-east. It looks like a normal house. I need to talk to a bouncer named Brunt inside.")
 
+                # # test quest 6 and sidequest
+                # player.inventory.add_item("ferret_amulet")
+                # player.journal.complete_quest("quest_echoes_rebellion")
+                # player.inventory.add_item("gold", 50)
+                # player.journal.add_quest("quest_bouncers_test")
+                # player.journal.add_entry("quest_bouncers_test", "Grizzly sent me to the bandit hideout in the north-east. It looks like a normal house. I need to talk to a bouncer named Brunt inside.")
+                # player.journal.add_entry("quest_bouncers_test", "I convinced Brunt to let me pass.")
+                # player.journal.complete_quest("quest_bouncers_test")
+                # game_state.set_npc_spawn("brunt", "brunt_rest")
+
                 play_state = PlayState(
                     self.state_machine,
                     level_filename=LEVEL_START,
