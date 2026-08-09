@@ -61,32 +61,7 @@ class MainMenuState(BaseState):
                 player.journal.add_quest("quest_echoes_rebellion")
                 player.journal.add_entry("quest_echoes_rebellion", STRING_FIRST_LOG_ENTRY)
 
-                # # test quest 4
-                # player.inventory.add_item("ferret_amulet")
-                # player.journal.add_quest("quest_missing_shipment")
-                # player.journal.add_entry("quest_missing_shipment", "Find the lost herbs in the eastern woods.")
-                # game_state.set_npc_spawn("elara", "elara_quest_woods")
-
-                # # test quest 5 & 6
-                # player.journal.complete_quest("quest_echoes_rebellion")
-                # player.inventory.add_item("ferret_amulet")
-                # player.inventory.add_item("gold", 50)
-                # player.journal.add_quest("quest_missing_shipment")
-                # player.journal.complete_quest("quest_missing_shipment")
-                # player.journal.add_quest("quest_bouncers_test")
-                # player.journal.add_entry("quest_bouncers_test", "Grizzly sent me to the bandit hideout in the north-east. It looks like a normal house. I need to talk to a bouncer named Brunt inside.")
-
-                # # test quest 6 and sidequest
-                # player.inventory.add_item("ferret_amulet")
-                # player.journal.complete_quest("quest_echoes_rebellion")
-                # player.inventory.add_item("gold", 50)
-                # player.journal.add_quest("quest_bouncers_test")
-                # player.journal.add_entry("quest_bouncers_test", "Grizzly sent me to the bandit hideout in the north-east. It looks like a normal house. I need to talk to a bouncer named Brunt inside.")
-                # player.journal.add_entry("quest_bouncers_test", "I convinced Brunt to let me pass.")
-                # player.journal.complete_quest("quest_bouncers_test")
-                # game_state.set_npc_spawn("brunt", "brunt_rest")
-
-                # # test quest 7 - The Midnight Drop
+                # # test quest 8
                 # player.inventory.add_item("ferret_amulet")
                 # player.journal.complete_quest("quest_echoes_rebellion")
                 # player.journal.add_quest("quest_stranger_tarnstead")
@@ -102,6 +77,21 @@ class MainMenuState(BaseState):
                 # player.journal.add_entry("quest_test_loyalty", "Cedric ordered me to retrieve a confiscated rebel ledger from Captain Thorne at the Guard Station in the south-west.")
                 # player.journal.add_entry("quest_test_loyalty", "I delivered the ledger. Cedric officially accepted me into the Shadows of the Crown.")
                 # player.journal.complete_quest("quest_test_loyalty")
+                #
+                # # SEALED LETTER
+                # player.journal.add_quest("quest_midnight_drop")
+                # player.journal.add_entry("quest_midnight_drop", "Silas told me to meet a Courier at the Meadow at night. Password: The blind eye sees.")
+                # player.journal.add_entry("quest_midnight_drop", "I got the sealed letter. The wax seal has the crest of the Prime Minister! Should I open it or give it to Silas intact?")
+                # player.journal.add_entry("quest_midnight_drop", "I delivered the sealed letter intact. Silas trusts me a bit more.")
+                # player.journal.complete_quest("quest_midnight_drop")
+                #
+                # # OPENED LETTER
+                # player.journal.add_quest("quest_midnight_drop")
+                # player.journal.add_entry("quest_midnight_drop", "Silas told me to meet a Courier at the Meadow at night. Password: The blind eye sees.")
+                # player.journal.add_entry("quest_midnight_drop", "I got the sealed letter. The wax seal has the crest of the Prime Minister! Should I open it or give it to Silas intact?")
+                # player.journal.add_entry("quest_midnight_drop", "I broke the seal and opened the letter. It mentions a closed estate next to the hideout and is signed 'H'. Who from the capital is behind this?")
+                # player.journal.add_entry("quest_midnight_drop", "Silas was furious I opened the letter, but I survived.")
+                # player.journal.complete_quest("quest_midnight_drop")
 
                 play_state = PlayState(
                     self.state_machine,

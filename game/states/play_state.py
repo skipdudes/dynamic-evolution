@@ -3,7 +3,8 @@ import logging
 from game.core.state import BaseState
 from game.core.settings import (
     KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, KEY_JOURNAL,
-    STRING_DIALOGUE_BEGIN_PROMPT, KEY_NIGHTMODE, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT
+    STRING_DIALOGUE_BEGIN_PROMPT, KEY_NIGHTMODE, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT,
+    STRING_NOTIFY_NEED_KEY
 )
 from game.world.level import Level
 from game.world.camera import Camera
@@ -71,6 +72,7 @@ class PlayState(BaseState):
             self.hud = hud
 
         self.pending_teleport: str | None = None  # variable to hold queued teleportations from LLM tools
+        self.locked_door_spam_guard = False  # prevents HUD spam for locked doors
 
         # Automatically start Quest 3 when the player first arrives in the meadow (after teleport)
         if self.level_filename == "meadow.tmx" and not self.player.journal.has_quest("quest_stranger_tarnstead"):
@@ -206,6 +208,29 @@ class PlayState(BaseState):
             self.pending_teleport = None  # Clear it so it doesn't trigger endlessly
         else:
             target_level = self.level.check_level_triggers(self.player.hitbox)
+
+            # --- CUSTOM LOCK LOGIC FOR TAVERN BEDROOM ---
+            if target_level:
+                # Strip extensions for safe comparison
+                check_name = target_level.replace(".tmx", "")
+                current_name = getattr(self, "level_filename", "").replace(".tmx", "")
+
+                # Check if trying to enter the bedroom from the hallway
+                if current_name == "tavern_rooms" and check_name == "tavern_bedroom":
+                    if not self.player.inventory.has_item("tavern_key"):
+                        target_level = None  # Block transition
+
+                        # Prevent HUD spam while standing on the trigger
+                        if not getattr(self, "locked_door_spam_guard", False):
+                            self.hud.add_notification(STRING_NOTIFY_NEED_KEY)
+                            self.locked_door_spam_guard = True
+                    else:
+                        self.locked_door_spam_guard = False
+                else:
+                    self.locked_door_spam_guard = False
+            else:
+                # Reset spam guard if player steps off the trigger
+                self.locked_door_spam_guard = False
 
         if target_level:
             if not target_level.endswith(".tmx"):

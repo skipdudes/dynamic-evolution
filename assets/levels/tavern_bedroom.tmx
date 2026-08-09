@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="54">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="13" tilewidth="48" tileheight="48" infinite="0" nextlayerid="7" nextobjectid="55">
  <properties>
   <property name="level_type" value="indoor"/>
  </properties>
@@ -81,6 +81,11 @@
     <property name="direction" value="down"/>
     <property name="npc_id" value="elara"/>
     <property name="spawn_id" value="elara_quest_bedroom"/>
+   </properties>
+  </object>
+  <object id="54" name="player_spawn" x="564" y="236" width="48" height="72">
+   <properties>
+    <property name="level" value="unknown"/>
    </properties>
   </object>
  </objectgroup>

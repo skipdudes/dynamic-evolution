@@ -58,6 +58,13 @@ ITEMS_DB = {
         "icon": "opened_letter.png"
     },
 
+    # Quest 8
+    "tavern_key": {
+        "name": "Tavern Room Key",
+        "description": "A heavy, slightly rusty key. It opens the third room on the right, at the very end of the corridor in The Dead Harpy.",
+        "icon": "key.png"
+    },
+
     # Quest X
     "aldous_staff": {
         "name": "Aldous's Staff",

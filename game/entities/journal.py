@@ -49,7 +49,7 @@ class Journal:
     def get_llm_string(self) -> str:
         """
         Formats the journal into a readable string for the LLM prompt.
-        Separates active and completed quests.
+        Separates active and completed quests and includes the final result for completed ones.
         """
         if not self.quests:
             return "No quests."
@@ -58,17 +58,18 @@ class Journal:
         completed_quests = []
 
         for q_id, q_data in self.quests.items():
+            last_entry = q_data["entries"][-1] if q_data["entries"] else "No details yet."
+
             if q_data["status"] == "active":
-                # Send the title and the most recent entry as the "current objective"
-                last_entry = q_data["entries"][-1] if q_data["entries"] else "No details yet."
                 active_quests.append(f"[{q_data['title']}] - Current state: {last_entry}")
             else:
-                completed_quests.append(q_data["title"])
+                # Include the final entry so NPCs can react to how a quest was resolved!
+                completed_quests.append(f"[{q_data['title']}] - Result: {last_entry}")
 
         result = ""
         if active_quests:
             result += "ACTIVE QUESTS:\n" + "\n".join(f"- {q}" for q in active_quests) + "\n"
         if completed_quests:
-            result += f"COMPLETED QUESTS: {', '.join(completed_quests)}\n"
+            result += "COMPLETED QUESTS:\n" + "\n".join(f"- {q}" for q in completed_quests) + "\n"
 
         return result.strip() if result else "No quests."

@@ -59,6 +59,7 @@ FPS_CHOICES = [30, 60, 120, 0]
 HUD_NOTIFICATION_DURATION = 5.0
 STRING_NOTIFY_ITEM = "New item: "
 STRING_NOTIFY_QUEST = "New log entry: "
+STRING_NOTIFY_NEED_KEY = "The door is locked. I need a key."
 
 # Splash text
 STRING_SPLASH_TEXT = "skipdudes presents..."

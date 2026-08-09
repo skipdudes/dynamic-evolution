@@ -117,7 +117,10 @@ def execute_tool_calls(tools: list[dict], play_state, game_state, current_npc_id
         # 7. Check for night mode toggle
         if "set_night_mode" in args:
             night_mode_val = args.get("set_night_mode")
-            if isinstance(night_mode_val, bool):
-                # Change variable is_night in class PlayState
-                play_state.is_night = night_mode_val
-                log.info(f"Tool Executed [set_night_mode]: {night_mode_val}")
+            if night_mode_val == "true":
+                play_state.is_night = True
+                log.info("Tool Executed [set_night_mode]: True")
+            elif night_mode_val == "false":
+                play_state.is_night = False
+                log.info("Tool Executed [set_night_mode]: False")
+            # If it's "" (empty string) or anything else, do nothing!
