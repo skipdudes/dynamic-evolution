@@ -86,6 +86,23 @@ class MainMenuState(BaseState):
                 # player.journal.complete_quest("quest_bouncers_test")
                 # game_state.set_npc_spawn("brunt", "brunt_rest")
 
+                # # test quest 7 - The Midnight Drop
+                # player.inventory.add_item("ferret_amulet")
+                # player.journal.complete_quest("quest_echoes_rebellion")
+                # player.journal.add_quest("quest_stranger_tarnstead")
+                # player.journal.add_entry("quest_stranger_tarnstead", "The teleportation was successful. I am in a meadow somewhere in Tarnstead. I should head east into the settlement and find a local tavern. A bartender is always the best source of rumors.")
+                # player.journal.complete_quest("quest_stranger_tarnstead")
+                # player.inventory.add_item("gold", 100)
+                # player.journal.add_quest("quest_bouncers_test")
+                # player.journal.add_entry("quest_bouncers_test", "Grizzly sent me to the bandit hideout in the north-east. It looks like a normal house. I need to talk to a bouncer named Brunt inside.")
+                # player.journal.add_entry("quest_bouncers_test", "I convinced Brunt to let me pass.")
+                # player.journal.complete_quest("quest_bouncers_test")
+                # game_state.set_npc_spawn("brunt", "brunt_rest")
+                # player.journal.add_quest("quest_test_loyalty")
+                # player.journal.add_entry("quest_test_loyalty", "Cedric ordered me to retrieve a confiscated rebel ledger from Captain Thorne at the Guard Station in the south-west.")
+                # player.journal.add_entry("quest_test_loyalty", "I delivered the ledger. Cedric officially accepted me into the Shadows of the Crown.")
+                # player.journal.complete_quest("quest_test_loyalty")
+
                 play_state = PlayState(
                     self.state_machine,
                     level_filename=LEVEL_START,

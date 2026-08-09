@@ -113,3 +113,11 @@ def execute_tool_calls(tools: list[dict], play_state, game_state, current_npc_id
                 log.warning(
                     f"Teleport requested to '{teleport_dest}', but 'teleport_player' method is missing in PlayState!")
             log.info(f"Tool Executed [teleport]: {teleport_dest}")
+
+        # 7. Check for night mode toggle
+        if "set_night_mode" in args:
+            night_mode_val = args.get("set_night_mode")
+            if isinstance(night_mode_val, bool):
+                # Change variable is_night in class PlayState
+                play_state.is_night = night_mode_val
+                log.info(f"Tool Executed [set_night_mode]: {night_mode_val}")

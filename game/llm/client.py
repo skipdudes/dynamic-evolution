@@ -68,6 +68,10 @@ LLM_TOOLS = [
                     "teleport_destination": {
                         "type": "string",
                         "description": "The map name to teleport the player to (e.g., 'meadow'). Leave empty string if no teleport."
+                    },
+                    "set_night_mode": {
+                        "type": "boolean",
+                        "description": "Set to true to enable night mode, false to disable it."
                     }
                 },
                 "required": ["dialogue"]

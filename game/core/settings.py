@@ -119,6 +119,9 @@ You have been urgently summoned to the castle. The true Shadows of the Crown are
 # Starting quest first entry
 STRING_FIRST_LOG_ENTRY = "The King summoned me urgently. I should speak with him in the throne room."
 
+# Quest entry upon breaking letter's seal
+STRING_BREAK_SEAL_LOG_ENTRY = "I broke the seal and opened the letter. It mentions a closed estate next to the hideout and is signed 'H'. Who from the capital is behind this?"
+
 # In-game strings
 STRING_RETURN_PROMPT = "Press ESC to return"
 STRING_CONTINUE_PROMPT = "Press ENTER to continue"
@@ -138,6 +141,7 @@ STRING_JOURNAL_EMPTY = "You have no quests."
 STRING_JOURNAL_ACTIVE = "[ Active ]"
 STRING_JOURNAL_COMPLETED = "[ Completed ]"
 STRING_JOURNAL_READ_PROMPT = "Press ENTER to read entries"
+STRING_BREAK_SEAL_PROMPT = "Press ENTER to break the seal"
 
 # UI Colors
 COLOR_UI_BG_ALPHA = (0, 0, 0, 153)          # 60% opacity black

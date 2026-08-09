@@ -3,12 +3,14 @@ import pygame
 import logging
 from game.core.state import BaseState
 from game.core.settings import (
-    FONT_UI, FONT_DIALOGUE, KEY_UP, KEY_DOWN, KEY_RETURN, KEY_INVENTORY,
+    FONT_UI, FONT_DIALOGUE, KEY_UP, KEY_DOWN, KEY_RETURN, KEY_INVENTORY, KEY_INTERACT,
     WINDOW_WIDTH, WINDOW_HEIGHT, COLOR_TEXT_MAIN, COLOR_TEXT_SELECTED,
     COLOR_TEXT_HELPER, COLOR_MISSING, IMAGES_DIR, STRING_INVENTORY_TITLE,
-    STRING_INVENTORY_EMPTY, STRING_DIALOGUE_SCROLL_UP, STRING_DIALOGUE_SCROLL_DOWN
+    STRING_INVENTORY_EMPTY, STRING_DIALOGUE_SCROLL_UP, STRING_DIALOGUE_SCROLL_DOWN,
+    STRING_NOTIFY_QUEST, STRING_BREAK_SEAL_LOG_ENTRY, STRING_BREAK_SEAL_PROMPT
 )
 from game.entities.item_data import ITEMS_DB
+from game.entities.quest_data import QUESTS_DB
 
 log = logging.getLogger(__name__)
 
@@ -26,8 +28,6 @@ class InventoryState(BaseState):
         self.icon_scroll_up = self._load_icon("scroll_up.png")
         self.icon_scroll_down = self._load_icon("scroll_down.png")
 
-        self.items = list(self.play_state.player.inventory.items.items())
-
         self.selected_index = 0
         self.list_scroll_offset = 0
         self.max_list_items = 8
@@ -35,34 +35,11 @@ class InventoryState(BaseState):
         self.overlay = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.SRCALPHA)
         self.overlay.fill((0, 0, 0, 150))
 
+        self.items = []
         self.item_icons = {}
-        items_gfx_dir = os.path.join(IMAGES_DIR, "items")
 
-        for item_id, _ in self.items:
-            item_info = ITEMS_DB.get(item_id, {})
-            custom_icon_name = item_info.get("icon")
-
-            final_icon_path = None
-
-            # 1. Try custom icon from ITEMS_DB
-            if custom_icon_name:
-                temp_path = os.path.join(items_gfx_dir, custom_icon_name)
-                if os.path.exists(temp_path):
-                    final_icon_path = temp_path
-
-            # 2. If custom fails or is missing, try item_id.png fallback
-            if not final_icon_path:
-                temp_path = os.path.join(items_gfx_dir, f"{item_id}.png")
-                if os.path.exists(temp_path):
-                    final_icon_path = temp_path
-
-            # 3. Load the matched image, or fallback to missing texture
-            if final_icon_path:
-                img = pygame.image.load(final_icon_path).convert_alpha()
-                self.item_icons[item_id] = pygame.transform.scale(img, (96, 96))
-            else:
-                log.warning(f"Missing inventory icon for item_id: '{item_id}'. Falling back to missing texture.")
-                self.item_icons[item_id] = None
+        # Initial inventory load
+        self._refresh_inventory()
 
     def _load_icon(self, filename: str) -> pygame.Surface | None:
         """Loads optional scroll arrow icons from assets/images/ui/"""
@@ -71,11 +48,66 @@ class InventoryState(BaseState):
             return pygame.image.load(path).convert_alpha()
         return None
 
+    def _load_item_icon(self, item_id: str):
+        """Helper to load a specific item's icon if not already loaded."""
+        if item_id in self.item_icons:
+            return
+
+        items_gfx_dir = os.path.join(IMAGES_DIR, "items")
+        item_info = ITEMS_DB.get(item_id, {})
+        custom_icon_name = item_info.get("icon")
+
+        final_icon_path = None
+
+        # 1. Try custom icon from ITEMS_DB
+        if custom_icon_name:
+            temp_path = os.path.join(items_gfx_dir, custom_icon_name)
+            if os.path.exists(temp_path):
+                final_icon_path = temp_path
+
+        # 2. If custom fails or is missing, try item_id.png fallback
+        if not final_icon_path:
+            temp_path = os.path.join(items_gfx_dir, f"{item_id}.png")
+            if os.path.exists(temp_path):
+                final_icon_path = temp_path
+
+        # 3. Load the matched image, or fallback to missing texture
+        if final_icon_path:
+            img = pygame.image.load(final_icon_path).convert_alpha()
+            self.item_icons[item_id] = pygame.transform.scale(img, (96, 96))
+        else:
+            log.warning(f"Missing inventory icon for item_id: '{item_id}'. Falling back to missing texture.")
+            self.item_icons[item_id] = None
+
+    def _refresh_inventory(self):
+        """Refreshes the item list and loads missing icons without closing the UI."""
+        self.items = list(self.play_state.player.inventory.items.items())
+        for item_id, _ in self.items:
+            self._load_item_icon(item_id)
+
+        # Secure the index in case the last item in the list was removed
+        if self.items and self.selected_index >= len(self.items):
+            self.selected_index = max(0, len(self.items) - 1)
+
     def handle_events(self, events: list[pygame.event.Event]):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key in KEY_INVENTORY or event.key in KEY_RETURN:
                     self.state_machine.pop()
+
+                # Interaction logic (e.g., opening the sealed letter)
+                elif event.key in KEY_INTERACT:
+                    if self.items:
+                        selected_item_id = self.items[self.selected_index][0]
+
+                        if selected_item_id == "sealed_letter":
+                            log.info("Player decided to break the seal on the letter!")
+                            self.play_state.player.inventory.remove_item("sealed_letter", 1)
+                            self.play_state.player.inventory.add_item("opened_letter", 1)
+                            self.play_state.player.journal.add_entry("quest_midnight_drop", STRING_BREAK_SEAL_LOG_ENTRY)
+                            quest_name = QUESTS_DB.get("quest_midnight_drop", {}).get("title", "quest_midnight_drop")
+                            self.play_state.hud.add_notification(f"{STRING_NOTIFY_QUEST}{quest_name}")
+                            self._refresh_inventory()  # refresh the UI to immediately show 'opened_letter'
 
                 elif event.key in KEY_UP:
                     if self.items:
@@ -180,6 +212,11 @@ class InventoryState(BaseState):
         desc_y = max(details_y + icon_size, final_name_y) + 16
         desc_rect = pygame.Rect(details_x, desc_y, panel_width - 340, panel_height - (desc_y - panel_y) - 10)
         self._draw_text_wrapped(screen, selected_item_data['description'], self.font_desc, COLOR_TEXT_MAIN, desc_rect)
+
+        # 4. Bottom UI hint
+        if selected_item_id == "sealed_letter":
+            hint_surf = self.font_ui.render(STRING_BREAK_SEAL_PROMPT, True, COLOR_TEXT_HELPER)
+            screen.blit(hint_surf, ((WINDOW_WIDTH - hint_surf.get_width()) // 2, panel_y + panel_height + 10))
 
     def _draw_text_wrapped(self, surface: pygame.Surface, text: str, font: pygame.font.Font, color: tuple,
                            rect: pygame.Rect) -> int:

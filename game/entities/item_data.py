@@ -46,18 +46,23 @@ ITEMS_DB = {
         "icon": "letters.png"
     },
 
+    # Quest 7
+    "sealed_letter": {
+        "name": "Sealed Letter",
+        "description": "A mysterious letter. The wax seal bears the crest of the Prime Minister. Breaking the seal might have consequences.",
+        "icon": "sealed_letter.png"
+    },
+    "opened_letter": {
+        "name": "Opened Letter",
+        "description": "A letter you broke the seal of. It mentions a 'closed estate next to the hideout' and is signed 'H'.",
+        "icon": "opened_letter.png"
+    },
+
     # Quest X
     "aldous_staff": {
         "name": "Aldous's Staff",
         "description": "A powerful wooden staff radiating faint magical energy. It feels warm to the touch.",
         "icon": "aldous_staff.png"
-    },
-
-    # Quest X
-    "sealed_letter": {
-        "name": "Sealed Letter",
-        "description": "A letter sealed with wax. The 'H' initial is clearly visible on the seal.",
-        "icon": "sealed_letter.png"
     },
 
 }
