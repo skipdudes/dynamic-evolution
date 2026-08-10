@@ -4,7 +4,7 @@ from game.core.state import BaseState
 from game.core.settings import (
     KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, KEY_JOURNAL,
     STRING_DIALOGUE_BEGIN_PROMPT, KEY_NIGHTMODE, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT,
-    STRING_NOTIFY_NEED_KEY, STRING_NOTIFY_MAGE_LOCK
+    STRING_NOTIFY_NEED_KEY, STRING_NOTIFY_MAGE_LOCK, STRING_NOTIFY_NO_TIME
 )
 from game.world.level import Level
 from game.world.camera import Camera
@@ -73,6 +73,7 @@ class PlayState(BaseState):
 
         self.pending_teleport: str | None = None  # variable to hold queued teleportations from LLM tools
         self.locked_door_spam_guard = False  # prevents HUD spam for locked doors
+        self.pending_ending = None
 
         # Automatically start Quest 3 when the player first arrives in the meadow (after teleport)
         if self.level_filename == "meadow.tmx" and not self.player.journal.has_quest("quest_stranger_tarnstead"):
@@ -167,6 +168,55 @@ class PlayState(BaseState):
         self.state_machine.push(dialogue_state)
 
     def update(self, dt: float):
+        # --- ENDGAME HANDLING ---
+        if getattr(self, "pending_ending", None):
+            ending_type = self.pending_ending
+            self.pending_ending = None  # Clear it
+
+            log.info(f"Triggering game ending: {ending_type}")
+
+            # Stop player
+            self.player.stop()
+
+            from game.states.story_board_state import StoryBoardState
+            from game.states.main_menu_state import MainMenuState
+            from game.core.settings import (
+                STRING_EPILOGUE_GOOD_HEADER, STRING_EPILOGUE_GOOD_TEXT, COLOR_HEADER_EPILOGUE_GOOD,
+                STRING_EPILOGUE_BAD_HEADER, STRING_EPILOGUE_BAD_TEXT, COLOR_HEADER_EPILOGUE_BAD
+            )
+
+            if ending_type == "good":
+                header = STRING_EPILOGUE_GOOD_HEADER
+                text = STRING_EPILOGUE_GOOD_TEXT
+                color = COLOR_HEADER_EPILOGUE_GOOD
+            else:
+                header = STRING_EPILOGUE_BAD_HEADER
+                text = STRING_EPILOGUE_BAD_TEXT
+                color = COLOR_HEADER_EPILOGUE_BAD
+
+            # After the ending text, return to the main menu
+            next_state = MainMenuState(self.state_machine)
+
+            outro = StoryBoardState(
+                self.state_machine,
+                header,
+                text,
+                next_state,
+                title_color=color,
+                hold_time=8.0
+            )
+
+            # Transition to Outro immediately
+            from game.states.transition_state import TransitionState
+            transition = TransitionState(
+                self.state_machine,
+                prev_state=self,
+                next_state_func=lambda: outro,
+                duration=1.0
+            )
+            self.state_machine.change(transition)
+            return  # Halt any further update logic on this frame!
+
         # Combine static level colliders with dynamic NPC hitboxes
         active_colliders = self.level.collision_rects + [npc.hitbox for npc in self.npcs]
 
@@ -212,7 +262,7 @@ class PlayState(BaseState):
         else:
             target_level = self.level.check_level_triggers(self.player.hitbox)
 
-            # --- CUSTOM LOCK LOGIC FOR TAVERN AND MAGE HOUSE ---
+            # --- CUSTOM LOCK LOGIC FOR TAVERN, MAGE HOUSE, AND FINALE ---
             if target_level:
                 # Strip extensions for safe comparison
                 check_name = target_level.replace(".tmx", "")
@@ -235,6 +285,17 @@ class PlayState(BaseState):
                         target_level = None  # Block transition
                         if not getattr(self, "locked_door_spam_guard", False):
                             self.hud.add_notification(STRING_NOTIFY_MAGE_LOCK)
+                            self.locked_door_spam_guard = True
+                    else:
+                        self.locked_door_spam_guard = False
+
+                # 3. Finale Lock (Quest 10: Checkmate) - Block everything except castle
+                elif current_name == "oldworld" and check_name in ["inn", "house_marquis", "house_mage"]:
+                    quest_10 = self.player.journal.quests.get("quest_checkmate")
+                    if quest_10 and quest_10.get("status") == "active":
+                        target_level = None  # Block transition
+                        if not getattr(self, "locked_door_spam_guard", False):
+                            self.hud.add_notification(STRING_NOTIFY_NO_TIME)
                             self.locked_door_spam_guard = True
                     else:
                         self.locked_door_spam_guard = False

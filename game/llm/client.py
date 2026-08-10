@@ -72,6 +72,10 @@ LLM_TOOLS = [
                     "set_night_mode": {
                         "type": "string",
                         "description": "Pass 'true' to enable night, 'false' to enable day, or '' (empty string) to leave time unchanged."
+                    },
+                    "trigger_ending": {
+                        "type": "string",
+                        "description": "Pass 'good' to trigger the good ending, 'bad' for the bad ending, or '' (empty string) to do nothing."
                     }
                 },
                 "required": ["dialogue"]

@@ -124,3 +124,10 @@ def execute_tool_calls(tools: list[dict], play_state, game_state, current_npc_id
                 play_state.is_night = False
                 log.info("Tool Executed [set_night_mode]: False")
             # If it's "" (empty string) or anything else, do nothing!
+
+        # 8. Check for endgame trigger
+        if "trigger_ending" in args:
+            ending_val = args.get("trigger_ending")
+            if ending_val in ["good", "bad"]:
+                play_state.pending_ending = ending_val
+                log.info(f"Tool Executed [trigger_ending]: {ending_val}")

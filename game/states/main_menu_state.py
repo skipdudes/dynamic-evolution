@@ -88,8 +88,8 @@ class MainMenuState(BaseState):
                 # player.inventory.add_item("tavern_key")
                 # player.journal.add_entry("quest_whispers_dark", "I paid Elara to escape. She warned me Silas senses my teleportation magic and will lay a trap. I went to sleep; she was gone by morning. I should return to Cedric now.")
                 #
-                # # # Thorne ending
-                # # player.inventory.add_item("blackmail_letters")
+                # # Thorne ending
+                # player.inventory.add_item("blackmail_letters")
 
                 play_state = PlayState(
                     self.state_machine,

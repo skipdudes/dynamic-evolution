@@ -61,6 +61,7 @@ STRING_NOTIFY_ITEM = "New item: "
 STRING_NOTIFY_QUEST = "New log entry: "
 STRING_NOTIFY_NEED_KEY = "The door is locked. I need a key."
 STRING_NOTIFY_MAGE_LOCK = "I cannot leave yet. I must deal with Aldous first."
+STRING_NOTIFY_NO_TIME = "There is no time for this now. The castle awaits."
 
 # Splash text
 STRING_SPLASH_TEXT = "skipdudes presents..."
@@ -153,6 +154,21 @@ Lord Cedric, the King's own brother, has ordered you to kill the very mage who h
 
 The time for playing a double agent is over. The choice you make in this room will determine the fate of the entire realm..."""
 
+# Epilogue
+STRING_EPILOGUE_GOOD_HEADER = "The Light Prevails"
+STRING_EPILOGUE_GOOD_TEXT = """You remained true to your oath. The rebels walked blindly into the trap you and Aldous laid.
+
+Silas's dark magic was no match for the combined might of the Royal Guard. Lord Cedric was captured, his treason brought to an end. However, the revelation of your father's involvement shook the kingdom to its core, leaving you to bear the weight of his sins.
+
+King Arthur's throne is safe. You have saved the realm once more, Duke Anthony, proving that even in the deepest shadows, loyalty is a light that cannot be extinguished."""
+
+STRING_EPILOGUE_BAD_HEADER = "A Dark New Era"
+STRING_EPILOGUE_BAD_TEXT = """You chose to side with Lord Cedric. The ambush was a massacre. King Arthur, betrayed and outmaneuvered, fell by his own brother's hand.
+
+The 'Shadows of the Crown' now rule from the throne room. Your father, Prime Minister Henry, steps from the shadows, revealing his role as the true architect of the rebellion. You were his greatest pawn.
+
+You are hailed as a hero of the revolution. But as you look at Silas's dark magic twisting the castle corridors, you can't help but wonder... what have you unleashed upon the kingdom?"""
+
 # UI Colors
 COLOR_UI_BG_ALPHA = (0, 0, 0, 153)          # 60% opacity black
 COLOR_UI_BOX_ALPHA = (0, 0, 0, 230)         # 90% opacity black
@@ -166,3 +182,5 @@ COLOR_PREFIX_THINKING = (255, 255, 255)     # White
 COLOR_MISSING = (255, 0, 255)               # Color used for missing textures (magenta)
 COLOR_NIGHT_FILTER = (15, 15, 45, 160)      # Dark blueish-purple for a cinematic night feel
 COLOR_HEADER_CROSSROADS = (170, 130, 255)   # Mystic Purple
+COLOR_HEADER_EPILOGUE_GOOD = (0, 192, 0)    # Victory Green
+COLOR_HEADER_EPILOGUE_BAD = (255, 0, 0)     # Defeat Red
