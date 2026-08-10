@@ -65,11 +65,11 @@ ITEMS_DB = {
         "icon": "key.png"
     },
 
-    # Quest X
+    # Quest 9
     "aldous_staff": {
         "name": "Aldous's Staff",
-        "description": "A powerful wooden staff radiating faint magical energy. It feels warm to the touch.",
-        "icon": "aldous_staff.png"
+        "description": "A powerful magical staff belonging to Mage Aldous. Proof of your encounter with him.",
+        "icon": "staff.png"
     },
 
 }

@@ -4,7 +4,7 @@ from game.core.state import BaseState
 from game.core.settings import (
     KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, KEY_JOURNAL,
     STRING_DIALOGUE_BEGIN_PROMPT, KEY_NIGHTMODE, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT,
-    STRING_NOTIFY_NEED_KEY
+    STRING_NOTIFY_NEED_KEY, STRING_NOTIFY_MAGE_LOCK
 )
 from game.world.level import Level
 from game.world.camera import Camera
@@ -203,26 +203,38 @@ class PlayState(BaseState):
 
         # Check for queued teleports (from LLM) or physical level triggers
         target_level = None
+        is_teleport = False
+
         if self.pending_teleport:
             target_level = self.pending_teleport
             self.pending_teleport = None  # Clear it so it doesn't trigger endlessly
+            is_teleport = True
         else:
             target_level = self.level.check_level_triggers(self.player.hitbox)
 
-            # --- CUSTOM LOCK LOGIC FOR TAVERN BEDROOM ---
+            # --- CUSTOM LOCK LOGIC FOR TAVERN AND MAGE HOUSE ---
             if target_level:
                 # Strip extensions for safe comparison
                 check_name = target_level.replace(".tmx", "")
                 current_name = getattr(self, "level_filename", "").replace(".tmx", "")
 
-                # Check if trying to enter the bedroom from the hallway
+                # 1. Tavern Bedroom Lock
                 if current_name == "tavern_rooms" and check_name == "tavern_bedroom":
                     if not self.player.inventory.has_item("tavern_key"):
                         target_level = None  # Block transition
-
-                        # Prevent HUD spam while standing on the trigger
                         if not getattr(self, "locked_door_spam_guard", False):
                             self.hud.add_notification(STRING_NOTIFY_NEED_KEY)
+                            self.locked_door_spam_guard = True
+                    else:
+                        self.locked_door_spam_guard = False
+
+                # 2. Mage House Lock (Quest 9: The Point of No Return)
+                elif current_name == "house_mage" and check_name == "oldworld":
+                    quest_9 = self.player.journal.quests.get("quest_point_no_return")
+                    if quest_9 and quest_9.get("status") == "active":
+                        target_level = None  # Block transition
+                        if not getattr(self, "locked_door_spam_guard", False):
+                            self.hud.add_notification(STRING_NOTIFY_MAGE_LOCK)
                             self.locked_door_spam_guard = True
                     else:
                         self.locked_door_spam_guard = False
@@ -237,13 +249,14 @@ class PlayState(BaseState):
                 target_level += ".tmx"  # Append .tmx extension if missing
 
             log.info(f"Player triggered transition to level: {target_level}")
+            check_name = target_level.replace(".tmx", "")
 
             # Stop the player completely on old level
             self.player.stop()
 
             # Define what to load in the background
             def load_next_level():
-                return PlayState(
+                next_play_state = PlayState(
                     self.state_machine,
                     level_filename=target_level,
                     player_instance=self.player,
@@ -253,6 +266,28 @@ class PlayState(BaseState):
                     hud=self.hud,
                     is_night=self.is_night
                 )
+
+                # --- STORYBOARD INTERCEPTION (Mid-Game Crossroads) ---
+                # Triggered ONLY if we teleport to house_mage and Quest 9 is active
+                if is_teleport and check_name == "house_mage":
+                    quest_9 = self.player.journal.quests.get("quest_point_no_return")
+                    if quest_9 and quest_9.get("status") == "active":
+                        from game.states.story_board_state import StoryBoardState
+                        from game.core.settings import (
+                            STRING_CROSSROADS_HEADER,
+                            STRING_CROSSROADS_TEXT,
+                            COLOR_HEADER_CROSSROADS
+                        )
+                        return StoryBoardState(
+                            self.state_machine,
+                            STRING_CROSSROADS_HEADER,
+                            STRING_CROSSROADS_TEXT,
+                            next_play_state,  # Passes the initialized PlayState to load after the storyboard!
+                            title_color=COLOR_HEADER_CROSSROADS,
+                            hold_time=6.0
+                        )
+
+                return next_play_state
 
             # Transition based on next_state_func
             from game.states.transition_state import TransitionState

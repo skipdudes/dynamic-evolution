@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="114">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="116">
  <properties>
   <property name="level_type" value="indoor"/>
  </properties>
@@ -48,11 +48,10 @@
 </data>
  </layer>
  <objectgroup id="10" name="collision">
-  <object id="62" x="0" y="0" width="96" height="720"/>
-  <object id="63" x="96" y="624" width="336" height="96"/>
-  <object id="64" x="528" y="624" width="336" height="96"/>
-  <object id="65" x="864" y="0" width="96" height="720"/>
-  <object id="66" x="576" y="864"/>
+  <object id="62" x="0" y="0" width="96" height="780"/>
+  <object id="63" x="96" y="624" width="336" height="156"/>
+  <object id="64" x="528" y="624" width="336" height="156"/>
+  <object id="65" x="864" y="0" width="96" height="780"/>
   <object id="67" x="96" y="0" width="768" height="96"/>
   <object id="70" x="162" y="537" width="60" height="39"/>
   <object id="71" x="145" y="537" width="16" height="34"/>
@@ -93,6 +92,7 @@
   <object id="109" x="743" y="297" width="4" height="6"/>
   <object id="110" x="726" y="302" width="2" height="10"/>
   <object id="111" x="728" y="299" width="15" height="4"/>
+  <object id="115" x="432" y="732" width="96" height="48"/>
  </objectgroup>
  <objectgroup id="11" name="triggers">
   <object id="60" name="level_trigger" x="432" y="720" width="96" height="48">
@@ -110,6 +110,11 @@
     <property name="direction" value="up"/>
     <property name="npc_id" value="mage"/>
     <property name="spawn_id" value="mage_start"/>
+   </properties>
+  </object>
+  <object id="114" name="player_spawn" x="456" y="384" width="48" height="72">
+   <properties>
+    <property name="level" value="unknown"/>
    </properties>
   </object>
  </objectgroup>

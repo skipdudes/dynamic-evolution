@@ -60,6 +60,7 @@ HUD_NOTIFICATION_DURATION = 5.0
 STRING_NOTIFY_ITEM = "New item: "
 STRING_NOTIFY_QUEST = "New log entry: "
 STRING_NOTIFY_NEED_KEY = "The door is locked. I need a key."
+STRING_NOTIFY_MAGE_LOCK = "I cannot leave yet. I must deal with Aldous first."
 
 # Splash text
 STRING_SPLASH_TEXT = "skipdudes presents..."
@@ -144,6 +145,14 @@ STRING_JOURNAL_COMPLETED = "[ Completed ]"
 STRING_JOURNAL_READ_PROMPT = "Press ENTER to read entries"
 STRING_BREAK_SEAL_PROMPT = "Press ENTER to break the seal"
 
+# Mid-Game Crossroads
+STRING_CROSSROADS_HEADER = "The Crossroads"
+STRING_CROSSROADS_TEXT = """Silas's dark magic envelops you, pulling you across the kingdom in the blink of an eye. You arrive in Aldous's study. The air is heavy with the scent of ozone and impending death.
+
+Lord Cedric, the King's own brother, has ordered you to kill the very mage who has been watching over you.
+
+The time for playing a double agent is over. The choice you make in this room will determine the fate of the entire realm..."""
+
 # UI Colors
 COLOR_UI_BG_ALPHA = (0, 0, 0, 153)          # 60% opacity black
 COLOR_UI_BOX_ALPHA = (0, 0, 0, 230)         # 90% opacity black
@@ -156,3 +165,4 @@ COLOR_PREFIX_NPC = (255, 215, 0)            # Gold
 COLOR_PREFIX_THINKING = (255, 255, 255)     # White
 COLOR_MISSING = (255, 0, 255)               # Color used for missing textures (magenta)
 COLOR_NIGHT_FILTER = (15, 15, 45, 160)      # Dark blueish-purple for a cinematic night feel
+COLOR_HEADER_CROSSROADS = (170, 130, 255)   # Mystic Purple

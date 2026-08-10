@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="48" tileheight="48" infinite="0" nextlayerid="10" nextobjectid="508">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="48" tileheight="48" infinite="0" nextlayerid="10" nextobjectid="513">
  <properties>
   <property name="level_type" value="outdoor"/>
  </properties>
@@ -193,6 +193,39 @@
   <object id="231" name="player_spawn" x="576" y="430" width="48" height="72">
    <properties>
     <property name="level" value="unknown"/>
+   </properties>
+  </object>
+  <object id="508" name="player_spawn" x="1104" y="408" width="48" height="72">
+   <properties>
+    <property name="level" value="house_bandits_office"/>
+   </properties>
+  </object>
+  <object id="509" name="npc_spawn" x="1032" y="204" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="cedric"/>
+    <property name="spawn_id" value="cedric_end"/>
+   </properties>
+  </object>
+  <object id="510" name="npc_spawn" x="1176" y="204" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="silas"/>
+    <property name="spawn_id" value="silas_end"/>
+   </properties>
+  </object>
+  <object id="511" name="npc_spawn" x="972" y="264" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="thorne"/>
+    <property name="spawn_id" value="thorne_end"/>
+   </properties>
+  </object>
+  <object id="512" name="npc_spawn" x="1236" y="264" width="48" height="72">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="npc_id" value="brunt"/>
+    <property name="spawn_id" value="brunt_end"/>
    </properties>
   </object>
  </objectgroup>
