@@ -2,8 +2,8 @@ import pygame
 import logging
 from game.core.state import BaseState
 from game.core.settings import (
-    KEY_INTERACT, KEY_PAUSE, KEY_DEBUG, KEY_INVENTORY, KEY_JOURNAL,
-    STRING_DIALOGUE_BEGIN_PROMPT, KEY_NIGHTMODE, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT,
+    KEY_INTERACT, KEY_PAUSE, KEY_INVENTORY, KEY_JOURNAL,
+    STRING_DIALOGUE_BEGIN_PROMPT, COLOR_NIGHT_FILTER, WINDOW_WIDTH, WINDOW_HEIGHT,
     STRING_NOTIFY_NEED_KEY, STRING_NOTIFY_MAGE_LOCK, STRING_NOTIFY_NO_TIME
 )
 from game.world.level import Level
@@ -125,19 +125,6 @@ class PlayState(BaseState):
                     from game.states.journal_state import JournalState
                     self.state_machine.push(JournalState(self.state_machine, self))
                     return
-
-                # # Test HUD notifications
-                # elif event.key == pygame.K_SPACE:
-                #     self.hud.add_notification("Test notification")
-
-                # Test night mode
-                elif event.key in KEY_NIGHTMODE:
-                    self.is_night = not self.is_night
-                    log.debug(f"Night Mode set to: {self.is_night}")
-
-                elif event.key in KEY_DEBUG:
-                    self.debug_mode = not self.debug_mode
-                    log.debug(f"Debug Mode set to: {self.debug_mode}")
 
     def handle_input(self, keys):
         """Passes continuous input state to the player."""

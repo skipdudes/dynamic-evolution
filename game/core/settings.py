@@ -5,7 +5,7 @@ import pygame
 WINDOW_WIDTH = 816
 WINDOW_HEIGHT = 624
 WINDOW_TITLE = "Shadows of the Crown II"
-GAME_VERSION = "0.0.1"
+GAME_VERSION = "1.0.0"
 
 # Game loop settings
 MAX_UPDATETIME = 10  # ms (100 Hz logic update)
@@ -41,8 +41,6 @@ KEY_INVENTORY = [pygame.K_i, pygame.K_e, pygame.K_TAB]
 KEY_JOURNAL = [pygame.K_n, pygame.K_l]
 KEY_PAUSE = [pygame.K_ESCAPE]
 KEY_FULLSCREEN = [pygame.K_F4]
-KEY_DEBUG = [pygame.K_F3]
-KEY_NIGHTMODE = [pygame.K_F5]
 
 # Fonts (Tuple: Path, Size)
 FONT_SPLASH = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 48)
