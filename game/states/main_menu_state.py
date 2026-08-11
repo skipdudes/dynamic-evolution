@@ -61,7 +61,7 @@ class MainMenuState(BaseState):
                 player.journal.add_quest("quest_echoes_rebellion")
                 player.journal.add_entry("quest_echoes_rebellion", STRING_FIRST_LOG_ENTRY)
 
-                # # test quest 9
+                # # test epilogue
                 # player.inventory.add_item("ferret_amulet")
                 # player.journal.complete_quest("quest_echoes_rebellion")
                 # player.journal.add_quest("quest_stranger_tarnstead")
@@ -87,9 +87,22 @@ class MainMenuState(BaseState):
                 # player.journal.add_entry("quest_whispers_dark", "I got the room key from Grizzly. It is the third room on the right.")
                 # player.inventory.add_item("tavern_key")
                 # player.journal.add_entry("quest_whispers_dark", "I paid Elara to escape. She warned me Silas senses my teleportation magic and will lay a trap. I went to sleep; she was gone by morning. I should return to Cedric now.")
+                # player.journal.add_entry("quest_whispers_dark", "I survived the night and returned to Cedric.")
+                # player.journal.complete_quest("quest_whispers_dark")
+                # player.journal.add_quest("quest_point_no_return")
+                # player.journal.add_entry("quest_point_no_return", "Cedric is the King's brother! He ordered me to kill Mage Aldous and bring back his staff. I must speak to Silas for the teleport spell.")
+                # player.journal.add_entry("quest_point_no_return", "Silas teleported me to Aldous's house. It is time to make my final choice.")
                 #
-                # # Thorne ending
-                # player.inventory.add_item("blackmail_letters")
+                # # Good Ending
+                # player.journal.add_entry("quest_point_no_return", "I stayed loyal to the Crown. Aldous gave me his staff to fake his death and teleported me back to the hideout. He went to warn the capital so we can ambush the rebels.")
+                #
+                # # Bad Ending
+                # #player.journal.add_entry("quest_point_no_return", "I betrayed the Crown. I killed Aldous and took his staff, using its magic to teleport myself back to the hideout. The rebellion marches on.")
+                #
+                # player.journal.complete_quest("quest_point_no_return")
+                # player.journal.add_quest("quest_checkmate")
+                # player.journal.add_entry("quest_checkmate", "I returned to Cedric. He revealed my father is a traitor!")
+                # player.journal.add_entry("quest_checkmate", "We teleported to the castle gates. The final showdown begins.")
 
                 play_state = PlayState(
                     self.state_machine,

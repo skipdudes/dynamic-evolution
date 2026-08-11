@@ -71,9 +71,19 @@ class DialogueState(BaseState):
                         self.state_machine.pop()
                         return
                     elif event.key in KEY_INTERACT:
-                        self.player_text = ""
-                        self.current_phase = self.PHASE_PLAYER_TYPING
-                        self.scroll_offset = 0
+                        if getattr(self.play_state, "pending_ending", None):
+                            # Pop the dialogue_state (end the dialogue, thus triggering final boards)
+                            self.state_machine.pop()
+                            return
+                        elif getattr(self.play_state, "pending_teleport", None):
+                            # Same stuff for pending teleports -> we don't want the player to talk endlessly
+                            self.state_machine.pop()
+                            return
+                        else:
+                            # Standard player reply
+                            self.player_text = ""
+                            self.current_phase = self.PHASE_PLAYER_TYPING
+                            self.scroll_offset = 0
                     elif event.key in KEY_UP:
                         self.scroll_offset -= 1
                     elif event.key in KEY_DOWN:
