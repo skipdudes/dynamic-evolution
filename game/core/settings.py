@@ -1,4 +1,5 @@
 import os
+import sys
 import pygame
 
 # Window settings
@@ -14,7 +15,10 @@ MAX_UPDATETIME = 10  # ms (100 Hz logic update)
 LLM_NAME = "openai/gpt-oss-120b"
 
 # Paths
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if getattr(sys, "frozen", False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 LEVELS_DIR = os.path.join(ASSETS_DIR, "levels")
 IMAGES_DIR = os.path.join(ASSETS_DIR, "images")
@@ -49,6 +53,8 @@ FONT_DIALOGUE = (os.path.join(FONTS_DIR, "CelticTime.ttf"), 32)
 
 # Configuration
 CONFIG_FILE_PATH = os.path.join(BASE_DIR, "options.ini")
+LOGGER_FILE_PATH = os.path.join(BASE_DIR, "latest.log")
+ENV_FILE_PATH = os.path.join(BASE_DIR, ".env")
 DEFAULT_FPS = 60
 DEFAULT_FULLSCREEN = False
 FPS_CHOICES = [30, 60, 120, 0]

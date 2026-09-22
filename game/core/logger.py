@@ -1,13 +1,14 @@
 import logging
 import sys
 import colorlog
+from game.core.settings import LOGGER_FILE_PATH
 
 def setup_logger():
     log = logging.getLogger()
     if log.hasHandlers():
         return  # do not configure more than once
 
-    level = logging.DEBUG
+    level = logging.DEBUG  # change to INFO if prod
     log.setLevel(level)
 
     file_formatter = logging.Formatter(
@@ -15,7 +16,7 @@ def setup_logger():
         datefmt="%Y-%m-%d %H:%M:%S"
     )
     file_handler = logging.FileHandler(
-        filename="latest.log",
+        filename=LOGGER_FILE_PATH,
         mode="w",
         encoding="utf-8"
     )

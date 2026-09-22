@@ -4,7 +4,7 @@ import threading
 import logging
 from dotenv import load_dotenv
 from groq import Groq
-from game.core.settings import LLM_NAME
+from game.core.settings import LLM_NAME, ENV_FILE_PATH
 
 log = logging.getLogger(__name__)
 
@@ -87,7 +87,7 @@ LLM_TOOLS = [
 
 class GroqClient:
     def __init__(self):
-        load_dotenv()
+        load_dotenv(ENV_FILE_PATH)
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             log.error("GROQ_API_KEY not found in .env file!")
