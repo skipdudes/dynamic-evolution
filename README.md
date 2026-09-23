@@ -1,5 +1,22 @@
-# Dynamic Evolution
-todo
+<p align="center">
+  <a href="https://github.com/skipdudes/dynamic-evolution">
+    <img src="docs/assets/logo.png" alt="Shadows of the Crown II" />
+  </a>
+</p>
+<p align="center"><i>An LLM-powered 2D RPG where every conversation shapes the fate of the kingdom...</i></p>
+
+**Shadows of the Crown II** returns you to a medieval world teetering on the brink of rebellion. Sent by the King to the restless province of Tarnstead, you must navigate a dangerous web of conspiracies, interacting with powerful mages, cunning smugglers, and weary tavern keepers. This game is a direct sequel to [**Shadows of the Crown**](https://github.com/skipdudes/adventure-game) and assumes that the player remained loyal to the King.
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=9dFmNVkm_lo">
+    <img src="docs/assets/gameplay.gif" alt="Gameplay GIF" />
+  </a>
+</p>
+<p align="center"><i>Click on the gameplay GIF to watch the whole gameplay.</i></p>
+
+---
+
+This repository contains the source code for **Shadows of the Crown II** (repo name: [`dynamic-evolution`](https://github.com/skipdudes/dynamic-evolution)).
 
 ## 🛠 Requirements
 - Python 3.10+
