@@ -43,10 +43,10 @@ python main.py
 ```
 
 ## 📜 License
-todo
+This project is licensed under the [MIT](LICENSE) license.
 
 ## 🎨 Credits
 todo
 
 ## 👤 Author
-Copyright &copy; 2026 skipdudes
+Copyright &copy; 2026 Marcin Chętnik
