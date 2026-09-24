@@ -18,6 +18,10 @@
 
 This repository contains the source code for **Shadows of the Crown II** (repo name: [`dynamic-evolution`](https://github.com/skipdudes/dynamic-evolution)).
 
+[![language Python][shield-python]](https://github.com/skipdudes/dynamic-evolution)
+[![build Pygame][shield-pygame]](https://github.com/skipdudes/dynamic-evolution)
+[![platform Windows Linux macOS][shield-platform]](https://github.com/skipdudes/dynamic-evolution)
+
 ## 🛠 Requirements
 - Python 3.10+
 - pip
@@ -67,3 +71,7 @@ todo
 
 ## 👤 Author
 Copyright &copy; 2026 Marcin Chętnik
+
+[shield-python]: https://img.shields.io/badge/language-Python%203.10+-blue.svg
+[shield-pygame]: https://img.shields.io/badge/library-Pygame%202.6+-green.svg
+[shield-platform]: https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg
